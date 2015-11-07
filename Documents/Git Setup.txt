@@ -1,0 +1,53 @@
+https://www.atlassian.com/git/tutorials/setting-up-a-repository						//Tutorial on Git
+https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control				//Tutorial on Git
+http://gitref.org/																	//Command List
+https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html	//Command List
+
+
+-> Create a Folder, right click inside the folder and click "Git Bash"
+
+Only once on each machine after install:
+git config --global user.name "name"
+git config --global user.email "email"	//use same email as your github account
+
+Only once on each machine to get the entire repository:
+git remote add origin https://github.com/Christoph-M/PongKlohn.git
+git clone origin
+//"git clone https://github.com/Christoph-M/PongKlohn.git" automatically adds the remote connection
+
+
+
+Reference: https://www.atlassian.com/git/tutorials/saving-changes
+Staging a new snapshot to the repository:
+git add <file>			//to stage a specific file to be committed/track a specific file in the repository
+git add <directory>		//to stage a specific directory to be committed/track a specific directory in the repository
+git add -A				//to stage everything to be committed/track everything in the repository
+
+Saving a new snapshot to the repository:
+git commit -m "message"		//to commit the staged files to the repository
+git commit -a -m "message"	//to commit everything that is being tracked without staging to the repository. Any new files that haven't been added before won't be saved in the repository.
+
+
+Reference: https://www.atlassian.com/git/tutorials/inspecting-a-repository
+Information about the repository:
+git status		//to list current branch, staged/unstaged/untracked files
+git log			//to get the commit history
+
+
+Reference: https://www.atlassian.com/git/tutorials/syncing/git-fetch
+Import commits from remote repository:
+git fetch origin
+
+To see changes made to the remote repository:
+git log --oneline master..origin/master
+
+Apply changes in remote repository to local repository:
+git checkout master
+git log origin/master
+git merge origin/master
+
+To skip previous steps:
+git pull origin
+
+Transfer local commits to remote repository:
+git push --all

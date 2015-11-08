@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class GoalTrigger : MonoBehaviour {
-	Game goal;
+	private Game goal;
 
 	void Start(){
 		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
@@ -14,10 +14,5 @@ public class GoalTrigger : MonoBehaviour {
 
 			Collider.Destroy (other.gameObject);
 		}
-	}
-
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

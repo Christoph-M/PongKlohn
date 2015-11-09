@@ -9,43 +9,52 @@ public class PlayerInput : MonoBehaviour {
 
 	private Player player1;
 	private Player player2;
+	private RaycastHit hit;
 
 	void Start(){
 		player1 = new Player (figure1);
 		player2 = new Player (figure2);
 	}
 
-	public void moveP1(int collDirection){
-		float horP1 = Input.GetAxisRaw ("HorizontalP1");
-		float verP1 = Input.GetAxisRaw ("VerticalP1");
+	public void moveP1(){
+		float hor = Input.GetAxis ("HorizontalP1");
+		float ver = Input.GetAxis ("VerticalP1");
+
+		if (Physics.Raycast (figure1.position, Vector3.forward, out hit, 1.0f))
+			ver -= 1;
 		
-		switch (collDirection) {
-			case 0: verP1 -= 1; break;
-			case 90: horP1 -= 1; break;
-			case 180: verP1 += 1; break;
-			case 270: horP1 += 1; break;
-			default: break;
-		}
+		if (Physics.Raycast (figure1.position, Vector3.right, out hit, 1.0f))
+			hor -= 1;
+		
+		if (Physics.Raycast (figure1.position, Vector3.back, out hit, 1.0f))
+			ver += 1;
+		
+		if (Physics.Raycast (figure1.position, Vector3.left, out hit, 1.0f))
+			hor += 1;
 
-		Vector3 vecP1 = new Vector3 (horP1, 0.0f, verP1);
+		Vector3 vec = new Vector3 (hor, 0.0f, ver);
 
-		player1.Move (vecP1, playerSpeed);
+		player1.Move (vec, playerSpeed);
 	}
 
-	public void moveP2(int collDirection){
-		float horP2 = Input.GetAxisRaw ("HorizontalP2");
-		float verP2 = Input.GetAxisRaw ("VerticalP2");
+	public void moveP2(){
+		float hor = Input.GetAxis ("HorizontalP2");
+		float ver = Input.GetAxis ("VerticalP2");
 		
-		switch (collDirection) {
-		case 0: verP2 -= 1; break;
-		case 90: horP2 -= 1; break;
-		case 180: verP2 += 1; break;
-		case 270: horP2 += 1; break;
-		default: break;
-		}
+		if (Physics.Raycast (figure2.position, Vector3.forward, out hit, 1.0f))
+			ver -= 1;
+		
+		if (Physics.Raycast (figure2.position, Vector3.right, out hit, 1.0f))
+			hor -= 1;
+		
+		if (Physics.Raycast (figure2.position, Vector3.back, out hit, 1.0f))
+			ver += 1;
+		
+		if (Physics.Raycast (figure2.position, Vector3.left, out hit, 1.0f))
+			hor += 1;
 
-		Vector3 vecP2 = new Vector3 (horP2, 0.0f, verP2);
+		Vector3 vec = new Vector3 (hor, 0.0f, ver);
 
-		player2.Move (vecP2, playerSpeed);
+		player2.Move (vec, playerSpeed);
 	}
 }

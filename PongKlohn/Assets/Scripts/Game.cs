@@ -4,9 +4,6 @@ using System;
 using UnityEditor;
 
 public class Game : MonoBehaviour {
-
-	public Transform[] assets;
-
 	private PlayerInput playerInput;
 	private GameMechanics gameMechanics;
 
@@ -29,8 +26,8 @@ public class Game : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		playerInput.moveP1(gameMechanics.detectCollisionP1());
-		playerInput.moveP2(gameMechanics.detectCollisionP2());
+		playerInput.moveP1();
+		playerInput.moveP2();
 	}
 
 	// Update is called once per frame
@@ -47,18 +44,4 @@ public class Game : MonoBehaviour {
 
 		gameMechanics.moveBall ();
 	}
-}
-
-[CustomEditor(typeof(Game))]
-public class GameEditor : Editor
-{
-	[Range (1,100)]
-	public int sice = 1;
-	public Game game = new Game();
-
-	private void OnSceneGUI()
-	{		
-		game.assets= new Transform[sice];
-	}
-	
 }

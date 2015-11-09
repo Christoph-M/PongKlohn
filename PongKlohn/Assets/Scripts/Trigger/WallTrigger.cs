@@ -9,9 +9,4 @@ public class WallTrigger : MonoBehaviour {
 			other.gameObject.transform.rotation = Quaternion.LookRotation(direction);
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

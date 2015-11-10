@@ -22,7 +22,6 @@ public class Ball {
 	}
 	
 	public void move(float speed){
-		//myTransform.rotation = rotation;
-		myTransform.localPosition += (myTransform.TransformVector(Vector3.forward) * Time.deltaTime) * speed; //(direction * Time.deltaTime) * speed;
+		myTransform.localPosition += (myTransform.TransformVector(Vector3.forward) * Time.deltaTime) * speed;
 	}
 }

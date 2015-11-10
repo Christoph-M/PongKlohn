@@ -10,7 +10,7 @@ public class GoalTrigger : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.name == "Projectile") {
-			goal.setTriggeredGoal(gameObject.name as string);
+			goal.setTriggeredGoal(this.gameObject.name as string);
 
 			Collider.Destroy (other.gameObject);
 		}

@@ -20,16 +20,20 @@ public class PlayerInput : MonoBehaviour {
 		float hor = Input.GetAxis ("HorizontalP1");
 		float ver = Input.GetAxis ("VerticalP1");
 
-		if (Physics.Raycast (figure1.position, Vector3.forward, out hit, 1.0f))
+		if (Physics.Raycast (figure1.position, Vector3.forward, out hit, 1.0f) &&
+		    hit.transform.gameObject.name != "Projectile")
 			ver -= 1;
 		
-		if (Physics.Raycast (figure1.position, Vector3.right, out hit, 1.0f))
+		if (Physics.Raycast (figure1.position, Vector3.right, out hit, 1.0f) &&
+		    hit.transform.gameObject.name != "Projectile")
 			hor -= 1;
 		
-		if (Physics.Raycast (figure1.position, Vector3.back, out hit, 1.0f))
+		if (Physics.Raycast (figure1.position, Vector3.back, out hit, 1.0f) &&
+		    hit.transform.gameObject.name != "Projectile")
 			ver += 1;
 		
-		if (Physics.Raycast (figure1.position, Vector3.left, out hit, 1.0f))
+		if (Physics.Raycast (figure1.position, Vector3.left, out hit, 1.0f) &&
+		    hit.transform.gameObject.name != "Projectile")
 			hor += 1;
 
 		Vector3 vec = new Vector3 (hor, 0.0f, ver);
@@ -41,16 +45,20 @@ public class PlayerInput : MonoBehaviour {
 		float hor = Input.GetAxis ("HorizontalP2");
 		float ver = Input.GetAxis ("VerticalP2");
 		
-		if (Physics.Raycast (figure2.position, Vector3.forward, out hit, 1.0f))
+		if (Physics.Raycast (figure2.position, Vector3.forward, out hit, 1.0f) &&
+		    hit.transform.gameObject.name != "Projectile")
 			ver -= 1;
 		
-		if (Physics.Raycast (figure2.position, Vector3.right, out hit, 1.0f))
+		if (Physics.Raycast (figure2.position, Vector3.right, out hit, 1.0f) &&
+		    hit.transform.gameObject.name != "Projectile")
 			hor -= 1;
 		
-		if (Physics.Raycast (figure2.position, Vector3.back, out hit, 1.0f))
+		if (Physics.Raycast (figure2.position, Vector3.back, out hit, 1.0f) &&
+		    hit.transform.gameObject.name != "Projectile")
 			ver += 1;
 		
-		if (Physics.Raycast (figure2.position, Vector3.left, out hit, 1.0f))
+		if (Physics.Raycast (figure2.position, Vector3.left, out hit, 1.0f) &&
+		    hit.transform.gameObject.name != "Projectile")
 			hor += 1;
 
 		Vector3 vec = new Vector3 (hor, 0.0f, ver);

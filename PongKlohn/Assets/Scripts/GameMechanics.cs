@@ -69,7 +69,11 @@ public class GameMechanics : MonoBehaviour {
 
 		if (lShift > 0 && Physics.Raycast (figure1.position, Vector3.right, out hit, 2)) {
 			goal.setTriggeredGoal ("Goal_Red");
-			Vector3 direction = Vector3.Reflect (sphereC.forward, figure1.InverseTransformVector (Vector3.forward));
+
+			Vector3 normal = hit.normal;
+			if (hit.normal.y != 0) normal.y = 0;
+
+			Vector3 direction = Vector3.Reflect (figure1.forward, sphereC.InverseTransformVector (normal));
 			sphereC.rotation = Quaternion.LookRotation (direction);
 		}
 	}
@@ -79,7 +83,11 @@ public class GameMechanics : MonoBehaviour {
 
 		if (rShift > 0 && Physics.Raycast(figure2.position, Vector3.left, out hit, 2)){
 			goal.setTriggeredGoal("Goal_Blue");
-			Vector3 direction = Vector3.Reflect(sphereC.forward, figure2.InverseTransformVector(Vector3.forward));
+
+			Vector3 normal = hit.normal;
+			if (hit.normal.y != 0) normal.y = 0;
+
+			Vector3 direction = Vector3.Reflect(figure2.forward, sphereC.InverseTransformVector (normal));
 			sphereC.rotation = Quaternion.LookRotation(direction);
 		}
 	}

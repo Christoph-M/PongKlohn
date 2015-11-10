@@ -6,6 +6,7 @@ public class PlayerInput : MonoBehaviour {
 	public Transform figure2;
 
 	public float playerSpeed = 5;
+	public float collisionDistance = 0.6f;
 
 	private Player player1;
 	private Player player2;
@@ -17,24 +18,29 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	public void moveP1(){
-		float hor = Input.GetAxis ("HorizontalP1");
-		float ver = Input.GetAxis ("VerticalP1");
+		float horP = Input.GetAxis ("HorizontalP1p");
+		float verP = Input.GetAxis ("VerticalP1p");
+		float horN = Input.GetAxis ("HorizontalP1n");
+		float verN = Input.GetAxis ("VerticalP1n");
 
-		if (Physics.Raycast (figure1.position, Vector3.forward, out hit, 1.0f) &&
+		if (Physics.Raycast (figure1.position, Vector3.forward, out hit, collisionDistance) &&
 		    hit.transform.gameObject.name != "Projectile")
-			ver -= 1;
+			verP = 0;
 		
-		if (Physics.Raycast (figure1.position, Vector3.right, out hit, 1.0f) &&
+		if (Physics.Raycast (figure1.position, Vector3.right, out hit, collisionDistance) &&
 		    hit.transform.gameObject.name != "Projectile")
-			hor -= 1;
+			horP = 0;
 		
-		if (Physics.Raycast (figure1.position, Vector3.back, out hit, 1.0f) &&
+		if (Physics.Raycast (figure1.position, Vector3.back, out hit, collisionDistance) &&
 		    hit.transform.gameObject.name != "Projectile")
-			ver += 1;
+			verN = 0;
 		
-		if (Physics.Raycast (figure1.position, Vector3.left, out hit, 1.0f) &&
+		if (Physics.Raycast (figure1.position, Vector3.left, out hit, collisionDistance) &&
 		    hit.transform.gameObject.name != "Projectile")
-			hor += 1;
+			horN = 0;
+
+		float hor = horP + horN;
+		float ver = verP + verN;
 
 		Vector3 vec = new Vector3 (hor, 0.0f, ver);
 
@@ -42,24 +48,29 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	public void moveP2(){
-		float hor = Input.GetAxis ("HorizontalP2");
-		float ver = Input.GetAxis ("VerticalP2");
+		float horP = Input.GetAxis ("HorizontalP2p");
+		float verP = Input.GetAxis ("VerticalP2p");
+		float horN = Input.GetAxis ("HorizontalP2n");
+		float verN = Input.GetAxis ("VerticalP2n");
 		
-		if (Physics.Raycast (figure2.position, Vector3.forward, out hit, 1.0f) &&
+		if (Physics.Raycast (figure2.position, Vector3.forward, out hit, collisionDistance) &&
 		    hit.transform.gameObject.name != "Projectile")
-			ver -= 1;
+			verP = 0;
 		
-		if (Physics.Raycast (figure2.position, Vector3.right, out hit, 1.0f) &&
+		if (Physics.Raycast (figure2.position, Vector3.right, out hit, collisionDistance) &&
 		    hit.transform.gameObject.name != "Projectile")
-			hor -= 1;
+			horP = 0;
 		
-		if (Physics.Raycast (figure2.position, Vector3.back, out hit, 1.0f) &&
+		if (Physics.Raycast (figure2.position, Vector3.back, out hit, collisionDistance) &&
 		    hit.transform.gameObject.name != "Projectile")
-			ver += 1;
+			verN = 0;
 		
-		if (Physics.Raycast (figure2.position, Vector3.left, out hit, 1.0f) &&
+		if (Physics.Raycast (figure2.position, Vector3.left, out hit, collisionDistance) &&
 		    hit.transform.gameObject.name != "Projectile")
-			hor += 1;
+			horN = 0;
+		
+		float hor = horP + horN;
+		float ver = verP + verN;
 
 		Vector3 vec = new Vector3 (hor, 0.0f, ver);
 

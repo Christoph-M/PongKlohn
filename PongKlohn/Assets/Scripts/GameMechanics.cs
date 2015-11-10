@@ -20,7 +20,7 @@ public class GameMechanics : MonoBehaviour {
 
 	public void p1Shoot(){
 		float space = Input.GetAxisRaw ("ShootP1");
-		float ver = Input.GetAxisRaw ("VerticalP1");
+		float ver = Input.GetAxisRaw("VerticalP1p") + Input.GetAxisRaw ("VerticalP1n");
 
 		Quaternion angle = Quaternion.identity;
 		angle = figure1.rotation;
@@ -43,7 +43,7 @@ public class GameMechanics : MonoBehaviour {
 
 	public void p2Shoot(){
 		float rCntrl = Input.GetAxisRaw ("ShootP2");
-		float ver = Input.GetAxisRaw ("VerticalP2");
+		float ver = Input.GetAxisRaw("VerticalP2p") + Input.GetAxisRaw ("VerticalP2n");
 
 		Quaternion angle = Quaternion.identity;
 		angle = figure2.rotation;

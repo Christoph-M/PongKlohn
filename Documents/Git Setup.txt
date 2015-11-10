@@ -11,9 +11,7 @@ git config --global user.name "name"
 git config --global user.email "email"	//use same email as your github account
 
 Only once on each machine to get the entire repository:
-git remote add origin https://github.com/Christoph-M/PongKlohn.git
-git clone origin
-//"git clone https://github.com/Christoph-M/PongKlohn.git" automatically adds the remote connection
+git clone https://github.com/Christoph-M/PongKlohn.git 	//automatically adds the remote connection
 
 
 
@@ -50,4 +48,4 @@ To skip previous steps:
 git pull origin
 
 Transfer local commits to remote repository:
-git push --all
+git push --all origin

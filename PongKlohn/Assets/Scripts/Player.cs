@@ -2,25 +2,26 @@
 using System.Collections;
 
 public class Player {
-	private Transform myTransform;
+	private Rigidbody2D myTransform;
 
-	public Player(Transform trans) {
+	public Player(Rigidbody2D trans) {
 		myTransform = trans;
 	}
 
-	public void Move(Vector3 direction, float speed) {
-		myTransform.position += (direction * Time.deltaTime) * speed;
+	public void Move(Vector2 direction, float speed) {
+		myTransform.AddForce (direction * speed);
+		//myTransform.position += (direction * Time.deltaTime) * speed;
 	}
 
 	public Vector3 GetProjectilePositin() {
-		return myTransform.position;
+		return myTransform.gameObject.transform.position;
 	}
 	
 	public Quaternion Rotation() {
-		return myTransform.rotation;
+		return myTransform.gameObject.transform.rotation;
 	}
 	
 	public Vector3 GetRotation(){
-		return new Vector3(myTransform.rotation.x, myTransform.rotation.y, myTransform.rotation.z);
+		return new Vector3(myTransform.gameObject.transform.rotation.x, myTransform.gameObject.transform.rotation.y, myTransform.gameObject.transform.rotation.z);
 	}
 }

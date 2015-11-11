@@ -42,6 +42,6 @@ public class Game : MonoBehaviour {
 			gameMechanics.detectBallBlockP1();
 		}
 
-		gameMechanics.moveBall ();
+		//gameMechanics.moveBall ();
 	}
 }

@@ -2,26 +2,28 @@
 using System.Collections;
 
 public class Ball {
-	private Transform myTransform;
+	private Rigidbody2D myTransform;
 
-	public Ball(Transform trans) {
+	public Ball(Rigidbody2D trans) {
 		myTransform = trans;
 	}
 	
 	public void Set(Vector3 position, Quaternion rotation) {
-		myTransform.position = position;
-		myTransform.rotation = rotation;
+		myTransform.gameObject.transform.position = position;
+		myTransform.gameObject.transform.rotation = rotation;
 	}
 	
 	public Vector3 GetPosition() {
-		return myTransform.position;
+		return myTransform.gameObject.transform.position;
 	}
 	
 	public Quaternion GetRotaion() {
-		return myTransform.rotation;
+		return myTransform.gameObject.transform.rotation;
 	}
 	
 	public void move(float speed){
-		myTransform.localPosition += (myTransform.TransformVector(Vector3.forward) * Time.deltaTime) * speed;
+		//myTransform.gameObject.transform.Translate ((Vector2.right * Time.deltaTime) * speed);
+		//myTransform.AddForce ((myTransform.gameObject.transform.TransformVector(Vector2.right) * Time.deltaTime) * speed, ForceMode2D.Impulse);
+		//myTransform.localPosition += (myTransform.TransformVector(Vector2.up) * Time.deltaTime) * speed;
 	}
 }

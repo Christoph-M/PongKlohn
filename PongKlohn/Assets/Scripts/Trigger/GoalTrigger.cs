@@ -8,11 +8,12 @@ public class GoalTrigger : MonoBehaviour {
 		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
 	}
 
-	void OnTriggerEnter(Collider other) {
+	void OnCollisionEnter2D(Collision2D other) {
 		if (other.gameObject.name == "Projectile") {
+			Debug.Log ("Collided");
 			goal.setTriggeredGoal(this.gameObject.name as string);
 
-			Collider.Destroy (other.gameObject);
+			Object.Destroy (other.gameObject);
 		}
 	}
 }

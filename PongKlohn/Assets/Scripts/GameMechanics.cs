@@ -34,7 +34,7 @@ public class GameMechanics : MonoBehaviour {
 				angle=Quaternion.AngleAxis(-45.0f, Vector3.forward);
 			}
 
-			sphereC = Instantiate(sphereO, figure1.position, angle) as Rigidbody2D;
+			sphereC = Instantiate(sphereO, figure1.position + new Vector3(1.2f, 0.0f), angle) as Rigidbody2D;
 			sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
 			
 			sphereC.name = "Projectile";
@@ -58,7 +58,7 @@ public class GameMechanics : MonoBehaviour {
 				angle=Quaternion.AngleAxis(225.0f, Vector3.forward);
 			}
 
-			sphereC = Instantiate(sphereO, figure2.position, angle) as Rigidbody2D;
+			sphereC = Instantiate(sphereO, figure2.position + new Vector3(-1.2f, 0.0f), angle) as Rigidbody2D;
 			sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
 			
 			sphereC.name = "Projectile";

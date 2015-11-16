@@ -4,18 +4,53 @@ using System.Collections;
 public class GameMechanics : MonoBehaviour {
 	public Transform figure1;
 	public Transform figure2;
-	public Rigidbody2D sphereO;
+	public GameObject sphereRO;
+	public GameObject sphereBO;
+	public Transform catchTriggerO;
+	public Transform blockTriggerO;
 
 	public float ballSpeed = 2.0f;
+	public float ballSpawnDistance = 1.2f;
 	
 	private Game goal;
 	private Ball projectile;
 
-	private Rigidbody2D sphereC;
+	private GameObject sphereC;
+	private Transform catchTriggerP1C;
+	private Transform catchTriggerP2C;
+	private Transform blockTriggerP1C;
+	private Transform blockTriggerP2C;
 	private RaycastHit hit;
 
 	void Start(){
 		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
+
+		catchTriggerP1C = Instantiate (catchTriggerO, figure1.position, figure1.rotation) as Transform;
+		catchTriggerP2C = Instantiate (catchTriggerO, figure2.position, figure2.rotation) as Transform;
+		catchTriggerP1C.name = "Catch_Trigger_Player_01";
+		catchTriggerP2C.name = "Catch_Trigger_Player_02";
+
+		blockTriggerP1C = Instantiate (blockTriggerO, figure1.position, figure1.rotation) as Transform;
+		blockTriggerP2C = Instantiate (blockTriggerO, figure2.position, figure2.rotation) as Transform;
+		blockTriggerP1C.name = "Block_Trigger_Player_01";
+		blockTriggerP2C.name = "Block_Trigger_Player_02";
+		blockTriggerP1C.gameObject.layer = 8;
+		blockTriggerP2C.gameObject.layer = 8;
+	}
+
+	void Update(){
+		catchTriggerP1C.position = figure1.position;
+		catchTriggerP2C.position = figure2.position;
+
+		blockTriggerP1C.position = figure1.position;
+		blockTriggerP2C.position = figure2.position;
+	}
+
+	public void instantiateSphere(GameObject sphereO, Vector3 position, Quaternion rotation){
+		sphereC = Instantiate(sphereO, position, rotation) as GameObject;
+
+		sphereC.name = "Projectile";
+		projectile = new Ball (sphereC.transform);
 	}
 
 	public void p1Shoot(){
@@ -34,11 +69,8 @@ public class GameMechanics : MonoBehaviour {
 				angle=Quaternion.AngleAxis(-45.0f, Vector3.forward);
 			}
 
-			sphereC = Instantiate(sphereO, figure1.position + new Vector3(1.2f, 0.0f), angle) as Rigidbody2D;
-			sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
-			
-			sphereC.name = "Projectile";
-			projectile = new Ball (sphereC);
+			instantiateSphere(sphereRO, (Vector2)figure1.position + new Vector2(ballSpawnDistance, 0.0f), angle);
+			//sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
 		}
 	}
 
@@ -58,45 +90,14 @@ public class GameMechanics : MonoBehaviour {
 				angle=Quaternion.AngleAxis(225.0f, Vector3.forward);
 			}
 
-			sphereC = Instantiate(sphereO, figure2.position + new Vector3(-1.2f, 0.0f), angle) as Rigidbody2D;
-			sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
-			
-			sphereC.name = "Projectile";
-			projectile = new Ball (sphereC);
+			instantiateSphere(sphereBO, (Vector2)figure2.position + new Vector2(-ballSpawnDistance, 0.0f), angle);
+			//sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
 		}
 	}
 
-	public void detectBallBlockP1(){
-		float lShift = Input.GetAxisRaw ("BlockP1");
-
-		if (lShift > 0 && Physics.Raycast (figure1.position, Vector3.right, out hit, 2)) {
-			goal.setTriggeredGoal ("Goal_Red");
-
-			Vector3 normal = hit.normal;
-			if (hit.normal.y != 0) normal.y = 0;
-
-			Vector3 direction = Vector3.Reflect (figure1.forward, sphereC.gameObject.transform.InverseTransformVector (normal));
-			sphereC.gameObject.transform.rotation = Quaternion.LookRotation (direction);
+	public void moveBall(){
+		if (sphereC) {
+			projectile.move (ballSpeed);
 		}
 	}
-	
-	public void detectBallBlockP2(){
-		float rShift = Input.GetAxisRaw ("BlockP2");
-
-		if (rShift > 0 && Physics.Raycast(figure2.position, Vector3.left, out hit, 2)){
-			goal.setTriggeredGoal("Goal_Blue");
-
-			Vector3 normal = hit.normal;
-			if (hit.normal.y != 0) normal.y = 0;
-
-			Vector3 direction = Vector3.Reflect(figure2.forward, sphereC.gameObject.transform.InverseTransformVector (normal));
-			sphereC.gameObject.transform.rotation = Quaternion.LookRotation(direction);
-		}
-	}
-
-//	public void moveBall(){
-//		if (sphereC) {
-//			projectile.move (ballSpeed);
-//		}
-//	}
 }

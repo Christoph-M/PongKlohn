@@ -54,9 +54,7 @@
      <Compile Include="Assets\Scripts\Level.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerInput.cs" />
-     <Compile Include="Assets\Scripts\Trigger\Catch_Trigger.cs" />
-     <Compile Include="Assets\Scripts\Trigger\GoalTrigger.cs" />
-     <Compile Include="Assets\Scripts\Trigger\PushPadTrigger.cs" />
+     <Compile Include="Assets\Scripts\Trigger\Block_Trigger.cs" />
      <Compile Include="Assets\Scripts\Trigger\WallTrigger.cs" />
      <None Include="Assets\Scripts\Easing.txt" />
  <Reference Include="UnityEngine.UI">

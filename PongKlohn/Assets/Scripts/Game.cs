@@ -7,7 +7,7 @@ public class Game : MonoBehaviour {
 	private PlayerInput playerInput;
 	private GameMechanics gameMechanics;
 
-	private string triggeredGoal;
+	private bool turn;
 
 	// Use this for initialization
 	void Start () {
@@ -15,14 +15,14 @@ public class Game : MonoBehaviour {
 		gameMechanics = GetComponent<GameMechanics> ();
 
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f){
-			triggeredGoal = "Goal_Red";
+			turn = true;
 		} else {
-			triggeredGoal = "Goal_Blue";
+			turn = false;
 		}
 	}
 
-	public void setTriggeredGoal(string goal){
-		triggeredGoal = goal;
+	public void setTurn(bool goal){
+		turn = goal;
 	}
 
 	void FixedUpdate(){
@@ -32,16 +32,16 @@ public class Game : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (triggeredGoal == "Goal_Red"){
+		if (turn){
 			gameMechanics.p1Shoot();
 			
-			gameMechanics.detectBallBlockP2();
+			//gameMechanics.detectBallBlockP2();
 		} else {
 			gameMechanics.p2Shoot();
 			
-			gameMechanics.detectBallBlockP1();
+			//gameMechanics.detectBallBlockP1();
 		}
 
-		//gameMechanics.moveBall ();
+		gameMechanics.moveBall ();
 	}
 }

@@ -47,6 +47,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Ball.cs" />
+     <Compile Include="Assets\Scripts\BallEddi\CosinMovement.cs" />
+     <Compile Include="Assets\Scripts\BallEddi\CosinRotation.cs" />
+     <Compile Include="Assets\Scripts\BallEddi\LinearRotation.cs" />
+     <Compile Include="Assets\Scripts\BallEddi\SinMovement.cs" />
+     <Compile Include="Assets\Scripts\BallEddi\SinRotation.cs" />
      <Compile Include="Assets\Scripts\Easing.cs" />
      <Compile Include="Assets\Scripts\EasingTest.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />

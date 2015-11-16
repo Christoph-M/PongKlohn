@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
-	public Rigidbody2D figure1;
+	/*public Rigidbody2D figure1;
 	public Rigidbody2D figure2;
 
 	public float playerSpeed = 30;
@@ -32,5 +32,5 @@ public class PlayerInput : MonoBehaviour {
 		Vector2 vec = new Vector2 (hor, ver);
 
 		player2.Move (vec, playerSpeed);
-	}
+	}*/
 }

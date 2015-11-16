@@ -20,7 +20,6 @@ public class GameMechanics : MonoBehaviour {
 	private Transform catchTriggerP2C;
 	private Transform blockTriggerP1C;
 	private Transform blockTriggerP2C;
-	private RaycastHit hit;
 
 	void Start(){
 		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;

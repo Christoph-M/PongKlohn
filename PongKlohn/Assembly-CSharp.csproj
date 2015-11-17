@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\BallEddi\CosinMovement.cs" />
      <Compile Include="Assets\Scripts\BallEddi\CosinRotation.cs" />
      <Compile Include="Assets\Scripts\BallEddi\LinearRotation.cs" />
+     <Compile Include="Assets\Scripts\BallEddi\Move.cs" />
      <Compile Include="Assets\Scripts\BallEddi\SinMovement.cs" />
      <Compile Include="Assets\Scripts\BallEddi\SinRotation.cs" />
      <Compile Include="Assets\Scripts\Easing.cs" />
@@ -58,7 +59,6 @@
      <Compile Include="Assets\Scripts\Level.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Trigger\Block_Trigger.cs" />
-     <None Include="Assets\Scripts\Easing.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

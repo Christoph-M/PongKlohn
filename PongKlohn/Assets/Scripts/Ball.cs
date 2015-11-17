@@ -11,24 +11,44 @@ public class Ball : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
-		if (other.name.Contains("Goal") || other.name.Contains("Catch_Trigger")) {
-			if (other.name == "Goal_Red" || other.name == "Catch_Trigger_Player_01") {
+		if (other.name.Contains("Goal") || other.name == "Catch_Trigger") {
+			if (other.name == "Goal_Red" || other.transform.parent.name == "Player_01") {
 				goal.setTurn (true);
 			} else {
 				goal.setTurn (false);
 			}
 
 			Object.Destroy (this.gameObject);
-		} else if (other.name.Contains("Wall")) {
+		} else if (other.name.Contains ("Wall")) {
 			float distance = this.transform.right.magnitude;
 			Vector2 forwardL = this.transform.right / distance;
 			Vector2 forwardG = this.transform.TransformDirection(forwardL);
 
 			RaycastHit2D hit = Physics2D.Raycast (this.transform.position, forwardG);
 			Vector2 exitDirection = Vector2.Reflect(forwardL, hit.normal);
+
 			float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
 			this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+		} else if (other.name == "Block_Trigger") {
+			if (other.transform.parent.name == "Player_01") {
+				goal.setTurn (true);
+			} else {
+				goal.setTurn (false);
+			}
+
+			Vector2 playerDirection = other.transform.parent.position - this.transform.position;
+			
+			RaycastHit2D hit = Physics2D.Raycast(other.transform.position, this.transform.TransformDirection(playerDirection));
+			Vector2 exitDirection = Vector2.Reflect(playerDirection, hit.normal);
+			
+			float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
+			Vector2 position = this.transform.position;
+
+			Object.Destroy(this.gameObject);
+
+			Debug.Log("Still working");
+			other.GetComponentInParent<Player>().instantiateSphere(other.GetComponentInParent<Player>().sphereO, position, Quaternion.AngleAxis(angle, Vector3.forward));
 		}
 	}
 

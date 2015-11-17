@@ -23,21 +23,15 @@ public class Player : MonoBehaviour
 	{
 		animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
-		if(InvertMotion)
-		{
-			motionInverter = -1;
-		}
-		else
-		{
-			motionInverter = 1;
-		}
+		if(InvertMotion){motionInverter = -1;}
+		else{motionInverter = 1;}
 	}
 	
 	void Update()
 	{
 		Vector2 direction = new Vector2(Input.GetAxis(xAxis),Input.GetAxis(yAxis));
 		myTransform.AddForce (direction * speed);
-		Debug.Log(direction);
+		//Debug.Log(direction);
 		animator.SetFloat("xAxis",direction.x * motionInverter);
 		animator.SetFloat("yAxis",direction.y * motionInverter);
 	}

@@ -11,8 +11,7 @@ public class Ball : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
-		if (other.name == "Goal_Red" || other.name == "Goal_Blue" ||
-			other.name == "Catch_Trigger_Player_01" || other.name == "Catch_Trigger_Player_02") {
+		if (other.name.Contains("Goal") || other.name.Contains("Catch_Trigger")) {
 			if (other.name == "Goal_Red" || other.name == "Catch_Trigger_Player_01") {
 				goal.setTurn (true);
 			} else {
@@ -20,7 +19,7 @@ public class Ball : MonoBehaviour {
 			}
 
 			Object.Destroy (this.gameObject);
-		} else if (other.name == "Wall_01" || other.name == "Wall_02") {
+		} else if (other.name.Contains("Wall")) {
 			float distance = this.transform.right.magnitude;
 			Vector2 forwardL = this.transform.right / distance;
 			Vector2 forwardG = this.transform.TransformDirection(forwardL);

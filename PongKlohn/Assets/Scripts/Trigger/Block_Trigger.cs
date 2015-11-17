@@ -2,14 +2,14 @@
 using System.Collections;
 
 public class Block_Trigger : MonoBehaviour {
-	private Game goal;
-	
-	// Use this for initialization
-	void Start () {
-		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
-	}
-	
-	void OnTriggerStay2D(Collider2D other) {
+//	private Game goal;
+//	
+//	// Use this for initialization
+//	void Start () {
+//		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
+//	}
+//	
+//	void OnTriggerStay2D(Collider2D other) {
 //		if (other.name == "Projectile") {
 //			if (this.name == "Block_Trigger_Player_01") {
 //				float lShift = Input.GetAxisRaw ("BlockP1");
@@ -53,5 +53,5 @@ public class Block_Trigger : MonoBehaviour {
 //				}
 //			}
 //		}
-	}
+//	}
 }

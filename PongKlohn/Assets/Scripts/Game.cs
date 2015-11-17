@@ -4,44 +4,49 @@ using System;
 using UnityEditor;
 
 public class Game : MonoBehaviour {
-	private PlayerInput playerInput;
-	private GameMechanics gameMechanics;
+	public Player player1;
+	public Player player2;
 
-	private string triggeredGoal;
+	public float setPlayerSpeed = 15.0f;
+	public float setBallSpeed   = 10.0f;
+	public float setBallSpawnDistance = 1.2f;
+	public static float playerSpeed = 15.0f;
+	public static float ballSpeed   = 10.0f;
+	public static float ballSpawnDistance = 1.2f;
 
-	// Use this for initialization
-	void Start () {
-		playerInput = GetComponent<PlayerInput> ();
-		gameMechanics = GetComponent<GameMechanics> ();
+	private bool turn;
 
-		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f){
-			triggeredGoal = "Goal_Red";
+	void Start() {
+		player1.SetInputAxis("HorizontalP1", "VerticalP1", "ShootP1", "BlockP1");
+		player2.SetInputAxis("HorizontalP2", "VerticalP2", "ShootP2", "BlockP2");
+		
+		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
+			turn = player1.setTurn(true);
+			player2.setTurn(false);
 		} else {
-			triggeredGoal = "Goal_Blue";
+			turn = player1.setTurn(false);
+			player2.setTurn(true);
+		}
+	}
+	
+	public void setTurn(bool goal) {
+		if (turn){
+			turn = player1.setTurn(false);
+			player2.setTurn(true);
+		} else {
+			turn = player1.setTurn(true);
+			player2.setTurn(false);
 		}
 	}
 
-	public void setTriggeredGoal(string goal){
-		triggeredGoal = goal;
+	void Update() {
+		player1.moveBall ();
+		player2.moveBall ();
 	}
-
-	void FixedUpdate(){
-		playerInput.moveP1();
-		playerInput.moveP2();
-	}
-
-	// Update is called once per frame
-	void Update () {
-		if (triggeredGoal == "Goal_Red"){
-			gameMechanics.p1Shoot();
-			
-			gameMechanics.detectBallBlockP2();
-		} else {
-			gameMechanics.p2Shoot();
-			
-			gameMechanics.detectBallBlockP1();
-		}
-
-		//gameMechanics.moveBall ();
+	
+	void LateUpdate(){
+		playerSpeed = setPlayerSpeed;
+		ballSpeed = setBallSpeed;
+		ballSpawnDistance = setBallSpawnDistance;
 	}
 }

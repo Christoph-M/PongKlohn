@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
 	public GameObject dashCollider;
 	
 	public float speed { get; set; }
+	public float dashSpeed { get; set; }
 	public bool InvertMotion = false;
 
 
@@ -90,7 +91,7 @@ public class Player : MonoBehaviour {
 				animator.SetBool ("Block", false);
 				animator.SetFloat("xAxis", direction.x * motionInverter);
 				animator.SetFloat("yAxis", direction.y * motionInverter);
-				myTransform.AddForce (directionRaw * (5), ForceMode2D.Impulse);
+				myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
 
 				axisInUse = true;
 			}

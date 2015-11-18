@@ -3,25 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
-	//public GameObject shootLeft; 
-	//public GameObject shootForward; 
-	//public GameObject shootRight;
-	//public GameObject shootSuppi;
+	public Transform ballSpohorn;
+	public List<GameObject> balls;
+
 	public GameObject catchCollider;
 	public GameObject blockCollider;
-	private GameObject catchTrigger;
-	private GameObject blockTrigger;
 	
-	public float speed = 10;
+	public float speed { get; set; }
 	public bool InvertMotion = false;
-	
+
+
 	private Rigidbody2D myTransform;
 	private Animator animator;
 	private Ball projectile;
-
-	public List<GameObject> balls;
-	private GameObject ball;
 	
+	private GameObject ball;
+
+	private GameObject catchTrigger;
+	private GameObject blockTrigger;
+		
 	private string xAxis = "x";
 	private string yAxis = "y";
 	private string shoot = "s";
@@ -34,80 +34,70 @@ public class Player : MonoBehaviour {
 	
 	void Start() 
 	{
-		catchTrigger = Instantiate(catchCollider, transform.position, transform.rotation) as GameObject;
-		blockTrigger = Instantiate(blockCollider, transform.position, transform.rotation) as GameObject;
 		animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
-		
+
+		catchTrigger = Instantiate(catchCollider, transform.position, transform.rotation) as GameObject;
+		blockTrigger = Instantiate(blockCollider, transform.position, transform.rotation) as GameObject;
+		catchTrigger.transform.parent = this.transform;
+		blockTrigger.transform.parent = this.transform;
 		catchTrigger.SetActive(true);
 		blockTrigger.SetActive(false);
+		catchTrigger.name = "Catch_Trigger";
+		blockTrigger.name = "Block_Trigger";
 		
-		if(InvertMotion){motionInverter = -1;}
-		else{motionInverter = 1;}
-
-		if(InvertMotion) {
+		if (InvertMotion) {
 			motionInverter = -1;
 		} else {
 			motionInverter = 1;
 		}
-
 	}
 	
 	private bool canMovement = true;
 	void FixedUpdate() 
 	{
-		
-		Vector2 direction = new Vector2(Input.GetAxis(xAxis),Input.GetAxis(yAxis));
-		if(Input.GetAxis(block)!=0f)
+		Vector2 direction = new Vector2(Input.GetAxis(xAxis), Input.GetAxis(yAxis));
+
+		if (canMovement)
+		{
+			animator.SetFloat("xAxis", direction.x * motionInverter);
+			animator.SetFloat("yAxis", direction.y * motionInverter);
+			myTransform.AddForce (direction * speed);
+		}
+
+		if (Input.GetAxis(block) != 0f)
 		{
 			canMovement = false;
-			animator.SetBool("Block",true);
+			animator.SetBool("Block", true);
 			blockTrigger.SetActive(true);
 		}
 		else
 		{
 			canMovement = true;
-			animator.SetBool("Block",false);
+			animator.SetBool("Block", false);
 			blockTrigger.SetActive(false);
 		}
 		
-		/*if(Input.GetAxis(dash)!=0f)
+		if (Input.GetAxis(shoot) != 0f)
 		{
-			animator.SetBool("Block",true);
-		}*/	
-		
-		//Debug.Log(direction);
-		if(canMovement)
+			//animator.SetBool("Shoot", true);
+			canMovement = false;
+		}
+		else
 		{
-			animator.SetFloat("xAxis",direction.x * motionInverter);
-			animator.SetFloat("yAxis",direction.y * motionInverter);
-			myTransform.AddForce (direction * speed);
+			canMovement = true;
+			//animator.SetBool("Shoot", false);
 		}
 
-		float shooting = Input.GetAxisRaw (shoot);
-		float blocking = Input.GetAxisRaw (block);
-
-		/*if (blocking == 1.0f) {
-			blockTrigger.SetActive (true);
-			
-			animator.SetFloat("xAxis", 0.0f);
-			animator.SetFloat("yAxis", 0.0f);
-		} else {
-			blockTrigger.SetActive (false);
-
-			myTransform.AddForce (direction * Game.playerSpeed);
-			
-			animator.SetFloat("xAxis", direction.x * motionInverter);
-			animator.SetFloat("yAxis", direction.y * motionInverter);
-		}
-
-		/*if (shooting == 1.0f && turn) {
-			if (this.name == "Player_01"){
-				p1Shoot();
-			} else {
-				p2Shoot();
-			}
-		}*/
+		if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == 0f && turn && !ball) {//mitte schiessen
+			ball = Shoot (balls [0], ballSpohorn.position, this.transform.rotation);
+		} else if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == 1f && turn && !ball) {//oben schiessen
+			ball = Shoot (balls [1], ballSpohorn.position, this.transform.rotation);
+		} else if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == -1f && turn && !ball) {//unten schiessen
+			ball = Shoot (balls [2], ballSpohorn.position, this.transform.rotation);
+		} //else if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == 1f && turn && !ball) {//spessel schiessen
+//
+//		}
 	}
 
 	void Update()
@@ -128,32 +118,8 @@ public class Player : MonoBehaviour {
 		return turn = turnt;
 	}
 
-	public void instantiateSphere(GameObject sphereO, Vector3 position, Quaternion rotation){
-		ball = Instantiate(sphereO, position, rotation) as GameObject;
-		
-		ball.name = "Projectile";
-		projectile = new Ball(ball.transform);
-	}
-	
-	public void Shoot(GameObject ball,Vector3 position,Quaternion rotation)
-	{
-		float ver = Input.GetAxisRaw ("VerticalP2");
-		
-		Quaternion angle = Quaternion.identity;
-		angle = this.transform.rotation;
-		
-		if (!ball) {
-			if (ver > 0) {
-				angle = Quaternion.AngleAxis (135.0f, Vector3.forward);
-			}
-			
-			if (ver < 0) {
-				angle = Quaternion.AngleAxis (225.0f, Vector3.forward);
-			}
-			
-			instantiateSphere (balls[0], (Vector2)this.transform.position + new Vector2 (-Game.ballSpawnDistance, 0.0f), angle);
-			//sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
-		}
+	public GameObject Shoot(GameObject ball, Vector3 position, Quaternion rotation){
+		return Instantiate(ball, position, rotation) as GameObject;
 	}
 	
 	public Vector3 GetProjectilePositin() {
@@ -166,11 +132,5 @@ public class Player : MonoBehaviour {
 	
 	public Vector3 GetRotation(){
 		return new Vector3(myTransform.gameObject.transform.rotation.x, myTransform.gameObject.transform.rotation.y, myTransform.gameObject.transform.rotation.z);
-	}
-
-	public void moveBall(){
-		if (ball) {
-			projectile.move (Game.ballSpeed);
-		}
 	}
 }

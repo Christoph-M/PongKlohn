@@ -47,8 +47,7 @@ public class Ball : MonoBehaviour {
 
 			Object.Destroy(this.gameObject);
 
-			Debug.Log("Still working");
-			other.GetComponentInParent<Player>().instantiateSphere(other.GetComponentInParent<Player>().sphereO, position, Quaternion.AngleAxis(angle, Vector3.forward));
+			other.GetComponentInParent<Player>().Shoot(other.GetComponentInParent<Player>().balls[0], position, Quaternion.AngleAxis(angle, Vector3.forward));
 		}
 	}
 
@@ -67,12 +66,5 @@ public class Ball : MonoBehaviour {
 	
 	public Quaternion GetRotaion() {
 		return myTransform.rotation;
-	}
-	
-	public void move(float speed){
-//		myTransform.position = Vector2.Lerp (myTransform.position, Vector2.right  * Time.deltaTime, speed);
-		myTransform.Translate ((Vector2.right * Time.deltaTime) * speed);
-		//myTransform.AddForce ((myTransform.gameObject.transform.TransformVector(Vector2.right) * Time.deltaTime) * speed, ForceMode2D.Impulse);
-		//myTransform.localPosition += (myTransform.TransformVector(Vector2.up) * Time.deltaTime) * speed;
 	}
 }

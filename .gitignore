@@ -7,6 +7,7 @@
 *.o
 *.so
 *.meta
+*.blend1
 
 # Project Files #
 #################
@@ -43,6 +44,5 @@ PongKlohn/Temp/**
 ._*
 .Spotlight-V100
 .Trashes
-*.xlsx
 ehthumbs.db
 Thumbs.db

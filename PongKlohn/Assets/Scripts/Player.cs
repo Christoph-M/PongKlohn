@@ -3,28 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
-	//public GameObject shootLeft; 
-	//public GameObject shootForward; 
-	//public GameObject shootRight;
-	//public GameObject shootSuppi;
+	public Transform ballSpohorn;
+	public List<GameObject> balls;
+
 	public GameObject catchCollider;
 	public GameObject blockCollider;
-	private GameObject catchTrigger;
-	private GameObject blockTrigger;
+	public GameObject dashCollider;
 	
-	public float speed = 10;
+	public float speed { get; set; }
+	public float dashSpeed { get; set; }
 	public bool InvertMotion = false;
-	
+
+
 	private Rigidbody2D myTransform;
 	private Animator animator;
 	private Ball projectile;
-
-	public Transform ballSpohorn;
-	public List<GameObject> balls;
+	
 	private GameObject ball;
-	
-	
-	
+
+	private GameObject catchTrigger;
+	private GameObject blockTrigger;
+	private GameObject dashTrigger;
+		
 	private string xAxis = "x";
 	private string yAxis = "y";
 	private string shoot = "s";
@@ -37,101 +37,114 @@ public class Player : MonoBehaviour {
 	
 	void Start() 
 	{
-		catchTrigger = Instantiate(catchCollider, transform.position, transform.rotation) as GameObject;
-		blockTrigger = Instantiate(blockCollider, transform.position, transform.rotation) as GameObject;
 		animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
-		
+
+		catchTrigger = Instantiate(catchCollider, transform.position, transform.rotation) as GameObject;
+		blockTrigger = Instantiate(blockCollider, transform.position, transform.rotation) as GameObject;
+		dashTrigger = Instantiate(dashCollider, transform.position, transform.rotation) as GameObject;
+		catchTrigger.transform.parent = this.transform;
+		blockTrigger.transform.parent = this.transform;
+		dashTrigger.transform.parent = this.transform;
 		catchTrigger.SetActive(true);
 		blockTrigger.SetActive(false);
+		dashTrigger.SetActive(false);
+		catchTrigger.name = "Catch_Trigger";
+		blockTrigger.name = "Block_Trigger";
+		dashTrigger.name = "Dash_Trigger";
 		
-		if(InvertMotion){motionInverter = -1;}
-		else{motionInverter = 1;}
-
-		if(InvertMotion) {
+		if (InvertMotion) {
 			motionInverter = -1;
 		} else {
 			motionInverter = 1;
 		}
-
 	}
 	
 	private bool canMovement = true;
+	private bool axisInUse = false;
+	private bool fired = false;
+	private float timeLeft = 1.0f;
 	void FixedUpdate() 
 	{
-		
-		Vector2 direction = new Vector2(Input.GetAxis(xAxis),Input.GetAxis(yAxis));
-		if(Input.GetAxis(block)!=0f)
-		{
-			canMovement = false;
-			animator.SetBool("Block",true);
-			blockTrigger.SetActive(true);
-		}
-		else
-		{
-			canMovement = true;
-			animator.SetBool("Block",false);
-			blockTrigger.SetActive(false);
-		}
-		
-		if(Input.GetAxis(shoot)!=0f)
-		{
-			animator.SetBool("Shoot",true);
-			canMovement = false;
-			blockTrigger.SetActive(true);
-		}	
-		else
-		{
-			canMovement = true;
-			animator.SetBool("Block",false);
-			blockTrigger.SetActive(false);
-		}
-		
-		
-		//Debug.Log(direction);
-		if(canMovement)
-		{
-			animator.SetFloat("xAxis",direction.x * motionInverter);
-			animator.SetFloat("yAxis",direction.y * motionInverter);
-			myTransform.AddForce (direction * speed);
-		}
-		
-		/*if()//mitte schiessen
-		{
-			//Shoot(balls[0],transform.position);
-		}
-		if()//oben schiessen
-		if()//unten schiessen
-		if()//spessel schiessen*/
+		Vector2 direction = new Vector2(Input.GetAxis(xAxis), Input.GetAxis(yAxis));
+		Vector2 directionRaw = new Vector2(Input.GetAxisRaw(xAxis), Input.GetAxisRaw(yAxis));
 
-		/*if (blocking == 1.0f) {
+		if (Input.GetAxis(shoot) != 0f)
+		{
+			animator.SetBool("Fire", true);
+			canMovement = false;
+		}
+		else
+		{
+			canMovement = true;
+			animator.SetBool("Fire", false);
+		}
+
+		if (Input.GetAxis (block) != 0f && directionRaw.x == 0f && directionRaw.y == 0f) {
+			canMovement = false;
+			animator.SetBool ("Block", true);
 			blockTrigger.SetActive (true);
-			
-			animator.SetFloat("xAxis", 0.0f);
-			animator.SetFloat("yAxis", 0.0f);
-		} else {
-			blockTrigger.SetActive (false);
 
-			myTransform.AddForce (direction * Game.playerSpeed);
+			axisInUse = false;
+		} else if (Input.GetAxis (block) != 0f) {
+			canMovement = false;
+
+			if (!axisInUse) {
+				animator.SetBool ("Block", false);
+				animator.SetFloat("xAxis", direction.x * motionInverter);
+				animator.SetFloat("yAxis", direction.y * motionInverter);
+				myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
+
+				axisInUse = true;
+			}
+		} else {
+			animator.SetBool("Block", false);
+			blockTrigger.SetActive(false);
+			canMovement = true;
 			
+			axisInUse = false;
+		}
+
+		if (canMovement)
+		{
 			animator.SetFloat("xAxis", direction.x * motionInverter);
 			animator.SetFloat("yAxis", direction.y * motionInverter);
+			myTransform.AddForce (direction * speed);
 		}
 
-		/*if (shooting == 1.0f && turn) {
-			if (this.name == "Player_01"){
-				p1Shoot();
-			} else {
-				p2Shoot();
+
+		if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == 0f && turn && !ball) {//mitte schiessen
+			timeLeft -= Time.deltaTime;
+			fired = true;
+		} else if (fired && turn && !ball) {
+			if (timeLeft > 0) {
+				Debug.Log("Regular");
+				if (Input.GetAxisRaw (yAxis) == 1f) {//oben schiessen
+					ball = Shoot (balls [1], ballSpohorn.position, this.transform.rotation);
+				} else if (Input.GetAxisRaw (yAxis) == -1f) {//unten schiessen
+					ball = Shoot (balls [2], ballSpohorn.position, this.transform.rotation);
+				} else {
+					ball = Shoot (balls [0], ballSpohorn.position, this.transform.rotation);
+				}
+
+				timeLeft = 1.0f;
+				fired = false;
+			} else if (turn && !ball) {
+				Debug.Log("Special");
+				ball = Shoot(balls[3], ballSpohorn.position, this.transform.rotation);
+
+				timeLeft = 1.0f;
+				fired = false;
 			}
-		}*/
+		}
+
+		Debug.Log (timeLeft);
 	}
 
 	void Update()
 	{
 		catchTrigger.transform.position = this.transform.position;
 		blockTrigger.transform.position = this.transform.position;
-
 	}
 	
 	public void SetInputAxis(string x,string y, string s, string b) {
@@ -149,28 +162,6 @@ public class Player : MonoBehaviour {
 		return Instantiate(ball, position, rotation) as GameObject;
 	}
 	
-	/*public void Shoot(GameObject ball,Vector3 position,Quaternion rotation)
-	{
-		float ver = Input.GetAxisRaw ("VerticalP2");
-		
-		Quaternion angle = Quaternion.identity;
-		angle = this.transform.rotation;
-		
-		if (!ball) {
-			if (ver > 0) {
-				angle = Quaternion.AngleAxis (135.0f, Vector3.forward);
-			}
-			
-			if (ver < 0) {
-				angle = Quaternion.AngleAxis (225.0f, Vector3.forward);
-			}
-			
-			//instantiateSphere (balls[0], (Vector2)this.transform.position + new Vector2 (-Game.ballSpawnDistance, 0.0f), angle);
-			//instantiateSphere (ball, (Vector2)this.transform.position + new Vector2 (-Game.ballSpawnDistance, 0.0f), angle);
-			//sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
-		}
-	}*/
-	
 	public Vector3 GetProjectilePositin() {
 		return myTransform.gameObject.transform.position;
 	}
@@ -181,11 +172,5 @@ public class Player : MonoBehaviour {
 	
 	public Vector3 GetRotation(){
 		return new Vector3(myTransform.gameObject.transform.rotation.x, myTransform.gameObject.transform.rotation.y, myTransform.gameObject.transform.rotation.z);
-	}
-
-	public void moveBall(){
-		if (ball) {
-			projectile.move (Game.ballSpeed);
-		}
 	}
 }

@@ -7,12 +7,8 @@ public class Game : MonoBehaviour {
 	public Player player1;
 	public Player player2;
 
-	public float setPlayerSpeed = 15.0f;
-	public float setBallSpeed   = 10.0f;
-	public float setBallSpawnDistance = 1.2f;
-	public static float playerSpeed = 15.0f;
-	public static float ballSpeed   = 10.0f;
-	public static float ballSpawnDistance = 1.2f;
+	public float playerSpeed = 15.0f;
+	public float dashSpeed = 5.0f;
 
 	private bool turn;
 
@@ -40,13 +36,9 @@ public class Game : MonoBehaviour {
 	}
 
 	void Update() {
-		player1.moveBall ();
-		player2.moveBall ();
-	}
-	
-	void LateUpdate(){
-		playerSpeed = setPlayerSpeed;
-		ballSpeed = setBallSpeed;
-		ballSpawnDistance = setBallSpawnDistance;
+		player1.speed = playerSpeed;
+		player2.speed = playerSpeed;
+		player1.dashSpeed = dashSpeed;
+		player2.dashSpeed = dashSpeed;
 	}
 }

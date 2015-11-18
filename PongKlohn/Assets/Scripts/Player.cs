@@ -62,6 +62,8 @@ public class Player : MonoBehaviour {
 	
 	private bool canMovement = true;
 	private bool axisInUse = false;
+	private bool fired = false;
+	private float timeLeft = 1.0f;
 	void FixedUpdate() 
 	{
 		Vector2 direction = new Vector2(Input.GetAxis(xAxis), Input.GetAxis(yAxis));
@@ -110,15 +112,33 @@ public class Player : MonoBehaviour {
 			myTransform.AddForce (direction * speed);
 		}
 
+
 		if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == 0f && turn && !ball) {//mitte schiessen
-			ball = Shoot (balls [0], ballSpohorn.position, this.transform.rotation);
-		} else if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == 1f && turn && !ball) {//oben schiessen
-			ball = Shoot (balls [1], ballSpohorn.position, this.transform.rotation);
-		} else if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == -1f && turn && !ball) {//unten schiessen
-			ball = Shoot (balls [2], ballSpohorn.position, this.transform.rotation);
-		} //else if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == 1f && turn && !ball) {//spessel schiessen
-//
-//		}
+			timeLeft -= Time.deltaTime;
+			fired = true;
+		} else if (fired && turn && !ball) {
+			if (timeLeft > 0) {
+				Debug.Log("Regular");
+				if (Input.GetAxisRaw (yAxis) == 1f) {//oben schiessen
+					ball = Shoot (balls [1], ballSpohorn.position, this.transform.rotation);
+				} else if (Input.GetAxisRaw (yAxis) == -1f) {//unten schiessen
+					ball = Shoot (balls [2], ballSpohorn.position, this.transform.rotation);
+				} else {
+					ball = Shoot (balls [0], ballSpohorn.position, this.transform.rotation);
+				}
+
+				timeLeft = 1.0f;
+				fired = false;
+			} else if (turn && !ball) {
+				Debug.Log("Special");
+				ball = Shoot(balls[3], ballSpohorn.position, this.transform.rotation);
+
+				timeLeft = 1.0f;
+				fired = false;
+			}
+		}
+
+		Debug.Log (timeLeft);
 	}
 
 	void Update()

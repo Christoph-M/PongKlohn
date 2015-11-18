@@ -15,6 +15,7 @@
 *.userprefs
 PongKlohn/Library/**
 PongKlohn/ProjectSettings/**
+PongKlohn/Temp/**
 
 # Packages #
 ############

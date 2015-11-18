@@ -19,8 +19,11 @@ public class Player : MonoBehaviour {
 	private Animator animator;
 	private Ball projectile;
 
+	public Transform ballSpohorn;
 	public List<GameObject> balls;
 	private GameObject ball;
+	
+	
 	
 	private string xAxis = "x";
 	private string yAxis = "y";
@@ -71,10 +74,19 @@ public class Player : MonoBehaviour {
 			blockTrigger.SetActive(false);
 		}
 		
-		/*if(Input.GetAxis(dash)!=0f)
+		if(Input.GetAxis(shoot)!=0f)
 		{
-			animator.SetBool("Block",true);
-		}*/	
+			animator.SetBool("Shoot",true);
+			canMovement = false;
+			blockTrigger.SetActive(true);
+		}	
+		else
+		{
+			canMovement = true;
+			animator.SetBool("Block",false);
+			blockTrigger.SetActive(false);
+		}
+		
 		
 		//Debug.Log(direction);
 		if(canMovement)
@@ -83,9 +95,14 @@ public class Player : MonoBehaviour {
 			animator.SetFloat("yAxis",direction.y * motionInverter);
 			myTransform.AddForce (direction * speed);
 		}
-
-		float shooting = Input.GetAxisRaw (shoot);
-		float blocking = Input.GetAxisRaw (block);
+		
+		/*if()//mitte schiessen
+		{
+			//Shoot(balls[0],transform.position);
+		}
+		if()//oben schiessen
+		if()//unten schiessen
+		if()//spessel schiessen*/
 
 		/*if (blocking == 1.0f) {
 			blockTrigger.SetActive (true);
@@ -128,14 +145,11 @@ public class Player : MonoBehaviour {
 		return turn = turnt;
 	}
 
-	public void instantiateSphere(GameObject sphereO, Vector3 position, Quaternion rotation){
-		ball = Instantiate(sphereO, position, rotation) as GameObject;
-		
-		ball.name = "Projectile";
-		projectile = new Ball(ball.transform);
+	public GameObject Shoot(GameObject ball, Vector3 position, Quaternion rotation){
+		return Instantiate(ball, position, rotation) as GameObject;
 	}
 	
-	public void Shoot(GameObject ball,Vector3 position,Quaternion rotation)
+	/*public void Shoot(GameObject ball,Vector3 position,Quaternion rotation)
 	{
 		float ver = Input.GetAxisRaw ("VerticalP2");
 		
@@ -151,10 +165,11 @@ public class Player : MonoBehaviour {
 				angle = Quaternion.AngleAxis (225.0f, Vector3.forward);
 			}
 			
-			instantiateSphere (balls[0], (Vector2)this.transform.position + new Vector2 (-Game.ballSpawnDistance, 0.0f), angle);
+			//instantiateSphere (balls[0], (Vector2)this.transform.position + new Vector2 (-Game.ballSpawnDistance, 0.0f), angle);
+			//instantiateSphere (ball, (Vector2)this.transform.position + new Vector2 (-Game.ballSpawnDistance, 0.0f), angle);
 			//sphereC.AddForce (sphereC.gameObject.transform.TransformVector(Vector2.right) * ballSpeed, ForceMode2D.Impulse);
 		}
-	}
+	}*/
 	
 	public Vector3 GetProjectilePositin() {
 		return myTransform.gameObject.transform.position;

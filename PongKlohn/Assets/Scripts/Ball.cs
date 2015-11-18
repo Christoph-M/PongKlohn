@@ -48,7 +48,7 @@ public class Ball : MonoBehaviour {
 			Object.Destroy(this.gameObject);
 
 			Debug.Log("Still working");
-			other.GetComponentInParent<Player>().instantiateSphere(other.GetComponentInParent<Player>().sphereO, position, Quaternion.AngleAxis(angle, Vector3.forward));
+			//other.GetComponentInParent<Player>().instantiateSphere(other.GetComponentInParent<Player>().sphereO, position, Quaternion.AngleAxis(angle, Vector3.forward));
 		}
 	}
 

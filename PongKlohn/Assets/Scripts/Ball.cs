@@ -2,9 +2,13 @@
 using System.Collections;
 
 public class Ball : MonoBehaviour {
+	public LayerMask mask = -1;
+
 	private Game goal;
 
 	private Transform myTransform;
+
+	Vector2 positionLastFrame;
 	
 	void Start(){
 		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
@@ -14,7 +18,7 @@ public class Ball : MonoBehaviour {
 		if (other.name.Contains("Goal") || other.name == "Catch_Trigger") {
 			this.Catch(other.gameObject);
 		} else if (other.name.Contains ("Wall")) {
-			this.bounce();
+			this.bounce(other.gameObject);
 		} else if (other.name == "Block_Trigger") {
 			this.block(other.gameObject);
 		}
@@ -34,13 +38,17 @@ public class Ball : MonoBehaviour {
 		Object.Destroy (this.gameObject);
 	}
 
-	private void bounce() {
+	private void bounce(GameObject other) {
 		float distance = this.transform.right.magnitude;
 		Vector2 forwardL = this.transform.right / distance;
 		Vector2 forwardG = this.transform.TransformDirection(forwardL);
-		
-		RaycastHit2D hit = Physics2D.Raycast (this.transform.position, forwardG);
-		Vector2 exitDirection = Vector2.Reflect(forwardL, hit.normal);
+
+		RaycastHit2D hit = Physics2D.Raycast (this.transform.position + (-this.transform.right * 5), this.transform.right, Mathf.Infinity, -1, 0.09f, 0.11f);
+		Vector2 exitDirection =  Vector2.Reflect(forwardL, hit.normal);
+
+//			Debug.DrawRay (this.transform.position + -this.transform.right, this.transform.right, Color.blue, 1000);
+//			Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
+//			Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
@@ -56,8 +64,12 @@ public class Ball : MonoBehaviour {
 		
 		Vector2 playerDirection = other.transform.parent.position - this.transform.position;
 		
-		RaycastHit2D hit = Physics2D.Raycast(other.transform.position, this.transform.TransformDirection(playerDirection));
+		RaycastHit2D hit = Physics2D.Raycast(this.transform.position, playerDirection);
 		Vector2 exitDirection = Vector2.Reflect(playerDirection, hit.normal);
+		
+//			Debug.DrawRay (this.transform.position, playerDirection, Color.blue, 1000);
+//			Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
+//			Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 

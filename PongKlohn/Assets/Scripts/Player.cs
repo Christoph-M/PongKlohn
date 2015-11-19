@@ -88,6 +88,8 @@ public class Player : MonoBehaviour {
 			axisInUse = false;
 		} else if (Input.GetAxis (block) != 0f) {
 			canMovement = false;
+			animator.SetBool ("Block", true);
+			blockTrigger.SetActive (true);
 
 			if (!axisInUse) {
 				animator.SetBool ("Block", false);
@@ -112,8 +114,7 @@ public class Player : MonoBehaviour {
 			myTransform.AddForce (direction * speed);
 		}
 
-
-		if (Input.GetAxis (shoot) != 0f && Input.GetAxisRaw (yAxis) == 0f && turn && !ball) {//mitte schiessen
+		if (Input.GetAxis (shoot) != 0f && turn && !ball) {//mitte schiessen
 			timeLeft -= Time.deltaTime;
 			fired = true;
 		} else if (fired && turn && !ball) {
@@ -123,7 +124,7 @@ public class Player : MonoBehaviour {
 					ball = Shoot (balls [1], ballSpohorn.position, this.transform.rotation);
 				} else if (Input.GetAxisRaw (yAxis) == -1f) {//unten schiessen
 					ball = Shoot (balls [2], ballSpohorn.position, this.transform.rotation);
-				} else {
+				} else if (Input.GetAxisRaw (yAxis) == 0f) {
 					ball = Shoot (balls [0], ballSpohorn.position, this.transform.rotation);
 				}
 

@@ -43,12 +43,12 @@ public class Ball : MonoBehaviour {
 		Vector2 forwardL = this.transform.right / distance;
 		Vector2 forwardG = this.transform.TransformDirection(forwardL);
 
-		RaycastHit2D hit = Physics2D.Raycast (this.transform.position + (-this.transform.right * 5), this.transform.right, Mathf.Infinity, -1, 0.09f, 0.11f);
+		RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
 		Vector2 exitDirection =  Vector2.Reflect(forwardL, hit.normal);
 
-//			Debug.DrawRay (this.transform.position + -this.transform.right, this.transform.right, Color.blue, 1000);
-//			Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
-//			Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
+			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 1000);
+			Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
+			Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 

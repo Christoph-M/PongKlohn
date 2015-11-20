@@ -6,7 +6,6 @@
 *.exe
 *.o
 *.so
-*.meta
 *.blend1
 
 # Project Files #
@@ -14,8 +13,8 @@
 *.csproj
 *.sln
 *.userprefs
-PongKlohn/Library/**
-PongKlohn/ProjectSettings/**
+PongKlohn/Library/ShaderCache/**
+PongKlohn/Builds/**
 PongKlohn/Temp/**
 
 # Packages #

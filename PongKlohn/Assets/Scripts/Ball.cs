@@ -72,19 +72,20 @@ public class Ball : MonoBehaviour {
 		this.SetTurn (other.name);
 		
 		Object.Destroy (this.gameObject);
+
+		goal.ballSpeed = goal.minBallSpeed;
 	}
 
 	private void bounce(GameObject other) {
 		float distance = this.transform.right.magnitude;
-		Vector2 forwardL = this.transform.right / distance;
-		Vector2 forwardG = this.transform.TransformDirection(forwardL);
+		Vector2 forward = this.transform.right / distance;
 
 		RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-		Vector2 exitDirection =  Vector2.Reflect(forwardL, hit.normal);
+		Vector2 exitDirection =  Vector2.Reflect(forward, hit.normal);
 
-			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
-			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
-			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
+//			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
+//			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
+//			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
@@ -114,5 +115,7 @@ public class Ball : MonoBehaviour {
 		other.GetComponentInParent<Player>().Shoot(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
 
 		Object.Destroy(this.gameObject);
+
+		goal.BallSpeedUp ();
 	}
 }

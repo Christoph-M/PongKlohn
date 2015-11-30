@@ -203,6 +203,10 @@ MonoBehaviour:
   player2: {fileID: 1228017306}
   playerSpeed: 15
   dashSpeed: 5
+  minBallSpeed: 10
+  maxBallSpeed: 30
+  ballSpeed: 0
+  ballSpeedUpStep: 1
 --- !u!4 &227055173
 Transform:
   m_ObjectHideFlags: 0

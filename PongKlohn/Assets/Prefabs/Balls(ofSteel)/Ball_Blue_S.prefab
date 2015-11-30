@@ -15,8 +15,6 @@ GameObject:
   - 114: {fileID: 11492534}
   - 114: {fileID: 11431998}
   - 96: {fileID: 9635800}
-  - 114: {fileID: 11412008}
-  - 114: {fileID: 11482106}
   m_Layer: 0
   m_Name: Ball_Blue_S
   m_TagString: Untagged
@@ -141,23 +139,6 @@ TrailRenderer:
       rgba: 16777215
   m_MinVertexDistance: .100000001
   m_Autodestruct: 0
---- !u!114 &11412008
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed339925fa630eb45b9f00e4a22748b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  intervalMuliplier: .300000012
-  x_movement: 1
-  y_movement: 0
-  z_movement: 0
-  offset: 1
 --- !u!114 &11431998
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,29 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2d9d4322ce1444bb33b3eccc94f582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 10
   angle: 0
   x_achse: 1
   y_achse: 0
   z_achse: 0
---- !u!114 &11482106
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e49e9f3ee57124da88784acfa4c541, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  angle: 80
-  intervalMuliplier: 1
-  x_rotation: 0
-  y_rotation: 0
-  z_rotation: 1
-  offset: 0
 --- !u!114 &11492534
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -203,9 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e5691fc027a836438a84056124e108f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  move: 1
+  sinCosMove: 0
+  linearRotation: 0
+  sinCosRotation: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -259,7 +223,7 @@ Prefab:
       objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 0}
       propertyPath: speed
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: y_achse
@@ -296,6 +260,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: intervalMuliplier
       value: .300000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: move
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -4,7 +4,7 @@ using System.Collections;
 public class CosinMovement : MonoBehaviour
 {
     public float speed = 1;
-	public float intervalMuliplier = 1;
+	public float Strecke	= 1;
 	//double startTime;
 	float counter=0;
 
@@ -31,8 +31,8 @@ public class CosinMovement : MonoBehaviour
 			deltatime = Time.time;
 		}
 		
-		if(x_movement){transform.position += transform.TransformDirection(new Vector3(1,0,0)) * intervalMuliplier * temp;}
-		if(y_movement){transform.position += transform.TransformDirection(new Vector3(0,1,0)) * intervalMuliplier * temp;}
-		if(z_movement){transform.position += transform.TransformDirection(new Vector3(0,0,1)) * intervalMuliplier * temp;}		
+		if(x_movement){transform.position += transform.TransformDirection(new Vector3(1,0,0)) * Strecke * temp;}
+		if(y_movement){transform.position += transform.TransformDirection(new Vector3(0,1,0)) * Strecke * temp;}
+		if(z_movement){transform.position += transform.TransformDirection(new Vector3(0,0,1)) * Strecke * temp;}		
     }    
 }

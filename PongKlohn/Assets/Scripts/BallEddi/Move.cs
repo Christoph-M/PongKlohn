@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Move : MonoBehaviour
 {
-    public float speed = 1;
+    public float speed = 10;
 	public float angle = 0;
 	
 	public bool x_achse = true;
@@ -17,7 +17,7 @@ public class Move : MonoBehaviour
 		if(z_achse){transform.rotation *= Quaternion.AngleAxis(angle,new Vector3(0,1,0));}
     }
 
-    void FixedUpdate()
+    public void Update_()
     {
 		if(x_achse){transform.position += transform.TransformDirection(new Vector3(1,0,0)) * (Time.deltaTime * speed);}
 		if(y_achse){transform.position += transform.TransformDirection(new Vector3(0,1,0)) * (Time.deltaTime * speed);}

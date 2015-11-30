@@ -13,7 +13,8 @@ public class Player : MonoBehaviour {
 	public float speed { get; set; }
 	public float dashSpeed { get; set; }
 	public bool InvertMotion = false;
-
+	
+	private Timer catchTimer;
 
 	private Rigidbody2D myTransform;
 	private Animator animator;
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour {
 	
 	void Start() 
 	{
+		catchTimer = new Timer();
 		animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
 
@@ -64,7 +66,7 @@ public class Player : MonoBehaviour {
 	private bool axisInUse = false;
 	private bool fired = false;
 	private float timeLeft = 1.0f;
-	void FixedUpdate() 
+	void Update() 
 	{
 		Vector2 direction = new Vector2(Input.GetAxis(xAxis), Input.GetAxis(yAxis));
 		Vector2 directionRaw = new Vector2(Input.GetAxisRaw(xAxis), Input.GetAxisRaw(yAxis));
@@ -80,16 +82,14 @@ public class Player : MonoBehaviour {
 			animator.SetBool("Fire", false);
 		}
 
-		if (Input.GetAxis (block) != 0f && directionRaw.x == 0f && directionRaw.y == 0f) {
+		if (Input.GetAxisRaw (block) != 0f && (directionRaw.x == 0f && directionRaw.y == 0f)) {
 			canMovement = false;
 			animator.SetBool ("Block", true);
 			blockTrigger.SetActive (true);
 
 			axisInUse = false;
-		} else if (Input.GetAxis (block) != 0f) {
+		} else if (Input.GetAxisRaw (block) != 0f) {
 			canMovement = false;
-			animator.SetBool ("Block", true);
-			blockTrigger.SetActive (true);
 
 			if (!axisInUse) {
 				animator.SetBool ("Block", false);
@@ -98,8 +98,11 @@ public class Player : MonoBehaviour {
 				myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
 
 				axisInUse = true;
+			} else {
+				animator.SetBool ("Block", true);
+				blockTrigger.SetActive (true);
 			}
-		} else {
+		} else if (Input.GetAxisRaw (block) == 0f) {
 			animator.SetBool("Block", false);
 			blockTrigger.SetActive(false);
 			canMovement = true;
@@ -138,11 +141,12 @@ public class Player : MonoBehaviour {
 				fired = false;
 			}
 		}
-
+		
+		catchTimer.Update();
 		Debug.Log (timeLeft);
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		catchTrigger.transform.position = this.transform.position;
 		blockTrigger.transform.position = this.transform.position;

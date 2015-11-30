@@ -1,19 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Ball : MonoBehaviour {
-	public LayerMask mask = -1;
+	public bool move = true;
+	public bool sinCosMove = false;
+	public bool linearRotation = false;
+	public bool sinCosRotation = false;
+
 
 	private Game goal;
+	private Move moveScript;
+	private SinCosMovement sinCosMovementScript;
+	private LinearRotation linearRotationScript;
+	private SinCosRotation sinCosRotationScript;
 
 	private Transform myTransform;
-
-	Vector2 positionLastFrame;
 
 	private bool triggered = false;
 	
 	void Start(){
 		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
+		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
+		sinCosMovementScript = GameObject.FindObjectOfType (typeof(SinCosMovement)) as SinCosMovement;
+		linearRotationScript = GameObject.FindObjectOfType (typeof(LinearRotation)) as LinearRotation;
+		sinCosRotationScript = GameObject.FindObjectOfType (typeof(SinCosRotation)) as SinCosRotation;
+	}
+
+	void FixedUpdate() {
+		if (move) moveScript.Update_ ();
+		if (sinCosMove) sinCosMovementScript.Update_ ();
+		if (linearRotation) linearRotationScript.Update_ ();
+		if (sinCosRotation) sinCosRotationScript.Update_ ();
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
@@ -27,16 +45,6 @@ public class Ball : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D other){
 		triggered = false;
 	}
-
-//	void OnTriggerStay2D(Collider2D other) {
-//		if (other.name.Contains ("Wall")) {
-//			RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-//			
-//			float spherePosition = other.transform.localScale.y + this.transform.localScale.y;
-//
-//			this.transform.Translate(hit.normal * spherePosition);
-//		}
-//	}
 
 	private void Trigger(GameObject other){
 		if (!triggered) {

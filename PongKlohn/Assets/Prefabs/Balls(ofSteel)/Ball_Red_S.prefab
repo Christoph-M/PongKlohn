@@ -15,8 +15,6 @@ GameObject:
   - 114: {fileID: 11492534}
   - 114: {fileID: 11406858}
   - 96: {fileID: 9684706}
-  - 114: {fileID: 11450334}
-  - 114: {fileID: 11441156}
   m_Layer: 0
   m_Name: Ball_Red_S
   m_TagString: Untagged
@@ -152,46 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2d9d4322ce1444bb33b3eccc94f582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 10
   angle: 0
   x_achse: 1
   y_achse: 0
   z_achse: 0
---- !u!114 &11441156
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e49e9f3ee57124da88784acfa4c541, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  angle: 80
-  intervalMuliplier: 1
-  x_rotation: 0
-  y_rotation: 0
-  z_rotation: 1
-  offset: 0
---- !u!114 &11450334
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed339925fa630eb45b9f00e4a22748b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  intervalMuliplier: .300000012
-  x_movement: 1
-  y_movement: 0
-  z_movement: 0
-  offset: 1
 --- !u!114 &11492534
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -203,9 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e5691fc027a836438a84056124e108f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  move: 1
+  sinCosMove: 0
+  linearRotation: 0
+  sinCosRotation: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -213,6 +177,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: activeScripts.Array.size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_IsKinematic
       value: 1
@@ -263,7 +231,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: speed
-      value: 1
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: x_achse
@@ -279,7 +247,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: angle
-      value: 80
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: x_movement
@@ -287,11 +255,31 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: offset
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: intervalMuliplier
       value: .300000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sinus
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: cosinus
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: move
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sinCosRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: x_rotation
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

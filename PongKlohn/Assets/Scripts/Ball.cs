@@ -9,21 +9,49 @@ public class Ball : MonoBehaviour {
 	private Transform myTransform;
 
 	Vector2 positionLastFrame;
+
+	private bool triggered = false;
 	
 	void Start(){
 		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
-		if (other.name.Contains("Goal") || other.name == "Catch_Trigger") {
-			this.Catch(other.gameObject);
-		} else if (other.name.Contains ("Wall")) {
-			this.bounce(other.gameObject);
-		} else if (other.name == "Block_Trigger") {
-			this.block(other.gameObject);
-		}
+	void OnTriggerEnter2D(Collider2D other){
+		this.Trigger (other.gameObject);
 	}
 	
+	void OnTriggerStay2D(Collider2D other) {
+		this.Trigger (other.gameObject);
+	}
+
+	void OnTriggerExit2D(Collider2D other){
+		triggered = false;
+	}
+
+//	void OnTriggerStay2D(Collider2D other) {
+//		if (other.name.Contains ("Wall")) {
+//			RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
+//			
+//			float spherePosition = other.transform.localScale.y + this.transform.localScale.y;
+//
+//			this.transform.Translate(hit.normal * spherePosition);
+//		}
+//	}
+
+	private void Trigger(GameObject other){
+		if (!triggered) {
+			if (other.name.Contains ("Goal") || other.name == "Catch_Trigger") {
+				this.Catch (other.gameObject);
+			} else if (other.name.Contains ("Wall")) {
+				this.bounce (other.gameObject);
+			} else if (other.name == "Block_Trigger") {
+				this.block (other.gameObject);
+			}
+		}
+		
+		triggered = true;
+	}
+
 	private void SetTurn(string name) {
 		if (name == "Goal_Red" || name == "Player_01") {
 			goal.setTurn (true);
@@ -46,9 +74,9 @@ public class Ball : MonoBehaviour {
 		RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
 		Vector2 exitDirection =  Vector2.Reflect(forwardL, hit.normal);
 
-//			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 1000);
-//			Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
-//			Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
+			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
+			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
+			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 

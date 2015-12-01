@@ -50,16 +50,18 @@ public class Ball : MonoBehaviour {
 
 	private void Trigger(GameObject other){
 		if (!triggered) {
-			if (other.name.Contains ("Goal") || other.name == "Catch_Trigger") {
+			if (other.name.Contains ("Goal")) {
+				this.Goal (other.gameObject);
+			} else if (other.name == "Catch_Trigger") {
 				this.Catch (other.gameObject);
 			} else if (other.name.Contains ("Wall")) {
-				this.bounce (other.gameObject);
+				this.Bounce (other.gameObject);
 			} else if (other.name == "Dash_Trigger") {
 //				other.GetComponentInParent<Player>().SetDashTrigger(true);
 			} else if (other.name == "Miss_Trigger") {
 //				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
 			} else if (other.name == "Block_Trigger") {
-				this.block (other.gameObject);
+				this.Block (other.gameObject);
 			}
 		}
 		
@@ -74,16 +76,25 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	private void Catch(GameObject other) {
-		this.SetTurn ((other.name.Contains ("Goal")) ? other.name : other.transform.parent.name);
-		
-		Object.Destroy (this.gameObject);
+	private void Goal(GameObject other) {
+		if (other.name == "Goal_Red") {
+			gameScript.Player2Scored ();
+		} else {
+			gameScript.Player1Scored ();
+		}
 
-		gameScript.SetProjectileTransform (null);
-		gameScript.ResetBallSpeed();
+		this.SetTurn (other.name);
+		
+		this.DestroyBall ();
 	}
 
-	private void bounce(GameObject other) {
+	private void Catch(GameObject other) {
+		this.SetTurn (other.transform.parent.name);
+		
+		this.DestroyBall ();
+	}
+
+	private void Bounce(GameObject other) {
 		float distance = this.transform.right.magnitude;
 		Vector2 forward = this.transform.right / distance;
 
@@ -99,7 +110,7 @@ public class Ball : MonoBehaviour {
 		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);		
 	}
 
-	private void block(GameObject other) {
+	private void Block(GameObject other) {
 		Vector2 playerDirection = other.transform.parent.position - this.transform.position;
 		
 		RaycastHit2D hit = Physics2D.Raycast(this.transform.position, playerDirection);
@@ -119,5 +130,12 @@ public class Ball : MonoBehaviour {
 		
 		gameScript.SetProjectileTransform (null);
 		gameScript.BallSpeedUp ();
+	}
+
+	private void DestroyBall() {
+		Object.Destroy (this.gameObject);
+		
+		gameScript.SetProjectileTransform (null);
+		gameScript.ResetBallSpeed();
 	}
 }

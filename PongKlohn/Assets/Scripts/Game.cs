@@ -16,7 +16,6 @@ public class Game : MonoBehaviour {
 	private Transform projectile;
 	
 	private float ballSpeed;
-	private bool turn;
 
 	void Start() {
 		player1.SetInputAxis("HorizontalP1", "VerticalP1", "ShootP1", "BlockP1");
@@ -25,10 +24,10 @@ public class Game : MonoBehaviour {
 		ballSpeed = minBallSpeed;
 
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
-			turn = player1.setTurn(true);
+			player1.setTurn(true);
 			player2.setTurn(false);
 		} else {
-			turn = player1.setTurn(false);
+			player1.setTurn(false);
 			player2.setTurn(true);
 		}
 	}
@@ -40,12 +39,12 @@ public class Game : MonoBehaviour {
 		player2.dashSpeed = dashSpeed;
 	}
 	
-	public void setTurn(bool goal) {
+	public void SetTurn(bool turn) {
 		if (turn){
-			turn = player1.setTurn(false);
+			player1.setTurn(false);
 			player2.setTurn(true);
 		} else {
-			turn = player1.setTurn(true);
+			player1.setTurn(true);
 			player2.setTurn(false);
 		}
 	}

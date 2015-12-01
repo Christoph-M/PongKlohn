@@ -8,11 +8,14 @@ public class Game : MonoBehaviour {
 	public Player player2;
 	public GameObject canvas;
 
+	[Header("Player")]
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
+	[Header("Ball")]
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
 	public float ballSpeedUpStep = 5.0f;
+	[Header("Game Rounds")]
 	public int maxGameRounds = 3;
 	public int playerLifeDecStep = 10;
 
@@ -25,8 +28,8 @@ public class Game : MonoBehaviour {
 	private int player2Score = 100;
 
 	void Start() {
-		player1.SetInputAxis("HorizontalP1", "VerticalP1", "ShootP1", "BlockP1");
-		player2.SetInputAxis("HorizontalP2", "VerticalP2", "ShootP2", "BlockP2");
+		player1.SetPlayer("Player1");
+		player2.SetPlayer("Player2");
 
 		ballSpeed = minBallSpeed;
 
@@ -81,7 +84,6 @@ public class Game : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		Debug.Log ("P1: " + player1Score + ". P2: " + player2Score);
 		canvas.transform.FindChild ("Player_1_Life").GetComponent<Text> ().text = "" + player1Score;
 		canvas.transform.FindChild ("Player_2_Life").GetComponent<Text> ().text = "" + player2Score;
 	}

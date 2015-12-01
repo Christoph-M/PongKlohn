@@ -5,6 +5,7 @@ using System;
 public class Game : MonoBehaviour {
 	public Player player1;
 	public Player player2;
+	public GameObject canvas;
 
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
@@ -30,9 +31,33 @@ public class Game : MonoBehaviour {
 			player1.setTurn(false);
 			player2.setTurn(true);
 		}
+
+		canvas.transform.FindChild ("2").gameObject.SetActive (true);
 	}
 	
+	private float timeLeft = 4.0f;
 	void Update() {
+		if (timeLeft > 0) {
+			timeLeft -= Time.deltaTime;
+
+			switch ((int)timeLeft) {
+			case 2:
+				canvas.transform.FindChild ("2").gameObject.SetActive (false);
+				canvas.transform.FindChild ("1").gameObject.SetActive (true);
+				break;
+			case 1:
+				canvas.transform.FindChild ("1").gameObject.SetActive (false);
+				canvas.transform.FindChild ("FIGHT").gameObject.SetActive (true);
+				break;
+			case 0:
+				canvas.transform.FindChild ("FIGHT").gameObject.SetActive (false);
+				
+				player1.enabled = true;
+				player2.enabled = true;
+				break;
+			}
+		}
+
 		player1.speed = playerSpeed;
 		player2.speed = playerSpeed;
 		player1.dashSpeed = dashSpeed;

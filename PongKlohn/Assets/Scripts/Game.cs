@@ -10,10 +10,12 @@ public class Game : MonoBehaviour {
 	public float dashSpeed = 5.0f;
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
-	public float ballSpeed;
 	public float ballSpeedUpStep = 5.0f;
 
 
+	private Transform projectile;
+	
+	private float ballSpeed;
 	private bool turn;
 
 	void Start() {
@@ -31,6 +33,13 @@ public class Game : MonoBehaviour {
 		}
 	}
 	
+	void Update() {
+		player1.speed = playerSpeed;
+		player2.speed = playerSpeed;
+		player1.dashSpeed = dashSpeed;
+		player2.dashSpeed = dashSpeed;
+	}
+	
 	public void setTurn(bool goal) {
 		if (turn){
 			turn = player1.setTurn(false);
@@ -41,18 +50,15 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	void Update() {
-		player1.speed = playerSpeed;
-		player2.speed = playerSpeed;
-		player1.dashSpeed = dashSpeed;
-		player2.dashSpeed = dashSpeed;
-	}
+	public void SetProjectileTransform(Transform trans) { projectile = trans; }
+	public Transform GetProjectileTransform() { return projectile; }
 	
 	public void BallSpeedUp(){
 		ballSpeed += ballSpeedUpStep;
 
-		if (ballSpeed > maxBallSpeed) {
-			ballSpeed = maxBallSpeed;
-		}
+		if (ballSpeed > maxBallSpeed) ballSpeed = maxBallSpeed;
 	}
+
+	public float GetBallSpeed() { return ballSpeed; }
+	public void ResetBallSpeed() { ballSpeed = minBallSpeed; }
 }

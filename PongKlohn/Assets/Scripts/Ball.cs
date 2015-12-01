@@ -25,6 +25,8 @@ public class Ball : MonoBehaviour {
 		sinCosMovementScript = GameObject.FindObjectOfType (typeof(SinCosMovement)) as SinCosMovement;
 		linearRotationScript = GameObject.FindObjectOfType (typeof(LinearRotation)) as LinearRotation;
 		sinCosRotationScript = GameObject.FindObjectOfType (typeof(SinCosRotation)) as SinCosRotation;
+
+		goal.SetProjectileTransform (this.transform);
 	}
 
 	void FixedUpdate() {
@@ -53,9 +55,9 @@ public class Ball : MonoBehaviour {
 			} else if (other.name.Contains ("Wall")) {
 				this.bounce (other.gameObject);
 			} else if (other.name == "Dash_Trigger") {
-				other.GetComponentInParent<Player>().SetDashTrigger(true);
+//				other.GetComponentInParent<Player>().SetDashTrigger(true);
 			} else if (other.name == "Miss_Trigger") {
-				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
+//				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
 			} else if (other.name == "Block_Trigger") {
 				this.block (other.gameObject);
 			}
@@ -77,7 +79,8 @@ public class Ball : MonoBehaviour {
 		
 		Object.Destroy (this.gameObject);
 
-		goal.ballSpeed = goal.minBallSpeed;
+		goal.SetProjectileTransform (null);
+		goal.ResetBallSpeed();
 	}
 
 	private void bounce(GameObject other) {
@@ -119,7 +122,8 @@ public class Ball : MonoBehaviour {
 		other.GetComponentInParent<Player>().Shoot(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
 
 		Object.Destroy(this.gameObject);
-
+		
+		goal.SetProjectileTransform (null);
 		goal.BallSpeedUp ();
 	}
 }

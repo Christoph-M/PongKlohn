@@ -18,7 +18,7 @@ public class Move : MonoBehaviour
     {
 		game = GameObject.FindObjectOfType (typeof(Game)) as Game;
 
-		speed = game.ballSpeed;
+		speed = game.GetBallSpeed();
 
 		if(x_achse){transform.rotation *= Quaternion.AngleAxis(angle,new Vector3(0,0,1));}
 		if(y_achse){transform.rotation *= Quaternion.AngleAxis(angle,new Vector3(1,0,0));}

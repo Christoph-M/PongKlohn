@@ -18,7 +18,7 @@ public class LinearRotation : MonoBehaviour
 		else{direction = 1;}
     }
     
-    void Update()
+	public void Update_()
     {
 		if(x_rotation){transform.rotation *= Quaternion.AngleAxis(Time.deltaTime * speed * direction,new Vector3(1,0,0));}
 		if(y_rotation){transform.rotation *= Quaternion.AngleAxis(Time.deltaTime * speed * direction,new Vector3(0,1,0));}

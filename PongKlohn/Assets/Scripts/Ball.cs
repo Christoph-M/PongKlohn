@@ -1,19 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Ball : MonoBehaviour {
-	public LayerMask mask = -1;
+	public bool move = true;
+	public bool sinCosMove = false;
+	public bool linearRotation = false;
+	public bool sinCosRotation = false;
+
 
 	private Game goal;
+	private Move moveScript;
+	private SinCosMovement sinCosMovementScript;
+	private LinearRotation linearRotationScript;
+	private SinCosRotation sinCosRotationScript;
 
 	private Transform myTransform;
-
-	Vector2 positionLastFrame;
 
 	private bool triggered = false;
 	
 	void Start(){
 		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
+		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
+		sinCosMovementScript = GameObject.FindObjectOfType (typeof(SinCosMovement)) as SinCosMovement;
+		linearRotationScript = GameObject.FindObjectOfType (typeof(LinearRotation)) as LinearRotation;
+		sinCosRotationScript = GameObject.FindObjectOfType (typeof(SinCosRotation)) as SinCosRotation;
+	}
+
+	void FixedUpdate() {
+		if (move) moveScript.Update_ ();
+		if (sinCosMove) sinCosMovementScript.Update_ ();
+		if (linearRotation) linearRotationScript.Update_ ();
+		if (sinCosRotation) sinCosRotationScript.Update_ ();
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
@@ -28,22 +46,16 @@ public class Ball : MonoBehaviour {
 		triggered = false;
 	}
 
-//	void OnTriggerStay2D(Collider2D other) {
-//		if (other.name.Contains ("Wall")) {
-//			RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-//			
-//			float spherePosition = other.transform.localScale.y + this.transform.localScale.y;
-//
-//			this.transform.Translate(hit.normal * spherePosition);
-//		}
-//	}
-
 	private void Trigger(GameObject other){
 		if (!triggered) {
 			if (other.name.Contains ("Goal") || other.name == "Catch_Trigger") {
 				this.Catch (other.gameObject);
 			} else if (other.name.Contains ("Wall")) {
 				this.bounce (other.gameObject);
+			} else if (other.name == "Dash_Trigger") {
+				other.GetComponentInParent<Player>().SetDashTrigger(true);
+			} else if (other.name == "Miss_Trigger") {
+				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
 			} else if (other.name == "Block_Trigger") {
 				this.block (other.gameObject);
 			}
@@ -64,19 +76,20 @@ public class Ball : MonoBehaviour {
 		this.SetTurn (other.name);
 		
 		Object.Destroy (this.gameObject);
+
+		goal.ballSpeed = goal.minBallSpeed;
 	}
 
 	private void bounce(GameObject other) {
 		float distance = this.transform.right.magnitude;
-		Vector2 forwardL = this.transform.right / distance;
-		Vector2 forwardG = this.transform.TransformDirection(forwardL);
+		Vector2 forward = this.transform.right / distance;
 
 		RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-		Vector2 exitDirection =  Vector2.Reflect(forwardL, hit.normal);
+		Vector2 exitDirection =  Vector2.Reflect(forward, hit.normal);
 
-			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
-			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
-			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
+//			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
+//			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
+//			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
@@ -106,5 +119,7 @@ public class Ball : MonoBehaviour {
 		other.GetComponentInParent<Player>().Shoot(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
 
 		Object.Destroy(this.gameObject);
+
+		goal.BallSpeedUp ();
 	}
 }

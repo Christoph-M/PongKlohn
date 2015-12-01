@@ -8,13 +8,20 @@ public class Game : MonoBehaviour {
 
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
+	public float minBallSpeed = 10.0f;
+	public float maxBallSpeed = 100.0f;
+	public float ballSpeed;
+	public float ballSpeedUpStep = 5.0f;
+
 
 	private bool turn;
 
 	void Start() {
 		player1.SetInputAxis("HorizontalP1", "VerticalP1", "ShootP1", "BlockP1");
 		player2.SetInputAxis("HorizontalP2", "VerticalP2", "ShootP2", "BlockP2");
-		
+
+		ballSpeed = minBallSpeed;
+
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
 			turn = player1.setTurn(true);
 			player2.setTurn(false);
@@ -39,5 +46,13 @@ public class Game : MonoBehaviour {
 		player2.speed = playerSpeed;
 		player1.dashSpeed = dashSpeed;
 		player2.dashSpeed = dashSpeed;
+	}
+	
+	public void BallSpeedUp(){
+		ballSpeed += ballSpeedUpStep;
+
+		if (ballSpeed > maxBallSpeed) {
+			ballSpeed = maxBallSpeed;
+		}
 	}
 }

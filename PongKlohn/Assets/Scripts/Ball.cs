@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour {
 	public bool sinCosRotation = false;
 
 
-	private Game goal;
+	private Game gameScript;
 	private Move moveScript;
 	private SinCosMovement sinCosMovementScript;
 	private LinearRotation linearRotationScript;
@@ -20,11 +20,13 @@ public class Ball : MonoBehaviour {
 	private bool triggered = false;
 	
 	void Start(){
-		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
+		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
 		sinCosMovementScript = GameObject.FindObjectOfType (typeof(SinCosMovement)) as SinCosMovement;
 		linearRotationScript = GameObject.FindObjectOfType (typeof(LinearRotation)) as LinearRotation;
 		sinCosRotationScript = GameObject.FindObjectOfType (typeof(SinCosRotation)) as SinCosRotation;
+
+		gameScript.SetProjectileTransform (this.transform);
 	}
 
 	void FixedUpdate() {
@@ -48,16 +50,18 @@ public class Ball : MonoBehaviour {
 
 	private void Trigger(GameObject other){
 		if (!triggered) {
-			if (other.name.Contains ("Goal") || other.name == "Catch_Trigger") {
+			if (other.name.Contains ("Goal")) {
+				this.Goal (other.gameObject);
+			} else if (other.name == "Catch_Trigger") {
 				this.Catch (other.gameObject);
 			} else if (other.name.Contains ("Wall")) {
-				this.bounce (other.gameObject);
+				this.Bounce (other.gameObject);
 			} else if (other.name == "Dash_Trigger") {
-				other.GetComponentInParent<Player>().SetDashTrigger(true);
+//				other.GetComponentInParent<Player>().SetDashTrigger(true);
 			} else if (other.name == "Miss_Trigger") {
-				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
+//				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
 			} else if (other.name == "Block_Trigger") {
-				this.block (other.gameObject);
+				this.Block (other.gameObject);
 			}
 		}
 		
@@ -66,21 +70,31 @@ public class Ball : MonoBehaviour {
 
 	private void SetTurn(string name) {
 		if (name == "Goal_Red" || name == "Player_01") {
-			goal.setTurn (true);
+			gameScript.SetTurn (false);
 		} else {
-			goal.setTurn (false);
+			gameScript.SetTurn (true);
 		}
 	}
 
-	private void Catch(GameObject other) {
+	private void Goal(GameObject other) {
+		if (other.name == "Goal_Red") {
+			gameScript.Player2Scored ();
+		} else {
+			gameScript.Player1Scored ();
+		}
+
 		this.SetTurn (other.name);
 		
-		Object.Destroy (this.gameObject);
-
-		goal.ballSpeed = goal.minBallSpeed;
+		this.DestroyBall ();
 	}
 
-	private void bounce(GameObject other) {
+	private void Catch(GameObject other) {
+		this.SetTurn (other.transform.parent.name);
+		
+		this.DestroyBall ();
+	}
+
+	private void Bounce(GameObject other) {
 		float distance = this.transform.right.magnitude;
 		Vector2 forward = this.transform.right / distance;
 
@@ -96,13 +110,7 @@ public class Ball : MonoBehaviour {
 		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);		
 	}
 
-	private void block(GameObject other) {
-		if (other.name.Contains ("Goal") || other.name == "Catch_Trigger") {
-			this.SetTurn (other.name);
-		} else {
-			this.SetTurn (other.transform.parent.name);
-		}
-		
+	private void Block(GameObject other) {
 		Vector2 playerDirection = other.transform.parent.position - this.transform.position;
 		
 		RaycastHit2D hit = Physics2D.Raycast(this.transform.position, playerDirection);
@@ -119,7 +127,15 @@ public class Ball : MonoBehaviour {
 		other.GetComponentInParent<Player>().Shoot(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
 
 		Object.Destroy(this.gameObject);
+		
+		gameScript.SetProjectileTransform (null);
+		gameScript.BallSpeedUp ();
+	}
 
-		goal.BallSpeedUp ();
+	private void DestroyBall() {
+		Object.Destroy (this.gameObject);
+		
+		gameScript.SetProjectileTransform (null);
+		gameScript.ResetBallSpeed();
 	}
 }

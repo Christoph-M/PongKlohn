@@ -29,7 +29,7 @@ public class Game : MonoBehaviour {
 
 	void Start() {
 		player1.SetPlayer("Player1");
-		player2.SetPlayer("Player2");
+		player2.SetPlayer("ai");
 
 		ballSpeed = minBallSpeed;
 

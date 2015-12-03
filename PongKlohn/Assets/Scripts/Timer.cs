@@ -7,7 +7,7 @@ public class Timer
 	float time = 0f;
 	bool status = false;
 	
-	public void Update () 
+	public void UpdateTimer() 
 	{
 		if(timer<time)
 		{
@@ -20,13 +20,14 @@ public class Timer
 		}
 	}
 	
-	public void RestTimer()
+	public void ResetTimer()
 	{
 		timer = 0f;
 	}
 	
 	public void SetTimer(float t)
 	{
+		ResetTimer();
 		time = t;
 	}
 	

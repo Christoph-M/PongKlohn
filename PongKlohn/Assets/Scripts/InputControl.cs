@@ -20,7 +20,7 @@ public class InputControl
 			xAxis = "HorizontalP1";
 			yAxis = "VerticalP1";
 			shoot = "ShootP1";
-			dash = "BlockP1";
+			block = "BlockP1";
 		}
 		else if(player == "Player2")
 		{
@@ -28,7 +28,7 @@ public class InputControl
 			xAxis = "HorizontalP2";
 			yAxis = "VerticalP2";
 			shoot = "ShootP2";
-			dash = "BlockP2";
+			block = "BlockP2";
 		}
 		else if(player == "Ai")
 		{
@@ -44,27 +44,48 @@ public class InputControl
 	
 	public Vector2 UpdateMovement () 
 	{
+		//Debug.Log("jea");
 		if(isAiPlayer)
 		{
-			return ai.UpdateMovementInput();///////////////////////
+			return ai.GetMovementInput();///////////////////////
 		}
 		
 		else
 		{
-			return Vector2(Input.GetAxis(xAxis),Input.GetAxis(yAxis));
+			//Debug.Log("YippiJea");
+			return new Vector2(Input.GetAxis(xAxis),Input.GetAxis(yAxis));
 		}
+	}
+	public bool IsActionKeyActive()
+	{
+		if(isAiPlayer)
+		{
+			if(!ai.GetBlock() || !ai.GetAttack(true))
+			{
+				return true;
+			}
+		}
+		else
+		{
+			if(Input.GetAxis(block)!= 0 || Input.GetAxis(shoot) != 0)
+			{
+				return true;
+			}
+		}
+	
+		return false;
 	}
 	
 	public bool IsBlockKeyActive()
 	{
 		if(isAiPlayer)
 		{
-			return ai.feuern;////////////////
+			return ai.GetBlock();////////////////
 		}
 		
 		else
 		{
-			if(Input.GetAxis(dash)!=0)
+			if(Input.GetAxis(block)!=0)
 			{
 				return true;
 			}
@@ -72,16 +93,16 @@ public class InputControl
 		}
 	}
 	
-	public bool IsFireKeyActive()
+	public bool IsFireKeyActive(bool att)
 	{
 		if(isAiPlayer)
 		{
-			return ai.feuern;////////////////
+			return ai.GetAttack(att);////////////////
 		}
 		
 		else
 		{
-			if(Input.GetAxis(shoot) =! 0)
+			if(Input.GetAxis(shoot) != 0 && att)
 			{
 				return true;
 			}

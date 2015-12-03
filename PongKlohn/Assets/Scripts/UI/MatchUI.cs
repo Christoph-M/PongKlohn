@@ -3,19 +3,13 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class MatchUI : UserInterface {
-
-	// Use this for initialization
 	void Start () {
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 	}
 	
-	private float timeLeft = 6.0f;
+	private Timer uiTimer = new Timer(6.0f);
 	void Update() {
-		if (timeLeft > 0) {
-			timeLeft -= Time.deltaTime;
-			
-			this.RoundStart(timeLeft);
-		}
+		this.RoundStart(uiTimer.UpdateTimer());
 	}
 
 	void LateUpdate() {
@@ -23,13 +17,20 @@ public class MatchUI : UserInterface {
 		canvas.transform.FindChild ("Player_2_Life").GetComponent<Text> ().text = "" + gameScript.player2.health;
 	}
 	
-	public void RoundEnd(int i){
-		canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + i + " Wins";
+	public void RoundEnd(int p){
+		canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins Round " + gameScript.gameRound;
 		canvas.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 		canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (false);
 		canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (false);
 		
-		timeLeft = 8.0f;
+		uiTimer.SetTimer(8.0f);
+	}
+
+	public void MatchEnd(int p){
+		canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins Match";
+		canvas.transform.FindChild ("Player_Win").gameObject.SetActive (true);
+		canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (false);
+		canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (false);
 	}
 
 	private void RoundStart(float t) {
@@ -60,7 +61,7 @@ public class MatchUI : UserInterface {
 			canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (true);
 			canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (true);
 
-			gameScript.EnablePlayers();
+			gameScript.EnablePlayers(true);
 
 			break;
 		}

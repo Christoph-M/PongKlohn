@@ -4,7 +4,7 @@ using System.Collections;
 using System;
 
 public class Game : MonoBehaviour {
-	[Header("Gameobject References")]
+	[Header("GameObject References")]
 	public Player player1;
 	public Player player2;
 	
@@ -80,8 +80,8 @@ public class Game : MonoBehaviour {
 	public float GetBallSpeed() { return ballSpeed; }
 	public void ResetBallSpeed() { ballSpeed = minBallSpeed; }
 
-	public void EnablePlayers() { player1.enabled = true; 
-								  player2.enabled = true; }
+	public void EnablePlayers(bool b) { player1.enabled = b; 
+								  		player2.enabled = b; }
 
 	public void Player1Scored() {
 		if (player2.health > 0) {
@@ -93,7 +93,7 @@ public class Game : MonoBehaviour {
 			
 			++player1Score;
 			
-			this.NewRound(p1);
+			this.EndRound(p1);
 		}
 	}
 
@@ -107,19 +107,30 @@ public class Game : MonoBehaviour {
 
 			++player2Score;
 
-			this.NewRound(p2);
+			this.EndRound(p2);
 		}
 	}
-	
-	public void NewRound(int i){
-		uiScript.GetComponent<MatchUI> ().RoundEnd (i);
-		
-		player1.enabled = false;
-		player2.enabled = false;
-		
-		player1.health = playerHealth;
-		player2.health = playerHealth;
-		
-		++gameRound;
+
+	public void EndRound(int p){
+		if (gameRound >= maxGameRounds) {
+			uiScript.GetComponent<MatchUI> ().MatchEnd (p);
+
+			this.EnablePlayers(false);
+
+			if (p == 1) {
+//				Application.LoadLevel(2);
+			} else {
+//				Application.LoadLevel(3);
+			}
+		} else {
+			uiScript.GetComponent<MatchUI> ().RoundEnd (p);
+			
+			player1.health = playerHealth;
+			player2.health = playerHealth;
+
+			this.EnablePlayers(false);
+			
+			++gameRound;
+		}
 	}
 }

@@ -57,9 +57,9 @@ public class Ball : MonoBehaviour {
 			} else if (other.name.Contains ("Wall")) {
 				this.Bounce (other.gameObject);
 			} else if (other.name == "Dash_Trigger") {
-//				other.GetComponentInParent<Player>().SetDashTrigger(true);
+				other.GetComponentInParent<Player>().SetDashTrigger(true);
 			} else if (other.name == "Miss_Trigger") {
-//				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
+				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
 			} else if (other.name == "Block_Trigger") {
 				this.Block (other.gameObject);
 			}
@@ -86,12 +86,14 @@ public class Ball : MonoBehaviour {
 		this.SetTurn (other.name);
 		
 		this.DestroyBall ();
+		gameScript.ResetBallSpeed();
 	}
 
 	private void Catch(GameObject other) {
 		this.SetTurn (other.transform.parent.name);
 		
 		this.DestroyBall ();
+		gameScript.ResetBallSpeed();
 	}
 
 	private void Bounce(GameObject other) {
@@ -126,9 +128,7 @@ public class Ball : MonoBehaviour {
 		
 		other.GetComponentInParent<Player>().Shoot(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
 
-		Object.Destroy(this.gameObject);
-		
-		gameScript.SetProjectileTransform (null);
+		this.DestroyBall ();
 		gameScript.BallSpeedUp ();
 	}
 
@@ -136,6 +136,5 @@ public class Ball : MonoBehaviour {
 		Object.Destroy (this.gameObject);
 		
 		gameScript.SetProjectileTransform (null);
-		gameScript.ResetBallSpeed();
 	}
 }

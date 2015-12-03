@@ -104,13 +104,20 @@ public class Player : MonoBehaviour {
 	private bool fireKeyPressed = false;
 	private bool isBlocking = false;
 	private bool onZuLangsamZumFangenDuMongDown = true;
-	private int action = 0;
+	private int action = 5;
 	private bool isInAction = false;
 	
 	void Update() 
 	{
-		if(zuLangsamZumFangenDuMong)
+		SetTrigger(action);
+		stunTimer.UpdateTimer();
+		fireTimer.UpdateTimer();
+		blockTimer.UpdateTimer();
+		catchTimer.UpdateTimer();
+		
+		if(zuLangsamZumFangenDuMong || controls==null)
 		{
+			Debug.Log("Get Stuned");
 			isStunned = true;
 			zuLangsamZumFangenDuMong = false;
 			stunTimer.SetTimer(2);
@@ -118,12 +125,15 @@ public class Player : MonoBehaviour {
 		
 		/////////////////INPUT
 		if(isStunned)
-		{
+		{	
+			Debug.Log("is stuned");
 			Debug.Log("Player is Stunned or Controls havend be initialice");
 			action = 4;
 			if(stunTimer.IsFinished())
 			{
+				Debug.Log("was stuned");
 				isStunned = false;
+				action = 0;
 			}
 		}
 		else//Wenn der Spieler nicht gerade gestunde ist
@@ -133,38 +143,45 @@ public class Player : MonoBehaviour {
 			
 			if(controls.IsActionKeyActive() || isInAction)
 			{
-				if(controls.IsFireKeyActive(turn)){timeLeft += Time.deltaTime;}////////////SHOOT
+				Debug.Log("is in action");
+				if(controls.IsFireKeyActive(true)){timeLeft += Time.deltaTime;}////////////SHOOT
 				else{timeLeft = 0f;}
-				if (controls.IsFireKeyActive(turn) && !fireKeyPressed && !ball)
-				{
+				if (controls.IsFireKeyActive(ICanShoot()) && !fireKeyPressed)
+				{	
+					Debug.Log("Shoot Phase 1");
 					isInAction = true;
 					action = 3;
 					fireTimer.SetTimer(0.7f);
 					fireKeyPressed = true;
 				}
-				if (fireKeyPressed && !ball && fireTimer.IsFinished() && turn) 
+				if (fireKeyPressed && fireTimer.IsFinished()) 
 				{
+					Debug.Log("Shoot Phase 2");
 					this.Shoot(direction);
 					fireKeyPressed = false;
-					waitAfterSoot.SetTimer(1);
+					waitAfterSoot.SetTimer(0.5f);
 				}
 				
 				if (controls.IsBlockKeyActive())/////////////BLOCK
 				{
+					Debug.Log("BLOCK");
 					blockTimer.SetTimer(0.5f);
-					if(isBlocking == false)
+					if(!isBlocking)
 					{
+						Debug.Log("Block Phase 1");
 						isBlocking = true;
 						action = 1;
 					}
 					else
 					{
+						Debug.Log("Block Phase 2");
 						action = 2;
 					}
 				}
 				
 				if(blockTimer.IsFinished()== false && waitAfterSoot.IsFinished())
 				{
+					Debug.Log("action has finished");
 					isBlocking = false;
 					isInAction = false;
 				}
@@ -172,7 +189,7 @@ public class Player : MonoBehaviour {
 			
 			else
 			{
-				canMovement = true;
+				Debug.Log("no action");
 				action = 0;
 				animator.SetBool ("Block", false);
 				animator.SetBool ("Fire", false);
@@ -188,18 +205,12 @@ public class Player : MonoBehaviour {
 			myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
 		}
 		
-		if (blockTimer.IsFinished())// Bewegt den spieler
+		if (canMovement)// Bewegt den spieler
 		{
 			animator.SetFloat("xAxis", direction.x * motionInverter);
 			animator.SetFloat("yAxis", direction.y * motionInverter);
 			myTransform.AddForce (direction * speed);
 		}
-	
-		SetTrigger(action);
-		stunTimer.UpdateTimer();
-		fireTimer.UpdateTimer();
-		blockTimer.UpdateTimer();
-		catchTimer.UpdateTimer();
 	}
 	
 	int oldState =0;
@@ -218,7 +229,7 @@ public class Player : MonoBehaviour {
 					canMovement = true;
 					animator.SetBool ("Block", false);
 					animator.SetBool ("Fire", false);
-					animator.SetBool ("stun", false);
+					animator.SetBool ("Stun", false);
 					oldState = newState;
 					break;
 				
@@ -231,7 +242,7 @@ public class Player : MonoBehaviour {
 					canMovement = false;
 					animator.SetBool ("Block", true);
 					animator.SetBool ("Fire", false);
-					animator.SetBool ("stun", false);
+					animator.SetBool ("Stun", false);
 					oldState = newState;
 					break;
 				
@@ -244,7 +255,7 @@ public class Player : MonoBehaviour {
 					canMovement = false;
 					animator.SetBool ("Block", true);
 					animator.SetBool ("Fire", false);
-					animator.SetBool ("stun", false);
+					animator.SetBool ("Stun", false);
 					oldState = newState;
 					break;
 				
@@ -257,7 +268,7 @@ public class Player : MonoBehaviour {
 					canMovement = true;
 					animator.SetBool ("Block", false);
 					animator.SetBool ("Fire", true);
-					animator.SetBool ("stun", false);
+					animator.SetBool ("Stun", false);
 					oldState = newState;
 					break;
 				
@@ -269,8 +280,21 @@ public class Player : MonoBehaviour {
 
 					canMovement = false;
 					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", true);
-					animator.SetBool ("stun", false);
+					animator.SetBool ("Fire", false);
+					animator.SetBool ("Stun", true);
+					oldState = newState;
+					break;
+				
+				case 5://start
+					catchTrigger.SetActive(true);
+					missTrigger.SetActive(false);/////////
+					blockTrigger.SetActive(false);
+					dashTrigger.SetActive(false);
+
+					canMovement = true;
+					animator.SetBool ("Block", false);
+					animator.SetBool ("Fire", false);
+					animator.SetBool ("Stun", false);
 					oldState = newState;
 					break;
 			}
@@ -315,6 +339,18 @@ public class Player : MonoBehaviour {
 	public Vector3 GetRotation()
 	{
 		return new Vector3(myTransform.gameObject.transform.rotation.x, myTransform.gameObject.transform.rotation.y, myTransform.gameObject.transform.rotation.z);
+	}
+	
+	private bool ICanShoot()
+	{
+		if(ball !=null && turn)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	private void Shoot(Vector2 direction)

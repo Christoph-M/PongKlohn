@@ -292,8 +292,9 @@ MonoBehaviour:
   maxGameRounds: 3
   playerSpeed: 15
   dashSpeed: 5
-  playerHealth: 10
+  playerHealth: 100
   playerDamage: 10
+  wallDamage: 1
   minBallSpeed: 10
   maxBallSpeed: 30
   ballSpeedUpStep: 1

@@ -56,12 +56,12 @@ public class Ball : MonoBehaviour {
 				this.Catch (other.gameObject);
 			} else if (other.name.Contains ("Wall")) {
 				this.Bounce (other.gameObject);
-			} else if (other.name == "Dash_Trigger") {
-				other.GetComponentInParent<Player>().SetDashTrigger(true);
 			} else if (other.name == "Miss_Trigger") {
 				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
 			} else if (other.name == "Block_Trigger") {
 				this.Block (other.gameObject);
+			} else if (other.name == "Dash_Trigger") {
+				other.GetComponentInParent<Player>().SetDashTrigger(true);
 			}
 		}
 		
@@ -124,7 +124,7 @@ public class Ball : MonoBehaviour {
 
 		this.gameObject.SetActive (false);
 		
-		other.GetComponentInParent<Player>().Shoot(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
+		other.GetComponentInParent<Player>().Instance(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
 
 		Object.Destroy(this.gameObject);
 		

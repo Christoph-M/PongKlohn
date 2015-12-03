@@ -102,10 +102,16 @@ public class Player : MonoBehaviour {
 	
 	private bool isStunned = false;
 	private bool fireKeyPressed = false;
-	private bool isBlocking = false;
 	private bool onZuLangsamZumFangenDuMongDown = true;
 	private int action = 5;
 	private bool isInAction = false;
+	private bool inAction = true;
+	private bool hasShoot = false;
+	private bool isBlocking = false;
+	private int blockProgression = 0;
+	private bool isShooting = false;
+	private int shootProgression = 0;
+	private bool isDashActive = false;
 	
 	void Update() 
 	{
@@ -114,21 +120,22 @@ public class Player : MonoBehaviour {
 		fireTimer.UpdateTimer();
 		blockTimer.UpdateTimer();
 		catchTimer.UpdateTimer();
+		waitAfterSoot.UpdateTimer();
 		
 		if(zuLangsamZumFangenDuMong || controls==null)
 		{
 			Debug.Log("Get Stuned");
 			isStunned = true;
+			action = 4;
 			zuLangsamZumFangenDuMong = false;
 			stunTimer.SetTimer(2);
 		}
-		
-		/////////////////INPUT
+
 		if(isStunned)
 		{	
 			Debug.Log("is stuned");
 			Debug.Log("Player is Stunned or Controls havend be initialice");
-			action = 4;
+			
 			if(stunTimer.IsFinished())
 			{
 				Debug.Log("was stuned");
@@ -140,69 +147,70 @@ public class Player : MonoBehaviour {
 		{
 			direction = controls.UpdateMovement();//zuweisung der Inputachsen
 			directionRaw = controls.UpdateMovement();
-			
-			if(controls.IsActionKeyActive() || isInAction)
+			if(direction == Vector2.zero){isDashActive = false;}
+	
+			if(controls.IsFireKeyActive(ICanShoot()) && !isBlocking)//fire input
 			{
-				Debug.Log("is in action");
-				if(controls.IsFireKeyActive(true)){timeLeft += Time.deltaTime;}////////////SHOOT
-				else{timeLeft = 0f;}
-				if (controls.IsFireKeyActive(ICanShoot()) && !fireKeyPressed)
-				{	
-					Debug.Log("Shoot Phase 1");
-					isInAction = true;
+				isShooting = true;
+			}
+			if(controls.IsBlockKeyActive() && !isShooting)//Block input
+			{
+				isBlocking = true;
+			}
+			
+			if(isShooting)/////////Action Shoot//////////////////////
+			{		
+				if(shootProgression == 2 && waitAfterSoot.IsFinished())
+				{
+					shootProgression = 0;
+					action = 0;
+					isShooting = false;
+				}
+				else if(shootProgression == 1 && fireTimer.IsFinished())
+				{
+					if(Shoot(direction,false))
+					{
+						waitAfterSoot.SetTimer(0.3f);
+						shootProgression = 2;
+					}
+				}
+				else if(shootProgression == 0)
+				{
 					action = 3;
-					fireTimer.SetTimer(0.7f);
-					fireKeyPressed = true;
-				}
-				if (fireKeyPressed && fireTimer.IsFinished()) 
+					fireTimer.SetTimer(0.5f);
+					shootProgression = 1;
+				}		
+			}
+			
+			if(isBlocking)///////////////////////Bock Action//////////////////////////
+			{	
+				if(blockProgression == 2 && blockTimer.IsFinished())
 				{
-					Debug.Log("Shoot Phase 2");
-					this.Shoot(direction);
-					fireKeyPressed = false;
-					waitAfterSoot.SetTimer(0.5f);
-				}
-				
-				if (controls.IsBlockKeyActive())/////////////BLOCK
-				{
-					Debug.Log("BLOCK");
-					blockTimer.SetTimer(0.5f);
-					if(!isBlocking)
-					{
-						Debug.Log("Block Phase 1");
-						isBlocking = true;
-						action = 1;
-					}
-					else
-					{
-						Debug.Log("Block Phase 2");
-						action = 2;
-					}
-				}
-				
-				if(blockTimer.IsFinished()== false && waitAfterSoot.IsFinished())
-				{
-					Debug.Log("action has finished");
+					action = 0;
+					blockProgression = 0;
 					isBlocking = false;
-					isInAction = false;
+				}
+				else if(blockProgression == 1)
+				{
+					if(!controls.IsBlockKeyActive()){blockProgression = 2;}
+					blockTimer.SetTimer(1);
+					action = 2;
+				}
+				else if(blockProgression == 0)
+				{
+					action = 1;
+					blockProgression =1;
 				}
 			}
-			
-			else
-			{
-				Debug.Log("no action");
-				action = 0;
-				animator.SetBool ("Block", false);
-				animator.SetBool ("Fire", false);
-			}
-			
-			//////////////////////////////////////////////////Movements
 		}
 		
-		if(controls.IsBlockKeyActive() && dashHasBeenTriggert)
+		if(isBlocking && dashHasBeenTriggert && !isDashActive)
 		{
+			isDashActive = true;
 			animator.SetFloat("xAxis", direction.x * motionInverter);
 			animator.SetFloat("yAxis", direction.y * motionInverter);
 			myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
+			dashHasBeenTriggert = false;
 		}
 		
 		if (canMovement)// Bewegt den spieler
@@ -321,8 +329,9 @@ public class Player : MonoBehaviour {
 		return turn = turnt;
 	}
 
-	public GameObject Shoot(GameObject ball, Vector3 position, Quaternion rotation)
+	public GameObject Instance(GameObject ball, Vector3 position, Quaternion rotation)
 	{
+		Debug.Log("Insnciere ball");
 		return Instantiate(ball, position, rotation) as GameObject;
 	}
 	
@@ -343,7 +352,7 @@ public class Player : MonoBehaviour {
 	
 	private bool ICanShoot()
 	{
-		if(ball !=null && turn)
+		if(ball == null && turn)
 		{
 			return true;
 		}
@@ -353,31 +362,47 @@ public class Player : MonoBehaviour {
 		}
 	}
 	
-	private void Shoot(Vector2 direction)
+	private bool Shoot(Vector2 direction,bool type)
 	{
-		if(controls.IsFireKeyActive(turn) && fireTimer.IsFinished() && !ball)//Shoot
-		{
-			//fireTimer.ResetTimer();
 
-			
-			if(timeLeft>=0.9)
+		if(type)
+		{//speschel schuss
+			if(transform.position.y>3)//Spezial oban
 			{
-				if(transform.position.y>3){ball = Shoot(balls[5], ballSpohorn.position, this.transform.rotation);}//Spezial oban
-				else if(transform.position.y<-3){ball = Shoot(balls[4], ballSpohorn.position, this.transform.rotation);}//Special unten
-				else{ball = Shoot(balls[3], ballSpohorn.position, this.transform.rotation);}//speschel mitte
-				//speschel schuss
+				ball = Instance(balls[5], ballSpohorn.position, this.transform.rotation);
+				if(ball!=null){return true;}	
 			}
-			else
+			else if(transform.position.y<-3)//Special unten
 			{
-				//normal schuss
-				if (direction.y > 0f) {//oben schiessen
-					ball = Shoot (balls [1], ballSpohorn.position, this.transform.rotation);
-				} else if (direction.y < 0f) {//unten schiessen
-					ball = Shoot (balls [2], ballSpohorn.position, this.transform.rotation);
-				} else if (direction.y == 0f) {//normaler schuss
-					ball = Shoot (balls [0], ballSpohorn.position, this.transform.rotation);
-				}
+				ball = Instance(balls[4], ballSpohorn.position, this.transform.rotation);
+				if(ball!=null){return true;}
+			}
+			else//speschel mitte
+			{
+				ball = Instance(balls[3], ballSpohorn.position, this.transform.rotation);
+				if(ball!=null){return true;}
+			}	
+		}
+		else
+		{
+			//normal schuss
+			if (direction.y > 0f) //oben schiessen
+			{
+				ball = Instance(balls [1], ballSpohorn.position, this.transform.rotation);
+				if(ball!=null){return true;}
+			} 
+			else if (direction.y < 0f) //unten schiessen
+			{
+				ball = Instance (balls [2], ballSpohorn.position, this.transform.rotation);
+				if(ball!=null){return true;}
+			} 
+			else if (direction.y == 0f) //normaler schuss
+			{
+				ball = Instance(balls [0], ballSpohorn.position, this.transform.rotation);
+				if(ball!=null){return true;}
 			}
 		}
+		
+		return false;
 	}
 }

@@ -56,11 +56,11 @@ public class InputControl
 			return new Vector2(Input.GetAxis(xAxis),Input.GetAxis(yAxis));
 		}
 	}
-	public bool IsActionKeyActive()
+	public bool IsActionKeyActive(bool canShoot)
 	{
 		if(isAiPlayer)
 		{
-			if(!ai.GetBlock() || !ai.GetAttack(true))
+			if(!ai.GetBlock() || !ai.GetAttack(canShoot))
 			{
 				return true;
 			}
@@ -97,11 +97,13 @@ public class InputControl
 	{
 		if(isAiPlayer)
 		{
+			Debug.Log("AI Shoot:"+ att);
 			return ai.GetAttack(att);////////////////
 		}
 		
 		else
 		{
+			Debug.Log("player Shoot:"+ att);
 			if(Input.GetAxis(shoot) != 0 && att)
 			{
 				return true;

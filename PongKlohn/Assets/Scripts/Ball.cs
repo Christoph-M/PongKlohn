@@ -57,9 +57,9 @@ public class Ball : MonoBehaviour {
 			} else if (other.name.Contains ("Wall")) {
 				this.Bounce (other.gameObject);
 			} else if (other.name == "Dash_Trigger") {
-//				other.GetComponentInParent<Player>().SetDashTrigger(true);
+				other.GetComponentInParent<Player>().SetDashTrigger(true);
 			} else if (other.name == "Miss_Trigger") {
-//				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
+				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
 			} else if (other.name == "Block_Trigger") {
 				this.Block (other.gameObject);
 			}

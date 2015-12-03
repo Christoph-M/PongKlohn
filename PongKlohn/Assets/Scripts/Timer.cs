@@ -3,31 +3,33 @@ using System.Collections;
 
 public class Timer
 {	
-	float timer =0f;
 	float time = 0f;
 	bool status = false;
-	
-	public void UpdateTimer() 
+	public Timer(float t)
 	{
-		if(timer<time)
+		time = t;
+	}
+	public Timer()
+	{
+		
+	}
+	
+	public float UpdateTimer() 
+	{
+		if(0f<time)
 		{
-			timer+=Time.deltaTime;
+			time-=Time.deltaTime;
 			status = false;
 		}
 		else
 		{
 			status = true;
 		}
-	}
-	
-	public void ResetTimer()
-	{
-		timer = 0f;
+		return time;
 	}
 	
 	public void SetTimer(float t)
 	{
-		ResetTimer();
 		time = t;
 	}
 	

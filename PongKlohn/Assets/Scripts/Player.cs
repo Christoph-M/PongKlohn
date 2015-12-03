@@ -11,8 +11,8 @@ public class Player : MonoBehaviour {
 	public GameObject blockCollider;
 	public GameObject dashCollider;
 	
-	public int helth = 100;
-	public int power = 0;
+	public int health { get; set; }
+	public int power { get; set; }
 	
 	public float speed { get; set; }
 	public float dashSpeed { get; set; }

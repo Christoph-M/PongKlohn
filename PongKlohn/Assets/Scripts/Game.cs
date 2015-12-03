@@ -4,32 +4,34 @@ using System.Collections;
 using System;
 
 public class Game : MonoBehaviour {
+	[Header("Gameobject References")]
 	public Player player1;
 	public Player player2;
 	public GameObject canvas;
-
+	
+	[Header("Game")]
+	public int maxGameRounds = 3;
 	[Header("Player")]
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
+	public int playerHealth = 100;
+	public int playerDamage = 10;
 	[Header("Ball")]
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
 	public float ballSpeedUpStep = 5.0f;
-	[Header("Game Rounds")]
-	public int maxGameRounds = 3;
-	public int playerLifeDecStep = 10;
 
 
 	private Transform projectile;
 	
 	private float ballSpeed;
 	private int gameRound = 1;
-	private int player1Score = 100;
-	private int player2Score = 100;
 
 	void Start() {
 		player1.SetPlayer("Player1");
 		player2.SetPlayer("ai");
+		player1.health = playerHealth;
+		player2.health = playerHealth;
 
 		ballSpeed = minBallSpeed;
 
@@ -84,8 +86,8 @@ public class Game : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		canvas.transform.FindChild ("Player_1_Life").GetComponent<Text> ().text = "" + player1Score;
-		canvas.transform.FindChild ("Player_2_Life").GetComponent<Text> ().text = "" + player2Score;
+		canvas.transform.FindChild ("Player_1_Life").GetComponent<Text> ().text = "" + player1.health;
+		canvas.transform.FindChild ("Player_2_Life").GetComponent<Text> ().text = "" + player2.health;
 	}
 	
 	public void SetTurn(bool turn) {
@@ -111,14 +113,14 @@ public class Game : MonoBehaviour {
 	public void ResetBallSpeed() { ballSpeed = minBallSpeed; }
 
 	public void Player1Scored() {
-		if (player1Score > 0) {
-			player1Score -= playerLifeDecStep;
+		if (player2.health > 0) {
+			player2.health -= playerDamage;
 		}
 		
-		if (player1Score <= 0) {
-			player1Score = 0;
+		if (player2.health <= 0) {
+			player2.health = 0;
 			
-			canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player 2 Wins";
+			canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player 1 Wins";
 			canvas.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 			
 			player1.enabled = false;
@@ -129,14 +131,14 @@ public class Game : MonoBehaviour {
 	}
 
 	public void Player2Scored() {
-		if (player2Score > 0) {
-			player2Score -= playerLifeDecStep;
+		if (player1.health > 0) {
+			player1.health -= playerDamage;
 		}
 		
-		if (player2Score <= 0) {
-			player2Score = 0;
+		if (player1.health <= 0) {
+			player1.health = 0;
 			
-			canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player 1 Wins";
+			canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player 2 Wins";
 			canvas.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 			
 			player1.enabled = false;

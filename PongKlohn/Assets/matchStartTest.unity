@@ -289,13 +289,14 @@ MonoBehaviour:
   player1: {fileID: 849663295}
   player2: {fileID: 1228017306}
   canvas: {fileID: 2071084310}
+  maxGameRounds: 3
   playerSpeed: 15
   dashSpeed: 5
+  playerHealth: 100
+  playerDamage: 10
   minBallSpeed: 10
   maxBallSpeed: 30
   ballSpeedUpStep: 1
-  maxGameRounds: 3
-  playerLifeDecStep: 10
 --- !u!4 &227055173
 Transform:
   m_ObjectHideFlags: 0
@@ -1378,7 +1379,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1396,7 +1397,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 86149566}
   m_PlaneDistance: 5
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0

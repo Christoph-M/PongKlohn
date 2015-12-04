@@ -2,17 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Player : MonoBehaviour {
-	
+public class PlayerV2 : MonoBehaviour 
+{	
 	public Transform ballSpohorn;
 	public List<GameObject> balls;
-
-	public GameObject catchCollider;
-	public GameObject blockCollider;
-	public GameObject dashCollider;
 	
 	public int health { get; set; }
 	public int power { get; set; }
+	public int powerNeeded4Dash = 10;
 	
 	public float speed { get; set; }
 	public float dashSpeed { get; set; }
@@ -27,6 +24,7 @@ public class Player : MonoBehaviour {
 	private Rigidbody2D myTransform;
 	private Animator animator;
 	
+	private Game gameScript;
 	private GameObject ball;
 
 	private GameObject catchTrigger;
@@ -48,7 +46,7 @@ public class Player : MonoBehaviour {
 		fireTimer = new Timer();
 		stunTimer = new Timer();
 		waitAfterSoot = new Timer();
-		
+		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 		animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
 		
@@ -204,13 +202,14 @@ public class Player : MonoBehaviour {
 			}
 		}
 		
-		if(isBlocking && dashHasBeenTriggert && !isDashActive)
+		if(isBlocking && !isDashActive && power>=powerNeeded4Dash)
 		{
+			power-=powerNeeded4Dash;
 			isDashActive = true;
 			animator.SetFloat("xAxis", direction.x * motionInverter);
 			animator.SetFloat("yAxis", direction.y * motionInverter);
 			myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
-			dashHasBeenTriggert = false;
+			//dashHasBeenTriggert = false;
 		}
 		
 		if (canMovement)// Bewegt den spieler
@@ -258,7 +257,7 @@ public class Player : MonoBehaviour {
 					catchTrigger.SetActive(false);
 					missTrigger.SetActive(false);
 					blockTrigger.SetActive(true);///////////////
-					dashTrigger.SetActive(true);//////////////
+					dashTrigger.SetActive(false);//////////////
 
 					canMovement = false;
 					animator.SetBool ("Block", true);
@@ -319,7 +318,7 @@ public class Player : MonoBehaviour {
 		zuLangsamZumFangenDuMong = zLZFDM;
 	}
 	
-	public void SetDashTrigger(bool dt)
+	public void SetdashTrigger(bool dt)
 	{
 		dashHasBeenTriggert = dt;
 	}
@@ -352,7 +351,7 @@ public class Player : MonoBehaviour {
 	
 	private bool ICanShoot()
 	{
-		if(ball == null && turn)
+		if(!gameScript.GetProjectileTransform() && turn)
 		{
 			return true;
 		}
@@ -369,17 +368,17 @@ public class Player : MonoBehaviour {
 		{//speschel schuss
 			if(transform.position.y>3)//Spezial oban
 			{
-				ball = Instance(balls[5], ballSpohorn.position, this.transform.rotation);
+				Instance(balls[5], ballSpohorn.position, this.transform.rotation);
 				if(ball!=null){return true;}	
 			}
 			else if(transform.position.y<-3)//Special unten
 			{
-				ball = Instance(balls[4], ballSpohorn.position, this.transform.rotation);
+				Instance(balls[4], ballSpohorn.position, this.transform.rotation);
 				if(ball!=null){return true;}
 			}
 			else//speschel mitte
 			{
-				ball = Instance(balls[3], ballSpohorn.position, this.transform.rotation);
+				Instance(balls[3], ballSpohorn.position, this.transform.rotation);
 				if(ball!=null){return true;}
 			}	
 		}
@@ -388,17 +387,17 @@ public class Player : MonoBehaviour {
 			//normal schuss
 			if (direction.y > 0f) //oben schiessen
 			{
-				ball = Instance(balls [1], ballSpohorn.position, this.transform.rotation);
+				Instance(balls [1], ballSpohorn.position, this.transform.rotation);
 				if(ball!=null){return true;}
 			} 
 			else if (direction.y < 0f) //unten schiessen
 			{
-				ball = Instance (balls [2], ballSpohorn.position, this.transform.rotation);
+				Instance (balls [2], ballSpohorn.position, this.transform.rotation);
 				if(ball!=null){return true;}
 			} 
 			else if (direction.y == 0f) //normaler schuss
 			{
-				ball = Instance(balls [0], ballSpohorn.position, this.transform.rotation);
+				Instance(balls [0], ballSpohorn.position, this.transform.rotation);
 				if(ball!=null){return true;}
 			}
 		}

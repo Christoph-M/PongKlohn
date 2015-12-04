@@ -46,33 +46,25 @@ public class Ball : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other){
 		this.Trigger (other.gameObject);
 	}
-	
-	void OnTriggerStay2D(Collider2D other) {
-		this.Trigger (other.gameObject);
-	}
 
 	void OnTriggerExit2D(Collider2D other){
 		triggered = false;
 	}
 
 	private void Trigger(GameObject other){
-		if (!triggered) {
-			if (other.name.Contains ("Goal")) {
-				this.Goal (other.gameObject);
-			} else if (other.name == "Catch_Trigger") {
-				this.Catch (other.gameObject);
-			} else if (other.name.Contains ("Wall")) {
-				this.Bounce (other.gameObject);
-			} else if (other.name == "Miss_Trigger") {
-				other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
-			} else if (other.name == "Block_Trigger") {
-				this.Block (other.gameObject);
-			} else if (other.name == "Dash_Trigger") {
-				other.GetComponentInParent<Player>().SetDashTrigger(true);
-			}
+		if (other.name.Contains ("Goal")) {
+			this.Goal (other.gameObject);
+		} else if (other.name == "Catch_Trigger") {
+			this.Catch (other.gameObject);
+		} else if (other.name.Contains ("Wall")) {
+			this.Bounce (other.gameObject);
+		} else if (other.name == "Miss_Trigger") {
+			other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
+		} else if (other.name == "Block_Trigger") {
+			this.Block (other.gameObject);
+		} else if (other.name == "Dash_Trigger") {
+			other.GetComponentInParent<Player>().SetDashTrigger(true);
 		}
-		
-		triggered = true;
 	}
 
 	private void SetTurn(string name) {
@@ -137,6 +129,14 @@ public class Ball : MonoBehaviour {
 	private void Block(GameObject other) {
 		Debug.Log ("Blocked. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
+
+		if (other.transform.parent.name == "Player_01" && !triggered) {
+			gameScript.Player1AddEnergy();
+		} else {
+			gameScript.Player2AddEnergy();
+		}
+		
+		triggered = true;
 
 		Vector2 playerDirection = other.transform.parent.position - this.transform.position;
 		

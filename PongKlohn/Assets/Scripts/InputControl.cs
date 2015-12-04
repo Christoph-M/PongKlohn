@@ -56,6 +56,23 @@ public class InputControl
 			return new Vector2(Input.GetAxis(xAxis),Input.GetAxis(yAxis));
 		}
 	}
+	
+	public Vector2 UpdateMovementRaw () 
+	{
+		//Debug.Log("jea");
+		if(isAiPlayer)
+		{
+			return ai.GetMovementInput();///////////////////////
+		}
+		
+		else
+		{
+			//Debug.Log("YippiJea");
+			return new Vector2(Input.GetAxisRaw(xAxis),Input.GetAxisRaw(yAxis));
+		}
+	}
+	
+	
 	public bool IsActionKeyActive(bool canShoot)
 	{
 		if(isAiPlayer)
@@ -103,7 +120,7 @@ public class InputControl
 		
 		else
 		{
-			Debug.Log("player Shoot:"+ att);
+			//Debug.Log("player Shoot:"+ att);
 			if(Input.GetAxis(shoot) != 0 && att)
 			{
 				return true;

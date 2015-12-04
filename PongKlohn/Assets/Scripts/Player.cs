@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 	public int health { get; set; }
 	public int power { get; set; }
 	public int powerNeeded4Dash = 10;
+	public float blockTime = 0.2f;
 	
 	public float speed { get; set; }
 	public float dashSpeed { get; set; }
@@ -32,7 +33,6 @@ public class Player : MonoBehaviour
 	private GameObject dashTrigger;
 	private GameObject missTrigger;
 	
-
 	private InputControl controls;
 	
 	private bool turn;
@@ -111,6 +111,8 @@ public class Player : MonoBehaviour
 	private int shootProgression = 0;
 	private bool isDashActive = false;
 	
+	private bool inputAxisDown = false;
+	
 	void Update() 
 	{
 		SetTrigger(action);
@@ -143,8 +145,10 @@ public class Player : MonoBehaviour
 		}
 		else//Wenn der Spieler nicht gerade gestunde ist
 		{
+			if(direction == Vector2.zero && controls.UpdateMovement() != Vector2.zero){inputAxisDown = true;}
 			direction = controls.UpdateMovement();//zuweisung der Inputachsen
-			directionRaw = controls.UpdateMovement();
+			directionRaw = controls.UpdateMovementRaw();
+			
 			if(direction == Vector2.zero){isDashActive = false;}
 	
 			if(controls.IsFireKeyActive(ICanShoot()) && !isBlocking)//fire input
@@ -189,7 +193,7 @@ public class Player : MonoBehaviour
 				else if(blockProgression == 1)
 				{
 					if(!controls.IsBlockKeyActive()){blockProgression = 2;}
-					blockTimer.SetTimer(1);
+					blockTimer.SetTimer(blockTime);
 					action = 2;
 				}
 				else if(blockProgression == 0)
@@ -200,15 +204,22 @@ public class Player : MonoBehaviour
 			}
 		}
 		
-		if(isBlocking && !isDashActive && power>=powerNeeded4Dash)
+		if(isBlocking && inputAxisDown && power>=powerNeeded4Dash)
 		{
+			Debug.Log("DASH!!!!!!!!!!!!!");
+			inputAxisDown = false;
 			power-=powerNeeded4Dash;
 			isDashActive = true;
 			animator.SetFloat("xAxis", direction.x * motionInverter);
 			animator.SetFloat("yAxis", direction.y * motionInverter);
 			myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
 			//dashHasBeenTriggert = false;
+		} 
+		else
+		{
+			inputAxisDown =	false;
 		}
+		
 		
 		if (canMovement)// Bewegt den spieler
 		{
@@ -216,7 +227,7 @@ public class Player : MonoBehaviour
 			animator.SetFloat("yAxis", direction.y * motionInverter);
 			myTransform.AddForce (direction * speed);
 		}
-	}
+	} 
 	
 	int oldState =0;
 	public void SetTrigger(int newState)
@@ -328,7 +339,7 @@ public class Player : MonoBehaviour
 
 	public GameObject Instance(GameObject ball, Vector3 position, Quaternion rotation)
 	{
-		Debug.Log("Insnciere ball");
+		//Debug.Log("Insnciere ball");
 		return Instantiate(ball, position, rotation) as GameObject;
 	}
 	

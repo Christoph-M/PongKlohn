@@ -111,6 +111,7 @@ ModelImporter:
     7400012: Left
     7400014: Block
     7400016: Shoot
+    7400018: Stuned
     9500000: //RootNode
     13700000: Plane
     13700002: Testbuddy
@@ -1090,6 +1091,124 @@ ModelImporter:
       takeName: Default Take
       firstFrame: 35
       lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: metarig
+        weight: 1
+      - path: metarig/HandleTorso
+        weight: 1
+      - path: metarig/HandleTorso/HandleCest
+        weight: 0
+      - path: metarig/HandleTorso/hips
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/neck
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/neck/head
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_01_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_01_L/f_index_01_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_01_L/thumb_01_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_01_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_01_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_01_R/f_index_01_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_01_R/thumb_01_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_01_R/thumb_01_R/thumb_02_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_L/shin_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_L/shin_L/heel_L
+        weight: 0
+      - path: metarig/HandleTorso/hips/thigh_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_R/shin_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: metarig/HandleTorso/hips/thigh_R/shin_R/heel_R
+        weight: 0
+      - path: metarig/Knie_L
+        weight: 0
+      - path: metarig/Knie_R
+        weight: 0
+      - path: metarig/PolTarget_L
+        weight: 0
+      - path: metarig/PolTarget_R
+        weight: 0
+      - path: metarig/Root
+        weight: 0
+      - path: metarig/Root/ArmHandle_L
+        weight: 0
+      - path: metarig/Root/ArmHandle_R
+        weight: 0
+      - path: metarig/Root/FootHandle_L
+        weight: 0
+      - path: metarig/Root/FootHandle_R
+        weight: 0
+      - path: Testbuddy
+        weight: 0
+      - path: Testbuddy_001
+        weight: 0
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Stuned
+      takeName: Default Take
+      firstFrame: 41
+      lastFrame: 59
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

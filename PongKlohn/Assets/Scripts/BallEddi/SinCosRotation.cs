@@ -14,11 +14,10 @@ public class SinCosRotation : MonoBehaviour {
 	public bool z_rotation = false;
 	
 	public float offset = 0;
-	float deltatime;
-	float counter = 0;
 
-	Vector3 movement = Vector3.zero;
-	Vector3 ache = Vector3.zero;
+
+	private float deltatime;
+	private float counter = 0;
 	
 	void Start()
 	{

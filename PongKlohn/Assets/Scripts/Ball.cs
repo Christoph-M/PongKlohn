@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour {
 	public bool sinCosRotation = false;
 
 
-	private Game goal;
+	private Game gameScript;
 	private Move moveScript;
 	private SinCosMovement sinCosMovementScript;
 	private LinearRotation linearRotationScript;
@@ -20,11 +20,15 @@ public class Ball : MonoBehaviour {
 	private bool triggered = false;
 	
 	void Start(){
-		goal = GameObject.FindObjectOfType (typeof(Game)) as Game;
+		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
 		sinCosMovementScript = GameObject.FindObjectOfType (typeof(SinCosMovement)) as SinCosMovement;
 		linearRotationScript = GameObject.FindObjectOfType (typeof(LinearRotation)) as LinearRotation;
 		sinCosRotationScript = GameObject.FindObjectOfType (typeof(SinCosRotation)) as SinCosRotation;
+
+		this.name = "Projectile";
+
+		gameScript.SetProjectileTransform (this.transform);
 	}
 
 	void FixedUpdate() {
@@ -34,11 +38,12 @@ public class Ball : MonoBehaviour {
 		if (sinCosRotation) sinCosRotationScript.Update_ ();
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
-		this.Trigger (other.gameObject);
+	float timeElapsed = 0.0f;
+	void LateUpdate() {
+		timeElapsed += Time.deltaTime;
 	}
-	
-	void OnTriggerStay2D(Collider2D other) {
+
+	void OnTriggerEnter2D(Collider2D other){
 		this.Trigger (other.gameObject);
 	}
 
@@ -47,57 +52,92 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void Trigger(GameObject other){
-		if (!triggered) {
-			if (other.name.Contains ("Goal") || other.name == "Catch_Trigger") {
-				this.Catch (other.gameObject);
-			} else if (other.name.Contains ("Wall")) {
-				this.bounce (other.gameObject);
-			} else if (other.name == "Block_Trigger") {
-				this.block (other.gameObject);
-			}
+		if (other.name.Contains ("Goal")) {
+			this.Goal (other.gameObject);
+		} else if (other.name == "Catch_Trigger") {
+			this.Catch (other.gameObject);
+		} else if (other.name.Contains ("Wall")) {
+			this.Bounce (other.gameObject);
+		} else if (other.name == "Miss_Trigger") {
+			other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
+		} else if (other.name == "Block_Trigger") {
+			this.Block (other.gameObject);
+		} else if (other.name == "Dash_Trigger") {
+			other.GetComponentInParent<Player>().SetDashTrigger(true);
 		}
-		
-		triggered = true;
 	}
 
 	private void SetTurn(string name) {
 		if (name == "Goal_Red" || name == "Player_01") {
-			goal.setTurn (true);
+			gameScript.SetTurn (false);
 		} else {
-			goal.setTurn (false);
+			gameScript.SetTurn (true);
 		}
 	}
 
-	private void Catch(GameObject other) {
+	private void Goal(GameObject other) {
+		Debug.Log ("Goal. Time: " + timeElapsed);
+		timeElapsed = 0.0f;
+
+		if (other.name == "Goal_Red") {
+			gameScript.Player2Scored (false);
+		} else {
+			gameScript.Player1Scored (false);
+		}
+
 		this.SetTurn (other.name);
 		
-		Object.Destroy (this.gameObject);
+		this.DestroyBall ();
+		gameScript.ResetBallSpeed();
 	}
 
-	private void bounce(GameObject other) {
+	private void Catch(GameObject other) {
+		Debug.Log ("Catched. Time: " + timeElapsed);
+		timeElapsed = 0.0f;
+
+		this.SetTurn (other.transform.parent.name);
+		
+		this.DestroyBall ();
+		gameScript.ResetBallSpeed();
+	}
+
+	private void Bounce(GameObject other) {
+		Debug.Log ("Bounced. Time: " + timeElapsed);
+		timeElapsed = 0.0f;
+
+		if (this.tag == "RedBall") {
+			gameScript.Player1Scored (true);
+		} else {
+			gameScript.Player2Scored (true);
+		}
+
 		float distance = this.transform.right.magnitude;
-		Vector2 forwardL = this.transform.right / distance;
-		Vector2 forwardG = this.transform.TransformDirection(forwardL);
+		Vector2 forward = this.transform.right / distance;
 
 		RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-		Vector2 exitDirection =  Vector2.Reflect(forwardL, hit.normal);
+		Vector2 exitDirection =  Vector2.Reflect(forward, hit.normal);
 
-			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
-			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
-			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
+//			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
+//			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
+//			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
 		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);		
 	}
 
-	private void block(GameObject other) {
-		if (other.name.Contains ("Goal") || other.name == "Catch_Trigger") {
-			this.SetTurn (other.name);
+	private void Block(GameObject other) {
+		Debug.Log ("Blocked. Time: " + timeElapsed);
+		timeElapsed = 0.0f;
+
+		if (other.transform.parent.name == "Player_01" && !triggered) {
+			gameScript.Player1AddEnergy();
 		} else {
-			this.SetTurn (other.transform.parent.name);
+			gameScript.Player2AddEnergy();
 		}
 		
+		triggered = true;
+
 		Vector2 playerDirection = other.transform.parent.position - this.transform.position;
 		
 		RaycastHit2D hit = Physics2D.Raycast(this.transform.position, playerDirection);
@@ -111,8 +151,15 @@ public class Ball : MonoBehaviour {
 
 		this.gameObject.SetActive (false);
 		
-		other.GetComponentInParent<Player>().Shoot(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
+		other.GetComponentInParent<Player>().Instance(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
 
-		Object.Destroy(this.gameObject);
+		this.DestroyBall ();
+		gameScript.BallSpeedUp ();
+	}
+
+	private void DestroyBall() {
+		Object.Destroy (this.gameObject);
+		
+		gameScript.SetProjectileTransform (null);
 	}
 }

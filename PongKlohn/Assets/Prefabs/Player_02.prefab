@@ -779,8 +779,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 477140}
   - 33: {fileID: 3376664}
-  - 135: {fileID: 13506670}
+  - 58: {fileID: 5803850}
   - 23: {fileID: 2326382}
+  - 50: {fileID: 5079534}
   m_Layer: 0
   m_Name: Miss_Trigger
   m_TagString: Untagged
@@ -1682,6 +1683,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!50 &5079534
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195020}
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: .0500000007
+  m_GravityScale: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!50 &5096410
 Rigidbody2D:
   serializedVersion: 2
@@ -1698,6 +1715,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!58 &5803850
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195020}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: .5
 --- !u!58 &5825214
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -1801,22 +1831,9 @@ MonoBehaviour:
   - {fileID: 108740, guid: 2a75f8e38ddfe464795d2e73488f6105, type: 2}
   - {fileID: 108740, guid: 013304178ebe69a409777cb3cb1ca16b, type: 2}
   - {fileID: 108740, guid: 883125fadb467794eb959a770fb02ded, type: 2}
-  catchCollider: {fileID: 121260, guid: 00b33326b84a6534b99d978636021a37, type: 2}
-  blockCollider: {fileID: 121260, guid: 536f1a0d1926a104cad56d158c84683a, type: 2}
-  dashCollider: {fileID: 121260, guid: 44ec6886d87045f40a42eba8421e64e9, type: 2}
+  powerNeeded4Dash: 10
+  blockTime: .200000003
   InvertMotion: 1
---- !u!135 &13506670
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 195020}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: .5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &13723088
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -1984,7 +2001,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_IsKinematic
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_GravityScale
@@ -2022,6 +2039,10 @@ Prefab:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 5d8f59f46c8fd7349a07ae02775c63a2, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 126488}

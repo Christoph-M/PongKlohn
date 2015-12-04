@@ -37,9 +37,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
---- !u!127 &3
-LevelGameManager:
-  m_ObjectHideFlags: 0
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -68,6 +65,7 @@ LightmapSettings:
     m_TextureCompression: 1
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
+    m_ReflectionCompression: 2
   m_LightmapSnapshot: {fileID: 0}
   m_RuntimeCPUUsage: 25
 --- !u!196 &5
@@ -237,6 +235,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -291,15 +290,17 @@ MonoBehaviour:
   gameRound: 1
   maxGameRounds: 3
   playerSpeed: 15
-  dashSpeed: 5
+  dashSpeed: 10
   playerHealth: 100
   playerDamage: 10
   wallDamage: 1
   playerEnergy: 0
+  maxPlayerEnergy: 100
   energyGain: 10
   minBallSpeed: 10
   maxBallSpeed: 30
   ballSpeedUpStep: 1
+  blockTime: .200000003
 --- !u!4 &227055173
 Transform:
   m_ObjectHideFlags: 0
@@ -1131,7 +1132,7 @@ MonoBehaviour:
   m_Script: {fileID: 1997211142, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowActivationOnStandalone: 0
+  m_ForceModuleActive: 0
 --- !u!114 &1264330076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1149,7 +1150,7 @@ MonoBehaviour:
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
   m_RepeatDelay: .5
-  m_AllowActivationOnMobileDevice: 0
+  m_ForceModuleActive: 0
 --- !u!114 &1264330077
 MonoBehaviour:
   m_ObjectHideFlags: 0

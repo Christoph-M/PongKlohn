@@ -17,7 +17,7 @@ GameObject:
   - 96: {fileID: 9684706}
   m_Layer: 0
   m_Name: Ball_Red_D
-  m_TagString: Untagged
+  m_TagString: RedBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,7 +150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2d9d4322ce1444bb33b3eccc94f582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
   angle: -45
   x_achse: 1
   y_achse: 0
@@ -244,6 +243,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: move
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: RedBall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

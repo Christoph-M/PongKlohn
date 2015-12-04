@@ -16,6 +16,7 @@ public class Game : MonoBehaviour {
 	public float dashSpeed = 5.0f;
 	public int playerHealth = 100;
 	public int playerDamage = 10;
+	public int wallDamage = 1;
 	[Header("Ball")]
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
@@ -83,23 +84,31 @@ public class Game : MonoBehaviour {
 	public void EnablePlayers(bool b) { player1.enabled = b; 
 								  		player2.enabled = b; }
 
-	public void Player1Scored() {
+	public void Player1Scored(bool isWall) {
 		if (player2.health > 0) {
-			player2.health -= playerDamage;
+			if (isWall) {
+				player2.health -= wallDamage;
+			} else {
+				player2.health -= playerDamage;
+			}
 		}
 		
 		if (player2.health <= 0) {
 			player2.health = 0;
 			
 			++player1Score;
-			
+
 			this.EndRound(p1);
 		}
 	}
 
-	public void Player2Scored() {
+	public void Player2Scored(bool isWall) {
 		if (player1.health > 0) {
-			player1.health -= playerDamage;
+			if (isWall) {
+				player1.health -= wallDamage;
+			} else {
+				player1.health -= playerDamage;
+			}
 		}
 		
 		if (player1.health <= 0) {
@@ -113,11 +122,12 @@ public class Game : MonoBehaviour {
 
 	public void EndRound(int p){
 		if (gameRound >= maxGameRounds) {
-			uiScript.GetComponent<MatchUI> ().MatchEnd (p);
+			int winner = (player1Score > player2Score) ? p1 : p2;
+			uiScript.GetComponent<MatchUI> ().MatchEnd (winner);
 
 			this.EnablePlayers(false);
 
-			if (p == 1) {
+			if (winner == 1) {
 //				Application.LoadLevel(2);
 			} else {
 //				Application.LoadLevel(3);
@@ -127,6 +137,12 @@ public class Game : MonoBehaviour {
 			
 			player1.health = playerHealth;
 			player2.health = playerHealth;
+			
+			if (p == 1) {
+				this.SetTurn(true);
+			} else {
+				this.SetTurn(false);
+			}
 
 			this.EnablePlayers(false);
 			

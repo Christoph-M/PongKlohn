@@ -41,7 +41,7 @@ public class Game : MonoBehaviour {
 		uiScript = GameObject.FindObjectOfType (typeof(UserInterface)) as UserInterface;
 
 		player1.SetPlayer("Player1");
-		player2.SetPlayer("ai");
+		player2.SetPlayer("Player2");
 		player1.health = playerHealth;
 		player2.health = playerHealth;
 		player1.power = playerEnergy;
@@ -130,17 +130,21 @@ public class Game : MonoBehaviour {
 	}
 
 	public void Player1AddEnergy() {
-		if (player1.power <= maxPlayerEnergy) {
+		if (player1.power < maxPlayerEnergy) {
 			player1.power += energyGain;
-		} else {
+		} 
+
+		if (player1.power >= maxPlayerEnergy) {
 			player1.power = maxPlayerEnergy;
 		}
 	}
 
 	public void Player2AddEnergy() {
-		if (player2.power <= maxPlayerEnergy) {
+		if (player2.power < maxPlayerEnergy) {
 			player2.power += energyGain;
-		} else {
+		} 
+
+		if (player2.power >= maxPlayerEnergy) {
 			player2.power = maxPlayerEnergy;
 		}
 	}

@@ -9,6 +9,10 @@ public class Move : MonoBehaviour
 	public bool y_achse = false;
 	public bool z_achse = false;
 
+	public bool moveOnYourOwn = false;
+
+	public float ownSpeed = 10.0f;
+
 
 	private Game game;
 
@@ -18,7 +22,11 @@ public class Move : MonoBehaviour
     {
 		game = GameObject.FindObjectOfType (typeof(Game)) as Game;
 
-		speed = game.GetBallSpeed();
+		if (moveOnYourOwn) {
+			speed = ownSpeed;
+		} else {
+			speed = game.GetBallSpeed ();
+		}
 
 		if(x_achse){transform.rotation *= Quaternion.AngleAxis(angle,new Vector3(0,0,1));}
 		if(y_achse){transform.rotation *= Quaternion.AngleAxis(angle,new Vector3(1,0,0));}

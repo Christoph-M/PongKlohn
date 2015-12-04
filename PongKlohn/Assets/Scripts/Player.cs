@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerV2 : MonoBehaviour 
+public class Player : MonoBehaviour 
 {	
 	public Transform ballSpohorn;
 	public List<GameObject> balls;
@@ -166,11 +166,9 @@ public class PlayerV2 : MonoBehaviour
 				}
 				else if(shootProgression == 1 && fireTimer.IsFinished())
 				{
-					if(Shoot(direction,false))
-					{
-						waitAfterSoot.SetTimer(0.3f);
-						shootProgression = 2;
-					}
+					waitAfterSoot.SetTimer(0.3f);
+					shootProgression = 2;
+					Shoot(direction,false);
 				}
 				else if(shootProgression == 0)
 				{
@@ -318,7 +316,7 @@ public class PlayerV2 : MonoBehaviour
 		zuLangsamZumFangenDuMong = zLZFDM;
 	}
 	
-	public void SetdashTrigger(bool dt)
+	public void SetDashTrigger(bool dt)
 	{
 		dashHasBeenTriggert = dt;
 	}

@@ -1801,9 +1801,9 @@ MonoBehaviour:
   - {fileID: 108740, guid: 8b6e21513e1d78b43aa75d211e6ea910, type: 2}
   - {fileID: 108740, guid: 641e5f8240d05eb46a031ec4291f4721, type: 2}
   - {fileID: 108740, guid: e4155eadbecf91e47a7fa878e1973ca4, type: 2}
-  catchCollider: {fileID: 121260, guid: 00b33326b84a6534b99d978636021a37, type: 2}
-  blockCollider: {fileID: 121260, guid: 536f1a0d1926a104cad56d158c84683a, type: 2}
-  dashCollider: {fileID: 121260, guid: 44ec6886d87045f40a42eba8421e64e9, type: 2}
+  - {fileID: 108740, guid: e4155eadbecf91e47a7fa878e1973ca4, type: 2}
+  - {fileID: 108740, guid: e4155eadbecf91e47a7fa878e1973ca4, type: 2}
+  powerNeeded4Dash: 10
   InvertMotion: 0
 --- !u!135 &13586426
 SphereCollider:

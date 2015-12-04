@@ -17,6 +17,9 @@ public class Game : MonoBehaviour {
 	public int playerHealth = 100;
 	public int playerDamage = 10;
 	public int wallDamage = 1;
+	public int playerEnergy = 0;
+	public int maxPlayerEnergy = 100;
+	public int energyGain = 10;
 	[Header("Ball")]
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
@@ -40,6 +43,8 @@ public class Game : MonoBehaviour {
 		player2.SetPlayer("ai");
 		player1.health = playerHealth;
 		player2.health = playerHealth;
+		player1.power = playerEnergy;
+		player2.power = playerEnergy;
 
 		ballSpeed = minBallSpeed;
 
@@ -117,6 +122,22 @@ public class Game : MonoBehaviour {
 			++player2Score;
 
 			this.EndRound(p2);
+		}
+	}
+
+	public void Player1AddEnergy() {
+		if (player1.power <= maxPlayerEnergy) {
+			player1.power += energyGain;
+		} else {
+			player1.power = maxPlayerEnergy;
+		}
+	}
+
+	public void Player2AddEnergy() {
+		if (player2.power <= maxPlayerEnergy) {
+			player2.power += energyGain;
+		} else {
+			player2.power = maxPlayerEnergy;
 		}
 	}
 

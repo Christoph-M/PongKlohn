@@ -15,6 +15,8 @@ public class MatchUI : UserInterface {
 	void LateUpdate() {
 		canvas.transform.FindChild ("Player_1_Life").GetComponent<Text> ().text = "" + gameScript.player1.health;
 		canvas.transform.FindChild ("Player_2_Life").GetComponent<Text> ().text = "" + gameScript.player2.health;
+		canvas.transform.FindChild ("Player_1_Energy").GetComponent<Text> ().text = "" + gameScript.player1.power;
+		canvas.transform.FindChild ("Player_2_Energy").GetComponent<Text> ().text = "" + gameScript.player2.power;
 	}
 	
 	public void RoundEnd(int p){
@@ -22,6 +24,8 @@ public class MatchUI : UserInterface {
 		canvas.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 		canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (false);
 		canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (false);
+		canvas.transform.FindChild ("Player_1_Energy").gameObject.SetActive (false);
+		canvas.transform.FindChild ("Player_2_Energy").gameObject.SetActive (false);
 		
 		uiTimer.SetTimer(10.0f);
 	}
@@ -31,6 +35,8 @@ public class MatchUI : UserInterface {
 		canvas.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 		canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (false);
 		canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (false);
+		canvas.transform.FindChild ("Player_1_Energy").gameObject.SetActive (false);
+		canvas.transform.FindChild ("Player_2_Energy").gameObject.SetActive (false);
 	}
 
 	private void RoundStart(float t) {
@@ -60,6 +66,8 @@ public class MatchUI : UserInterface {
 			canvas.transform.FindChild ("FIGHT").gameObject.SetActive (false);
 			canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (true);
 			canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (true);
+			canvas.transform.FindChild ("Player_1_Energy").gameObject.SetActive (true);
+			canvas.transform.FindChild ("Player_2_Energy").gameObject.SetActive (true);
 
 			gameScript.EnablePlayers(true);
 

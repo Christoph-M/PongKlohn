@@ -21,14 +21,14 @@ public class Ball : MonoBehaviour {
 	
 	void Start(){
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
+		gameScript.SetProjectileTransform (this.transform);
+
 		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
 		sinCosMovementScript = GameObject.FindObjectOfType (typeof(SinCosMovement)) as SinCosMovement;
 		linearRotationScript = GameObject.FindObjectOfType (typeof(LinearRotation)) as LinearRotation;
 		sinCosRotationScript = GameObject.FindObjectOfType (typeof(SinCosRotation)) as SinCosRotation;
 
 		this.name = "Projectile";
-
-		gameScript.SetProjectileTransform (this.transform);
 	}
 
 	void FixedUpdate() {
@@ -52,23 +52,23 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void Trigger(GameObject other){
-		if (other.name.Contains ("Goal")) {
+		if (other.tag == "Goal") {
 			this.Goal (other.gameObject);
-		} else if (other.name == "Catch_Trigger") {
+		} else if (other.tag == "CatchTrigger") {
 			this.Catch (other.gameObject);
-		} else if (other.name.Contains ("Wall")) {
+		} else if (other.tag == "Wall") {
 			this.Bounce (other.gameObject);
-		} else if (other.name == "Miss_Trigger") {
+		} else if (other.tag == "MissTrigger") {
 			other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
-		} else if (other.name == "Block_Trigger") {
+		} else if (other.tag == "BlockTrigger") {
 			this.Block (other.gameObject);
-		} else if (other.name == "Dash_Trigger") {
+		} else if (other.tag == "DashTrigger") {
 			other.GetComponentInParent<Player>().SetDashTrigger(true);
 		}
 	}
 
 	private void SetTurn(string name) {
-		if (name == "Goal_Red" || name == "Player_01") {
+		if (name == "Goal_Red" || name == "Player1") {
 			gameScript.SetTurn (false);
 		} else {
 			gameScript.SetTurn (true);
@@ -95,7 +95,7 @@ public class Ball : MonoBehaviour {
 		Debug.Log ("Catched. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
 
-		this.SetTurn (other.transform.parent.name);
+		this.SetTurn (other.transform.parent.tag);
 		
 		this.DestroyBall ();
 		gameScript.ResetBallSpeed();
@@ -105,9 +105,9 @@ public class Ball : MonoBehaviour {
 		Debug.Log ("Bounced. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
 
-		if (this.tag == "RedBall") {
+		if (this.tag == "RedBall" && this.transform.position.x > 0.0f) {
 			gameScript.Player1Scored (true);
-		} else {
+		} else if (this.tag == "BlueBall" && this.transform.position.x < 0.0f) {
 			gameScript.Player2Scored (true);
 		}
 
@@ -130,7 +130,7 @@ public class Ball : MonoBehaviour {
 		Debug.Log ("Blocked. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
 
-		if (other.transform.parent.name == "Player_01" && !triggered) {
+		if (other.transform.parent.tag == "Player1" && !triggered) {
 			gameScript.Player1AddEnergy();
 		} else {
 			gameScript.Player2AddEnergy();

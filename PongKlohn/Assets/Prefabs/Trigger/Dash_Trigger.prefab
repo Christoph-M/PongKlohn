@@ -14,7 +14,7 @@ GameObject:
   - 50: {fileID: 5099330}
   m_Layer: 0
   m_Name: Dash_Trigger
-  m_TagString: Untagged
+  m_TagString: DashTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +166,10 @@ Prefab:
       propertyPath: sphereO
       value: 
       objectReference: {fileID: 434628, guid: 80319c5e74e99a7468325e3933cdf27f, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: DashTrigger
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 121260}

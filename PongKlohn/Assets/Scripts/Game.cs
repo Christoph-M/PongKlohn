@@ -24,7 +24,8 @@ public class Game : MonoBehaviour {
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
 	public float ballSpeedUpStep = 5.0f;
-
+	
+	public float blockTime = 0.2f;
 	
 	private UserInterface uiScript;
 	private Transform projectile;
@@ -45,6 +46,7 @@ public class Game : MonoBehaviour {
 		player2.health = playerHealth;
 		player1.power = playerEnergy;
 		player2.power = playerEnergy;
+		
 
 		ballSpeed = minBallSpeed;
 
@@ -62,6 +64,8 @@ public class Game : MonoBehaviour {
 		player2.speed = playerSpeed;
 		player1.dashSpeed = dashSpeed;
 		player2.dashSpeed = dashSpeed;
+		player1.blockTime = blockTime;
+		player2.blockTime = blockTime;
 	}
 	
 	public void SetTurn(bool turn) {

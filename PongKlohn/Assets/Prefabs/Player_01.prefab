@@ -134,7 +134,7 @@ GameObject:
   - 50: {fileID: 5079206}
   m_Layer: 0
   m_Name: Block_Trigger
-  m_TagString: Untagged
+  m_TagString: BlockTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -381,7 +381,7 @@ GameObject:
   - 114: {fileID: 11441496}
   m_Layer: 0
   m_Name: Player_01
-  m_TagString: Untagged
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -475,7 +475,7 @@ GameObject:
   - 50: {fileID: 5091816}
   m_Layer: 0
   m_Name: Dash_Trigger
-  m_TagString: Untagged
+  m_TagString: DashTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -616,7 +616,7 @@ GameObject:
   - 50: {fileID: 5039706}
   m_Layer: 0
   m_Name: Catch_Trigger
-  m_TagString: Untagged
+  m_TagString: CatchTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -710,7 +710,7 @@ GameObject:
   - 50: {fileID: 5045220}
   m_Layer: 0
   m_Name: Miss_Trigger
-  m_TagString: Untagged
+  m_TagString: MissTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2056,6 +2056,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: BlockTrigger
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -257,6 +257,7 @@ PlayerSettings:
   ps4pnFriends: 1
   ps4pnGameCustomData: 1
   playerPrefsSupport: 0
+<<<<<<< HEAD
   ps4ReprojectionSupport: 0
   ps4UseAudio3dBackend: 0
   ps4Audio3dVirtualSpeakerCount: 14
@@ -267,6 +268,8 @@ PlayerSettings:
   ps4attrib3DSupport: 0
   ps4attribShareSupport: 0
   ps4IncludedModules: []
+=======
+>>>>>>> 5b85aae34a6f67da35c9c45cb147b1296f196253
   monoEnv: 
   psp2Splashimage: {fileID: 0}
   psp2NPTrophyPackPath: 

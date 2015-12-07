@@ -6,6 +6,16 @@ TagManager:
   tags:
   - RedBall
   - BlueBall
+  - Wall
+  - Goal
+  - Player1
+  - Player2
+  - CatchTrigger
+  - BlockTrigger
+  - MissTrigger
+  - DashTrigger
+  - StartScreen
+  - MainMenu
   layers:
   - Default
   - TransparentFX

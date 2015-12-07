@@ -655,7 +655,7 @@ ParticleSystem:
     enabled: 1
     type: 4
     radius: .400000006
-    angle: 9
+    angle: 7
     length: 5
     boxX: 1
     boxY: 1

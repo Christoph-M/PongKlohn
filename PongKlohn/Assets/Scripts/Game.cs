@@ -24,7 +24,8 @@ public class Game : MonoBehaviour {
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
 	public float ballSpeedUpStep = 5.0f;
-	
+
+	[Header("Timer")]
 	public float blockTime = 0.2f;
 	
 	private UserInterface uiScript;

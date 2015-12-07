@@ -35,13 +35,16 @@ public class Game : MonoBehaviour {
 
 	private float ballSpeed;
 	private int player1Score = 0;
-	private int player2Score = 0;
+	private int player2Score = 0; 
+
+	public string player1Typ = "Player1"; 
+	public string player2Typ = "Player2";
 
 	void Start() {
 		uiScript = GameObject.FindObjectOfType (typeof(UserInterface)) as UserInterface;
 
-		player1.SetPlayer("Player1");
-		player2.SetPlayer("Player2");
+		player1.SetPlayer(player1Typ);
+		player2.SetPlayer(player2Typ);
 		player1.health = playerHealth;
 		player2.health = playerHealth;
 		player1.power = playerEnergy;

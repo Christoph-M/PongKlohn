@@ -23,6 +23,7 @@ public class Game : MonoBehaviour {
 	public int playerHealth = 100;
 	public int playerDamage = 10;
 	public int wallDamage = 1;
+	[Space(10)]
 	public int playerEnergy = 0;
 	public int maxPlayerEnergy = 100;
 	public int energyGain = 10;
@@ -118,7 +119,7 @@ public class Game : MonoBehaviour {
 			
 			++player1Score;
 
-			this.EndRound(p1);
+			StartCoroutine(this.EndRound(p1));
 		}
 	}
 
@@ -136,7 +137,7 @@ public class Game : MonoBehaviour {
 
 			++player2Score;
 
-			this.EndRound(p2);
+			StartCoroutine(this.EndRound(p2));
 		}
 	}
 
@@ -160,16 +161,20 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	public void EndRound(int p){
+	public IEnumerator EndRound(int p){
 		if (gameRound >= maxGameRounds) {
 			int winner = (player1Score > player2Score) ? p1 : p2;
 			uiScript.GetComponent<MatchUI> ().MatchEnd (winner);
 
 			this.EnablePlayers(false);
 
+			yield return new WaitForSeconds(5);
+
 			if (winner == 1) {
+				Application.LoadLevel(0);
 //				Application.LoadLevel(2);
 			} else {
+				Application.LoadLevel(0);
 //				Application.LoadLevel(3);
 			}
 		} else {

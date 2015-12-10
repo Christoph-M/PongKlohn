@@ -9,8 +9,8 @@ public class Player : MonoBehaviour
 	
 	public int health { get; set; }
 	public int power { get; set; }
-	public int powerNeeded4Dash = 10;
-	public float blockTime = 0.2f;
+	public int dashEnergyCost { get; set; }
+	public float blockTime { get; set; }
 	
 	public float speed { get; set; }
 	public float dashSpeed { get; set; }
@@ -26,7 +26,6 @@ public class Player : MonoBehaviour
 	private Animator animator;
 	
 	private Game gameScript;
-	private GameObject ball;
 
 	private GameObject catchTrigger;
 	private GameObject blockTrigger;
@@ -94,17 +93,9 @@ public class Player : MonoBehaviour
 	private bool dashHasBeenTriggert = false;
 	private bool zuLangsamZumFangenDuMong = false;
 	private bool canMovement = true;
-	private bool axisInUse = false;
-	private bool fired = false;
-	private float timeLeft = 1.0f;
 	
 	private bool isStunned = false;
-	private bool fireKeyPressed = false;
-	private bool onZuLangsamZumFangenDuMongDown = true;
 	private int action = 5;
-	private bool isInAction = false;
-	private bool inAction = true;
-	private bool hasShoot = false;
 	private bool isBlocking = false;
 	private int blockProgression = 0;
 	private bool isShooting = false;
@@ -145,22 +136,24 @@ public class Player : MonoBehaviour
 		}
 		else//Wenn der Spieler nicht gerade gestunde ist
 		{
-			if(direction == Vector2.zero && controls.UpdateMovement() != Vector2.zero){inputAxisDown = true;}
+			if (direction == Vector2.zero && controls.UpdateMovement() != Vector2.zero) {inputAxisDown = true;}
+
 			direction = controls.UpdateMovement();//zuweisung der Inputachsen
 			directionRaw = controls.UpdateMovementRaw();
 			
-			if(direction == Vector2.zero){isDashActive = false;}
+			if (direction == Vector2.zero) {isDashActive = false;}
 	
-			if(controls.IsFireKeyActive(ICanShoot()) && !isBlocking)//fire input
+			if (controls.IsFireKeyActive(ICanShoot()) && !isBlocking)//fire input
 			{
 				isShooting = true;
 			}
-			if(controls.IsBlockKeyActive() && !isShooting)//Block input
+
+			if (controls.IsBlockKeyActive() && !isShooting)//Block input
 			{
 				isBlocking = true;
 			}
 			
-			if(isShooting)/////////Action Shoot//////////////////////
+			if (isShooting)/////////Action Shoot//////////////////////
 			{		
 				if(shootProgression == 2 && waitAfterSoot.IsFinished())
 				{
@@ -204,11 +197,11 @@ public class Player : MonoBehaviour
 			}
 		}
 		
-		if(isBlocking && inputAxisDown && power>=powerNeeded4Dash)
+		if(isBlocking && inputAxisDown && power >= dashEnergyCost)
 		{
 			Debug.Log("DASH!!!!!!!!!!!!!");
 			inputAxisDown = false;
-			power-=powerNeeded4Dash;
+			power -= dashEnergyCost;
 			isDashActive = true;
 			animator.SetFloat("xAxis", direction.x * motionInverter);
 			animator.SetFloat("yAxis", direction.y * motionInverter);
@@ -219,8 +212,7 @@ public class Player : MonoBehaviour
 		{
 			inputAxisDown =	false;
 		}
-		
-		
+
 		if (canMovement)// Bewegt den spieler
 		{
 			animator.SetFloat("xAxis", direction.x * motionInverter);
@@ -372,23 +364,22 @@ public class Player : MonoBehaviour
 	
 	private bool Shoot(Vector2 direction,bool type)
 	{
-
 		if(type)
 		{//speschel schuss
 			if(transform.position.y>3)//Spezial oban
 			{
 				Instance(balls[5], ballSpohorn.position, this.transform.rotation);
-				if(ball!=null){return true;}	
+				if(!gameScript.GetProjectileTransform()){return true;}	
 			}
 			else if(transform.position.y<-3)//Special unten
 			{
 				Instance(balls[4], ballSpohorn.position, this.transform.rotation);
-				if(ball!=null){return true;}
+				if(!gameScript.GetProjectileTransform()){return true;}
 			}
 			else//speschel mitte
 			{
 				Instance(balls[3], ballSpohorn.position, this.transform.rotation);
-				if(ball!=null){return true;}
+				if(!gameScript.GetProjectileTransform()){return true;}
 			}	
 		}
 		else
@@ -397,17 +388,17 @@ public class Player : MonoBehaviour
 			if (direction.y > 0f) //oben schiessen
 			{
 				Instance(balls [1], ballSpohorn.position, this.transform.rotation);
-				if(ball!=null){return true;}
+				if(!gameScript.GetProjectileTransform()){return true;}
 			} 
 			else if (direction.y < 0f) //unten schiessen
 			{
 				Instance (balls [2], ballSpohorn.position, this.transform.rotation);
-				if(ball!=null){return true;}
+				if(!gameScript.GetProjectileTransform()){return true;}
 			} 
 			else if (direction.y == 0f) //normaler schuss
 			{
 				Instance(balls [0], ballSpohorn.position, this.transform.rotation);
-				if(ball!=null){return true;}
+				if(!gameScript.GetProjectileTransform()){return true;}
 			}
 		}
 		

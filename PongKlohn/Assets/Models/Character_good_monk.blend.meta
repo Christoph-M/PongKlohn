@@ -52,6 +52,14 @@ ModelImporter:
     100088: UnterSchenkel_R
     100090: Zehe_L
     100092: Zehe_R
+    100094: Control_Hand_L
+    100096: Control_Hand_R
+    100098: Handle_DaumenSpitze_L
+    100100: Handle_FingerSpitze_L
+    100102: Handle_FingerSpitze_R
+    100104: Poltarget_Daumen_L
+    100106: Poltarget_Hand_L
+    100108: Poltarget_Hand_R
     400000: Bauch
     400002: Bone
     400004: Bone_001
@@ -99,12 +107,21 @@ ModelImporter:
     400088: UnterSchenkel_R
     400090: Zehe_L
     400092: Zehe_R
+    400094: Control_Hand_L
+    400096: Control_Hand_R
+    400098: Handle_DaumenSpitze_L
+    400100: Handle_FingerSpitze_L
+    400102: Handle_FingerSpitze_R
+    400104: Poltarget_Daumen_L
+    400106: Poltarget_Hand_L
+    400108: Poltarget_Hand_R
     4300000: Hose_001
     4300002: Hemd_001
     4300004: Schuhe_001
     4300006: GOOD_MONK_001
     4300008: GOOD_MONK_000
     7400000: Default Take
+    7400002: RiggAction
     9500000: //RootNode
     13700000: GOOD_MONK_000
     13700002: GOOD_MONK_001
@@ -167,10 +184,8 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
-    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
-  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

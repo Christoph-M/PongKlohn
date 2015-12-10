@@ -11,15 +11,22 @@ public class Game : MonoBehaviour {
 	[Header("Game")]
 	public int gameRound = 1;
 	public int maxGameRounds = 3;
+
 	[Header("Player")]
+	public string player1Typ = "Player1"; 
+	public string player2Typ = "Player2";
+	[Space(10)]
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
+	public int dashEnergyCost = 10;
+	[Space(10)]
 	public int playerHealth = 100;
 	public int playerDamage = 10;
 	public int wallDamage = 1;
 	public int playerEnergy = 0;
 	public int maxPlayerEnergy = 100;
 	public int energyGain = 10;
+
 	[Header("Ball")]
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
@@ -27,7 +34,8 @@ public class Game : MonoBehaviour {
 
 	[Header("Timer")]
 	public float blockTime = 0.2f;
-	
+
+
 	private UserInterface uiScript;
 	private Transform projectile;
 
@@ -37,9 +45,6 @@ public class Game : MonoBehaviour {
 	private float ballSpeed;
 	private int player1Score = 0;
 	private int player2Score = 0; 
-
-	public string player1Typ = "Player1"; 
-	public string player2Typ = "Player2";
 
 	void Start() {
 		uiScript = GameObject.FindObjectOfType (typeof(UserInterface)) as UserInterface;
@@ -70,6 +75,8 @@ public class Game : MonoBehaviour {
 		player2.dashSpeed = dashSpeed;
 		player1.blockTime = blockTime;
 		player2.blockTime = blockTime;
+		player1.dashEnergyCost = dashEnergyCost;
+		player2.dashEnergyCost = dashEnergyCost;
 	}
 	
 	public void SetTurn(bool turn) {

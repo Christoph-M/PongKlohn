@@ -8,13 +8,24 @@ public class UserInterface : MonoBehaviour {
 
 	protected Game gameScript;
 
+
+	private StartScreen startScreen;
+	private MainMenu mainMenu;
+
 	// Use this for initialization
 	void Start () {
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
+
+		startScreen = GameObject.FindObjectOfType (typeof(StartScreen)) as StartScreen;
+		mainMenu = GameObject.FindObjectOfType (typeof(MainMenu)) as MainMenu;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	protected void StartScreenSetActive (bool active) {
+		startScreen.startScreen.SetActive (active);
+	}
 	
+	protected void MainMenuSetActive (bool active) {
+		Debug.Log (mainMenu.mainMenu.activeSelf);
+		mainMenu.mainMenu.SetActive (active);
 	}
 }

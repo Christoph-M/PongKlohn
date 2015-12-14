@@ -1,6 +1,11 @@
 fileFormatVersion: 2
-guid: f206d0520eea73e439126f587b0a6577
-timeCreated: 1449223042
+<<<<<<< HEAD:PongKlohn/Assets/Scenes/TestScenes/Elektroball.unity.meta
+guid: 6e29c3126f2e6de47b2211edfabc59e2
+timeCreated: 1450093017
+=======
+guid: db69267dd2686cd4790d0ce2381f29a9
+timeCreated: 1450088989
+>>>>>>> 9cd402b8454edba617f7b97c495f45ae426d0d0a:PongKlohn/Assets/Scenes/TestScenes/Elektroball.unity.meta
 licenseType: Free
 DefaultImporter:
   userData: 

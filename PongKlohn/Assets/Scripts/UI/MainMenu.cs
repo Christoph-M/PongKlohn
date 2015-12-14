@@ -5,7 +5,8 @@ using System.Collections;
 public class MainMenu : UserInterface {
 	public GameObject startScreen;
 	public GameObject mainMenu;
-	public GameObject matchMenu;
+	public GameObject optionsMenu;
+	public GameObject mapMenu;
 
 	public float textPulseDuration = 1.0f;
 	
@@ -53,7 +54,7 @@ public class MainMenu : UserInterface {
 
 	public void MatchSettings() {
 		mainMenu.SetActive(false);
-		matchMenu.SetActive(true);
+		mapMenu.SetActive(true);
 	}
 	
 	public void StartGame() {

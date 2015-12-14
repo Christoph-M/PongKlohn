@@ -11,22 +11,32 @@ public class Game : MonoBehaviour {
 	[Header("Game")]
 	public int gameRound = 1;
 	public int maxGameRounds = 3;
+
 	[Header("Player")]
+	public string player1Typ = "Player1"; 
+	public string player2Typ = "Player2";
+	[Space(10)]
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
+	public int dashEnergyCost = 10;
+	[Space(10)]
 	public int playerHealth = 100;
 	public int playerDamage = 10;
 	public int wallDamage = 1;
+	[Space(10)]
 	public int playerEnergy = 0;
 	public int maxPlayerEnergy = 100;
 	public int energyGain = 10;
+
 	[Header("Ball")]
 	public float minBallSpeed = 10.0f;
 	public float maxBallSpeed = 100.0f;
 	public float ballSpeedUpStep = 5.0f;
-	
+
+	[Header("Timer")]
 	public float blockTime = 0.2f;
-	
+
+
 	private UserInterface uiScript;
 	private Transform projectile;
 
@@ -35,13 +45,13 @@ public class Game : MonoBehaviour {
 
 	private float ballSpeed;
 	private int player1Score = 0;
-	private int player2Score = 0;
+	private int player2Score = 0; 
 
 	void Start() {
 		uiScript = GameObject.FindObjectOfType (typeof(UserInterface)) as UserInterface;
 
-		player1.SetPlayer("Player1");
-		player2.SetPlayer("ai");
+		player1.SetPlayer(player1Typ);
+		player2.SetPlayer(player2Typ);
 		player1.health = playerHealth;
 		player2.health = playerHealth;
 		player1.power = playerEnergy;
@@ -66,6 +76,8 @@ public class Game : MonoBehaviour {
 		player2.dashSpeed = dashSpeed;
 		player1.blockTime = blockTime;
 		player2.blockTime = blockTime;
+		player1.dashEnergyCost = dashEnergyCost;
+		player2.dashEnergyCost = dashEnergyCost;
 	}
 	
 	public void SetTurn(bool turn) {
@@ -107,7 +119,7 @@ public class Game : MonoBehaviour {
 			
 			++player1Score;
 
-			this.EndRound(p1);
+			StartCoroutine(this.EndRound(p1));
 		}
 	}
 
@@ -125,36 +137,44 @@ public class Game : MonoBehaviour {
 
 			++player2Score;
 
-			this.EndRound(p2);
+			StartCoroutine(this.EndRound(p2));
 		}
 	}
 
 	public void Player1AddEnergy() {
-		if (player1.power <= maxPlayerEnergy) {
+		if (player1.power < maxPlayerEnergy) {
 			player1.power += energyGain;
-		} else {
+		} 
+
+		if (player1.power >= maxPlayerEnergy) {
 			player1.power = maxPlayerEnergy;
 		}
 	}
 
 	public void Player2AddEnergy() {
-		if (player2.power <= maxPlayerEnergy) {
+		if (player2.power < maxPlayerEnergy) {
 			player2.power += energyGain;
-		} else {
+		} 
+
+		if (player2.power >= maxPlayerEnergy) {
 			player2.power = maxPlayerEnergy;
 		}
 	}
 
-	public void EndRound(int p){
+	public IEnumerator EndRound(int p){
 		if (gameRound >= maxGameRounds) {
 			int winner = (player1Score > player2Score) ? p1 : p2;
 			uiScript.GetComponent<MatchUI> ().MatchEnd (winner);
 
 			this.EnablePlayers(false);
 
+			yield return new WaitForSeconds(5);
+
 			if (winner == 1) {
+				Application.LoadLevel(0);
 //				Application.LoadLevel(2);
 			} else {
+				Application.LoadLevel(0);
 //				Application.LoadLevel(3);
 			}
 		} else {

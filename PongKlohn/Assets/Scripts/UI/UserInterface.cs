@@ -9,23 +9,47 @@ public class UserInterface : MonoBehaviour {
 	protected Game gameScript;
 
 
-	private StartScreen startScreen;
-	private MainMenu mainMenu;
+	private StartScreen startScreenScript;
+	private MainMenu mainMenuScript;
+	private OptionsMenu optionsMenuScript;
+	private VideoOptionsMenu videoOptionsMenuScript;
+	private AudioOptionsMenu audioOptionsMenuScript;
+	private GameplayOptionsMenu gameplayOptionsMenuScript;
 
 	// Use this for initialization
 	void Start () {
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 
-		startScreen = GameObject.FindObjectOfType (typeof(StartScreen)) as StartScreen;
-		mainMenu = GameObject.FindObjectOfType (typeof(MainMenu)) as MainMenu;
+		startScreenScript = GetComponent<StartScreen>();
+		mainMenuScript = GetComponent<MainMenu>();
+		optionsMenuScript = GetComponent<OptionsMenu>();
+		videoOptionsMenuScript = GetComponent<VideoOptionsMenu> ();
+		audioOptionsMenuScript = GetComponent<AudioOptionsMenu> ();
+		gameplayOptionsMenuScript = GetComponent<GameplayOptionsMenu> ();
 	}
 	
-	protected void StartScreenSetActive (bool active) {
-		startScreen.startScreen.SetActive (active);
+	public void StartScreenSetActive (bool active) {
+		startScreenScript.startScreen.transform.FindChild ("Text").gameObject.SetActive(active);
+		startScreenScript.startScreen.transform.FindChild ("Press_Start").gameObject.SetActive(active);
 	}
 	
-	protected void MainMenuSetActive (bool active) {
-		Debug.Log (mainMenu.mainMenu.activeSelf);
-		mainMenu.mainMenu.SetActive (active);
+	public void MainMenuSetActive (bool active) {
+		mainMenuScript.mainMenu.SetActive (active);
+	}
+
+	public void OptionsMenuSetActive (bool active) {
+		optionsMenuScript.optionsMenu.SetActive (active);
+	}
+
+	public void VideoOptionsMenuSetActive (bool active) {
+		videoOptionsMenuScript.videoOptionsMenu.SetActive (active);
+	}
+
+	public void AudioOptionsMenuSetActive (bool active) {
+		audioOptionsMenuScript.audioOptionsMenu.SetActive (active);
+	}
+
+	public void GameplayOptionsMenuSetActive (bool active) {
+		gameplayOptionsMenuScript.gameplayOptionsMenu.SetActive (active);
 	}
 }

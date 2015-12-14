@@ -7,7 +7,9 @@ public class StartScreen : UserInterface {
 
 	public float textPulseDuration = 1.0f;
 	
-	
+
+	private UserInterface userInterfaceScript;
+
 	private Color textPulse;
 	private Color outlinePulse = Color.black;
 	
@@ -15,14 +17,15 @@ public class StartScreen : UserInterface {
 	private bool one = false;
 	
 	void Start() {
+		userInterfaceScript = GetComponent<UserInterface> ();
+
 		textPulse = startScreen.GetComponentInChildren<Text> ().color;
 	}
 	
 	void Update () {
 		if (Input.anyKeyDown && startScreen.transform.FindChild ("Text").gameObject.activeSelf) {
-			startScreen.transform.FindChild ("Text").gameObject.SetActive(false);
-			startScreen.transform.FindChild ("Press_Start").gameObject.SetActive(false);
-			MainMenuSetActive(true);
+			userInterfaceScript.StartScreenSetActive (false);
+			userInterfaceScript.MainMenuSetActive(true);
 		}
 	}
 	

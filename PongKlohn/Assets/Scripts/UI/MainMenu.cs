@@ -4,25 +4,36 @@ using System.Collections;
 
 public class MainMenu : UserInterface {
 	public GameObject mainMenu;
-	public GameObject optionsMenu;
-	public GameObject videoOptionsMenu;
-	public GameObject audioOptionsMenu;
-	public GameObject gameplayOptionsMenu;
 
-	public void SetVolume() {
-		AudioListener.volume = mainMenu.transform.FindChild ("Volume_Slider").GetComponent<Slider> ().value;
+
+	private UserInterface userInterfaceScript;
+
+	void Start() {
+		userInterfaceScript = GetComponent<UserInterface> ();
+	}
+
+	public void Singleplayer() {
+
+	}
+
+	public void Multiplayer() {
+		Application.LoadLevel(1);
+	}
+
+	public void Arcade() {
+
 	}
 
 	public void OptionsMenu() {
-		mainMenu.SetActive(false);
-		optionsMenu.SetActive(true);
+		userInterfaceScript.MainMenuSetActive(false);
+		userInterfaceScript.OptionsMenuSetActive(true);
+	}
+
+	public void Credits() {
+
 	}
 	
-	public void StartGame() {
-		Application.LoadLevel(1);
-	}
-	
-	public void ExitGame() {
+	public void Quit() {
 		Application.Quit ();
 	}
 }

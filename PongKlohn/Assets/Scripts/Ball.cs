@@ -18,7 +18,7 @@ public class Ball : MonoBehaviour {
 	private Transform myTransform;
 
 	private const float fieldHeight = 22.0f;
-	private const float fieldWidth = 63.0f;
+	private const float fieldWidth = 60.0f;
 	private float wallTop;
 	private float wallBottom;
 	private float wallLeft;

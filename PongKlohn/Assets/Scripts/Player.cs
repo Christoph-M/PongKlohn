@@ -101,8 +101,9 @@ public class Player : MonoBehaviour
 	private bool isShooting = false;
 	private int shootProgression = 0;
 	private bool isDashActive = false;
-	
+	private bool isPowerShooting = false;
 	private bool inputAxisDown = false;
+	private bool isBuffing = false;
 	
 	void Update() 
 	{
@@ -113,91 +114,93 @@ public class Player : MonoBehaviour
 		catchTimer.UpdateTimer();
 		waitAfterSoot.UpdateTimer();
 		
-		if(zuLangsamZumFangenDuMong || controls==null)
+		if(zuLangsamZumFangenDuMong)///////////////Stun
 		{
-			Debug.Log("Get Stuned");
 			isStunned = true;
-			action = 4;
-			zuLangsamZumFangenDuMong = false;
-			stunTimer.SetTimer(2);
-		}
-
-		if(isStunned)
-		{	
-			Debug.Log("is stuned");
-			Debug.Log("Player is Stunned or Controls havend be initialice");
-			
-			if(stunTimer.IsFinished())
-			{
-				Debug.Log("was stuned");
-				isStunned = false;
-				action = 0;
-			}
-		}
-		else//Wenn der Spieler nicht gerade gestunde ist
-		{
-			if (direction == Vector2.zero && controls.UpdateMovement() != Vector2.zero) {inputAxisDown = true;}
-
-			direction = controls.UpdateMovement();//zuweisung der Inputachsen
-			directionRaw = controls.UpdateMovementRaw();
-			
-			if (direction == Vector2.zero) {isDashActive = false;}
-	
-			if (controls.IsFireKeyActive(ICanShoot()) && !isBlocking)//fire input
-			{
-				isShooting = true;
-			}
-
-			if (controls.IsBlockKeyActive() && !isShooting)//Block input
-			{
-				isBlocking = true;
-			}
-			
-			if (isShooting)/////////Action Shoot//////////////////////
-			{		
-				if(shootProgression == 2 && waitAfterSoot.IsFinished())
-				{
-					shootProgression = 0;
-					action = 0;
-					isShooting = false;
-				}
-				else if(shootProgression == 1 && fireTimer.IsFinished())
-				{
-					waitAfterSoot.SetTimer(0.3f);
-					shootProgression = 2;
-					Shoot(direction,false);
-				}
-				else if(shootProgression == 0)
-				{
-					action = 3;
-					fireTimer.SetTimer(0.5f);
-					shootProgression = 1;
-				}		
-			}
-			
-			if(isBlocking)///////////////////////Bock Action//////////////////////////
-			{	
-				if(blockProgression == 2 && blockTimer.IsFinished())
-				{
-					action = 0;
-					blockProgression = 0;
-					isBlocking = false;
-				}
-				else if(blockProgression == 1)
-				{
-					if(!controls.IsBlockKeyActive()){blockProgression = 2;}
-					blockTimer.SetTimer(blockTime);
-					action = 2;
-				}
-				else if(blockProgression == 0)
-				{
-					action = 1;
-					blockProgression =1;
-				}
-			}
 		}
 		
-		if(isBlocking && inputAxisDown && power >= dashEnergyCost)
+		if (direction == Vector2.zero && controls.UpdateMovement() != Vector2.zero) {inputAxisDown = true;}
+
+		direction = controls.UpdateMovement();//zuweisung der Inputachsen
+		directionRaw = controls.UpdateMovementRaw();
+		
+		if (direction == Vector2.zero) {isDashActive = false;}
+
+		if (controls.IsFireKeyActive(ICanShoot()) && !isInAction)//fire input
+		{
+			isInAction = true;
+			isShooting = true;
+		}
+
+		if (controls.IsBlockKeyActive() && !isInAction)//Block input
+		{
+			isInAction = true;
+			isBlocking = true;
+		}
+		
+		if (controls.IsBuffActive() && !isInAction)//Buff input
+		{
+			isBlocking = true;
+		}
+		
+		if (controls.IsDashActive() && !isInAction)//Dash input
+		{
+			isInAction = true;
+			isBlocking = true;
+		}
+		
+		if (controls.IsPowerShootActive() && !isInAction)//Powershoot input
+		{
+			isInAction = true;
+			isBlocking = true;
+		}
+		
+		
+		if (isShooting)/////////Action Shoot//////////////////////
+		{		
+			if(shootProgression == 2 && waitAfterSoot.IsFinished())
+			{
+				shootProgression = 0;
+				action = 0;
+				isShooting = false;
+			}
+			else if(shootProgression == 1 && fireTimer.IsFinished())
+			{
+				waitAfterSoot.SetTimer(0.5f);
+				shootProgression = 2;
+				Shoot(direction,false);
+			}
+			else if(shootProgression == 0)
+			{
+				action = 3;
+				fireTimer.SetTimer(1f);
+				shootProgression = 1;
+			}		
+		}
+		
+		if(isBlocking)///////////////////////Bock Action//////////////////////////
+		{	
+			if(blockProgression == 2 && blockTimer.IsFinished())
+			{
+				action = 0;
+				blockProgression = 0;
+				isInAction = false;
+				isBlocking = false;
+			}
+			else if(blockProgression == 1)
+			{
+				if(!controls.IsBlockKeyActive()){blockProgression = 2;}
+				blockTimer.SetTimer(blockTime);
+				action = 2;
+			}
+			else if(blockProgression == 0)
+			{
+				action = 1;
+				blockProgression =1;
+			}
+		}
+	
+		if(isBlocking && inputAxisDown && power >= dashEnergyCost)//////////////Dash
 		{
 			Debug.Log("DASH!!!!!!!!!!!!!");
 			inputAxisDown = false;

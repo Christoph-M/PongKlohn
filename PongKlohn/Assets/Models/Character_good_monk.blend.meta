@@ -127,6 +127,7 @@ ModelImporter:
     7400020: Stun_in
     7400022: Stun_out
     7400024: Win
+    7400026: Fire
     9500000: //RootNode
     13700000: GOOD_MONK_000
   materials:
@@ -170,7 +171,23 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
+      curves:
+      - name: Curve
+        curve:
+          serializedVersion: 2
+          curve:
+          - time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          preInfinity: 2
+          postInfinity: 2
       events: []
       transformMask:
       - path: 
@@ -554,7 +571,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Idle
       takeName: Default Take
-      firstFrame: 220
+      firstFrame: 221
       lastFrame: 249
       wrapMode: 0
       orientationOffsetY: 0
@@ -562,7 +579,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -689,13 +706,13 @@ ModelImporter:
       name: Block
       takeName: Default Take
       firstFrame: 251
-      lastFrame: 270
+      lastFrame: 255
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -822,14 +839,14 @@ ModelImporter:
     - serializedVersion: 16
       name: Forward
       takeName: Default Take
-      firstFrame: 271
-      lastFrame: 290
+      firstFrame: 272
+      lastFrame: 280
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -956,14 +973,14 @@ ModelImporter:
     - serializedVersion: 16
       name: Back
       takeName: Default Take
-      firstFrame: 291
-      lastFrame: 310
+      firstFrame: 292
+      lastFrame: 300
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1090,14 +1107,14 @@ ModelImporter:
     - serializedVersion: 16
       name: Left
       takeName: Default Take
-      firstFrame: 311
-      lastFrame: 330
+      firstFrame: 312
+      lastFrame: 320
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1224,14 +1241,14 @@ ModelImporter:
     - serializedVersion: 16
       name: Right
       takeName: Default Take
-      firstFrame: 331
-      lastFrame: 350
+      firstFrame: 332
+      lastFrame: 340
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1638,9 +1655,9 @@ ModelImporter:
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -1891,6 +1908,140 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Fire
+      takeName: Default Take
+      firstFrame: 495
+      lastFrame: 519
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -1926,7 +2077,7 @@ ModelImporter:
     armStretch: .0500000007
     legStretch: .0500000007
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Rigg
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2

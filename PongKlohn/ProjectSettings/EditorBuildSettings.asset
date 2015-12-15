@@ -9,5 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/UI/StartScreen.unity
   - enabled: 0
     path: Assets/Scenes/Level/level_01.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TestScenes/matchStartTest.unity

@@ -50,15 +50,15 @@ public class Ball : MonoBehaviour {
 		if (sinCosRotation) sinCosRotationScript.Update_ ();
 
 		if (this.transform.position.x > wallRight) {
-			this.transform.position = new Vector2(wallRight, this.transform.position.y);
+			this.transform.position = new Vector3(wallRight, this.transform.position.y, this.transform.position.z);
 		} else if (this.transform.position.x < wallLeft) {
-			this.transform.position = new Vector2(wallLeft, this.transform.position.y);
+			this.transform.position = new Vector3(wallLeft, this.transform.position.y, this.transform.position.z);
 		}
 
 		if (this.transform.position.y > wallTop) {
-			this.transform.position = new Vector2(this.transform.position.x, wallTop);
+			this.transform.position = new Vector3(this.transform.position.x, wallTop, this.transform.position.z);
 		} else if (this.transform.position.y < wallBottom) {
-			this.transform.position = new Vector2(this.transform.position.x, wallBottom);
+			this.transform.position = new Vector3(this.transform.position.x, wallBottom, this.transform.position.z);
 		}
 	}
 

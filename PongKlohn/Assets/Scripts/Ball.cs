@@ -17,6 +17,13 @@ public class Ball : MonoBehaviour {
 
 	private Transform myTransform;
 
+	private const float fieldHeight = 22.0f;
+	private const float fieldWidth = 63.0f;
+	private float wallTop;
+	private float wallBottom;
+	private float wallLeft;
+	private float wallRight;
+
 	private bool triggered = false;
 	
 	void Start(){
@@ -29,6 +36,11 @@ public class Ball : MonoBehaviour {
 		sinCosRotationScript = GameObject.FindObjectOfType (typeof(SinCosRotation)) as SinCosRotation;
 
 		this.name = "Projectile";
+
+		wallTop = fieldHeight / 2;
+		wallBottom = -fieldHeight / 2;
+		wallRight = fieldWidth / 2;
+		wallLeft = -fieldWidth / 2;
 	}
 
 	void FixedUpdate() {
@@ -36,6 +48,18 @@ public class Ball : MonoBehaviour {
 		if (sinCosMove) sinCosMovementScript.Update_ ();
 		if (linearRotation) linearRotationScript.Update_ ();
 		if (sinCosRotation) sinCosRotationScript.Update_ ();
+
+		if (this.transform.position.x > wallRight) {
+			this.transform.position = new Vector2(wallRight, this.transform.position.y);
+		} else if (this.transform.position.x < wallLeft) {
+			this.transform.position = new Vector2(wallLeft, this.transform.position.y);
+		}
+
+		if (this.transform.position.y > wallTop) {
+			this.transform.position = new Vector2(this.transform.position.x, wallTop);
+		} else if (this.transform.position.y < wallBottom) {
+			this.transform.position = new Vector2(this.transform.position.x, wallBottom);
+		}
 	}
 
 	float timeElapsed = 0.0f;

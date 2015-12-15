@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameplayOptionsMenu : MonoBehaviour {
@@ -16,7 +17,11 @@ public class GameplayOptionsMenu : MonoBehaviour {
 	}
 
 	public void EnableGamepad() {
+		if (gameplayOptionsMenu.transform.FindChild ("Toggle").GetComponent<Toggle> ().isOn) {
 
+		} else {
+
+		}
 	}
 
 	public void GamepadBindings() {

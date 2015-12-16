@@ -182,8 +182,8 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void DestroyBall() {
-		Object.Destroy (this.gameObject);
-		
 		gameScript.SetProjectileTransform (null);
+		
+		Object.Destroy (this.gameObject);
 	}
 }

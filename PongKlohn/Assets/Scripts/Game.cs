@@ -70,14 +70,20 @@ public class Game : MonoBehaviour {
 	}
 
 	void LateUpdate() {		
-		player1.speed = playerSpeed;
-		player2.speed = playerSpeed;
-		player1.dashSpeed = dashSpeed;
-		player2.dashSpeed = dashSpeed;
-		player1.blockTime = blockTime;
-		player2.blockTime = blockTime;
-		player1.dashEnergyCost = dashEnergyCost;
-		player2.dashEnergyCost = dashEnergyCost;
+		StartCoroutine(UpdatePlayer(playerSpeed, dashSpeed, blockTime, dashEnergyCost));
+	}
+	
+	IEnumerator UpdatePlayer(float playerSpee, float dashSpee, float blockTim, int dashEnergyCos){
+		player1.speed = playerSpee;
+		player2.speed = playerSpee;
+		player1.dashSpeed = dashSpee;
+		player2.dashSpeed = dashSpee;
+		player1.blockTime = blockTim;
+		player2.blockTime = blockTim;
+		player1.dashEnergyCost = dashEnergyCos;
+		player2.dashEnergyCost = dashEnergyCos;
+		
+		yield return 0;
 	}
 	
 	public void SetTurn(bool turn) {
@@ -161,7 +167,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator EndRound(int p){
+	IEnumerator EndRound(int p){
 		if (gameRound >= maxGameRounds) {
 			int winner = (player1Score > player2Score) ? p1 : p2;
 			uiScript.GetComponent<MatchUI> ().MatchEnd (winner);

@@ -115,6 +115,25 @@ public class Player : MonoBehaviour
 	
 	void Update() 
 	{
+		direction = controls.UpdateMovement();//zuweisung der Inputachsen
+		directionRaw = controls.UpdateMovementRaw();
+		
+		StartCoroutine(this.MovePlayer(direction));
+		StartCoroutine(this.PerformAction(direction, directionRaw));
+	}
+	
+	IEnumerator MovePlayer(Vector2 direction_) {
+		if (canMovement)// Bewegt den spieler
+		{
+			animator.SetFloat("xAxis", direction_.x * motionInverter);
+			animator.SetFloat("yAxis", direction_.y * motionInverter);
+			myTransform.AddForce (direction_ * speed);
+		}
+		
+		yield return 0;
+	}
+	
+	IEnumerator PerformAction(Vector2 direction_, Vector2 directionRaw_) {
 		SetTrigger(action);
 		stunTimer.UpdateTimer();
 		fireTimer.UpdateTimer();
@@ -127,50 +146,50 @@ public class Player : MonoBehaviour
 		{
 			isInAction = true;
 			isStunned = true;
-		}
-
-		direction = controls.UpdateMovement();//zuweisung der Inputachsen
-		directionRaw = controls.UpdateMovementRaw();
-		
-		if (direction != Vector2.zero) {inputAxisDown = true;}
-		
-		if (controls.IsFireKeyActive(ICanShoot()) && !isInAction)//fire input
+		} else if (controls.IsFireKeyActive(ICanShoot()) && !isInAction)//fire input
 		{
 			isInAction = true;
 			isShooting = true;
-		}
-		
-		if (controls.IsPowerShootActive(ICanShoot()) && !isInAction)//Powershoot input
+		} else if (controls.IsPowerShootActive(ICanShoot()) && !isInAction)//Powershoot input
 		{
-			isInAction = true;
-			isPowerShooting = true;
-		}
-		
-
-		if (controls.IsBlockKeyActive() && !isInAction)//Block input
+			//isInAction = true;
+			//isPowerShooting = true;
+		} else if (controls.IsBlockKeyActive() && !isInAction)//Block input
 		{
 			isInAction = true;
 			isBlocking = true;
-		}
-		
-		if (controls.IsBuffActive() && !isInAction)//Buff input
+		} else if (controls.IsBuffActive() && !isInAction)//Buff input
 		{
-			isBlocking = true;
-		}
-		
-		if (controls.IsDashActive() && !isInAction && inputAxisDown && !isDashActive && power >= dashEnergyCost)//Dash input
+			//isBlocking = true;
+		} else if (controls.IsDashActive() && !isInAction && direction_ != Vector2.zero && power >= dashEnergyCost)//Dash input
 		{
-			isDashActive = true;
 			isInAction = true;
 			isDashing = true;
 		}
 		
-		if (isShooting)/////////Action Shoot//////////////////////
+		if(isStunned)///////////////////////isStunned Action//////////////////////////
+		{
+			Debug.Log(this.transform.name + " stun enter");
+			if(stunProgression == 1 && stunTimer.IsFinished())
+			{
+				Debug.Log(this.transform.name + " stun end");
+				action = 0;
+				isInAction = false;
+				isStunned = false;
+				zuLangsamZumFangenDuMong = false;
+			}
+			else if(stunProgression == 0)
+			{
+				stunTimer.SetTimer(2f);
+				action = 6;
+				stunProgression =1;
+			}
+		} else if (isShooting)/////////Action Shoot//////////////////////
 		{	
-			Debug.Log("shoot enter");		
+			Debug.Log(this.transform.name + " shoot enter");		
 			if(shootProgression == 2 && waitAfterSoot.IsFinished())
 			{
-				Debug.Log("shoot endet");
+				Debug.Log(this.transform.name + " shoot endet");
 				shootProgression = 0;
 				action = 0;
 				isInAction = false;
@@ -180,7 +199,7 @@ public class Player : MonoBehaviour
 			{
 				waitAfterSoot.SetTimer(0.5f);
 				shootProgression = 2;
-				Shoot(direction,false);
+				Shoot(direction_,false);
 			}
 			else if(shootProgression == 0)
 			{
@@ -188,12 +207,12 @@ public class Player : MonoBehaviour
 				fireTimer.SetTimer(1f);
 				shootProgression = 1;
 			}		
-		}
-		
-		if (isPowerShooting)/////////Action PowerShoot//////////////////////
-		{		
+		} else if (isPowerShooting)/////////Action PowerShoot//////////////////////
+		{
+			Debug.Log(this.transform.name + " powershoot enter");
 			if(shootProgression == 2 && waitAfterSoot.IsFinished())
 			{
+				Debug.Log(this.transform.name + " powershoot end");
 				shootProgression = 0;
 				action = 0;
 				isInAction = false;
@@ -203,7 +222,7 @@ public class Player : MonoBehaviour
 			{
 				waitAfterSoot.SetTimer(0.5f);
 				shootProgression = 2;
-				Shoot(direction,false);
+				Shoot(direction_,false);
 			}
 			else if(shootProgression == 0)
 			{
@@ -211,14 +230,12 @@ public class Player : MonoBehaviour
 				fireTimer.SetTimer(1f);
 				shootProgression = 1;
 			}		
-		}
-		
-		if(isBlocking)///////////////////////Block Action//////////////////////////
+		} else if(isBlocking)///////////////////////Block Action//////////////////////////
 		{	
-			Debug.Log(" block Enter");
+			Debug.Log(this.transform.name + " block Enter");
 			if(blockProgression == 2 && blockTimer.IsFinished())
 			{
-				Debug.Log("block endet");
+				Debug.Log(this.transform.name + " block endet");
 				action = 0;
 				blockProgression = 0;
 				isInAction = false;
@@ -235,14 +252,12 @@ public class Player : MonoBehaviour
 				action = 1;
 				blockProgression =1;
 			}
-		}
-	
-		if(isDashing)//////////////Dash//////////////////////////////////////////
+		} else if(isDashing)//////////////Dash//////////////////////////////////////////
 		{
-			Debug.Log("dash enter");
+			Debug.Log(this.transform.name + " dash enter");
 			if(dashProgression == 1 && dashTimer.IsFinished())
 			{
-				Debug.Log("dash endet");
+				Debug.Log(this.transform.name + " dash endet");
 				dashProgression = 0;
 				isDashing = false;
 				action = 0;
@@ -250,28 +265,21 @@ public class Player : MonoBehaviour
 			}
 			else if(dashProgression == 0)
 			{
-				Debug.Log("dash start");
+				Debug.Log(this.transform.name + " dash start");
 				dashTimer.SetTimer(0.2f);
 				power -= dashEnergyCost;
 				action = 10;
 				dashProgression =1;
-				animator.SetFloat("xAxis", direction.x * motionInverter);
-				animator.SetFloat("yAxis", direction.y * motionInverter);
-				myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
+				animator.SetFloat("xAxis", direction_.x * motionInverter);
+				animator.SetFloat("yAxis", direction_.y * motionInverter);
+				myTransform.AddForce (directionRaw_ * dashSpeed, ForceMode2D.Impulse);
 			}
-		} 
-		if(!controls.IsDashActive())
-		{
-				isDashActive = false;		
-		}		
-		inputAxisDown =	false;
-		
-		if(isBuffing)///////////////////////Buff Action//////////////////////////
+		} else if(isBuffing)///////////////////////Buff Action//////////////////////////
 		{	
-		Debug.Log("Dash enter");
+		Debug.Log(this.transform.name + " Buff enter");
 			if(blockProgression == 1 && !controls.IsBuffActive())
 			{
-				Debug.Log("Dash Has endet");
+				Debug.Log(this.transform.name + " Buff Has endet");
 				action = 0;
 				buffProgression = 0;
 				isBuffing = false;
@@ -284,29 +292,8 @@ public class Player : MonoBehaviour
 			}
 		}
 		
-		if(isStunned)///////////////////////isStunned Action//////////////////////////
-		{	
-			if(stunProgression == 1 && stunTimer.IsFinished())
-			{
-				action = 0;
-				isInAction = false;
-				isStunned = false;
-			}
-			else if(stunProgression == 0)
-			{
-				stunTimer.SetTimer(2f);
-				action = 6;
-				stunProgression =1;
-			}
-		}
-
-		if (canMovement)// Bewegt den spieler
-		{
-			animator.SetFloat("xAxis", direction.x * motionInverter);
-			animator.SetFloat("yAxis", direction.y * motionInverter);
-			myTransform.AddForce (direction * speed);
-		}
-	} 
+		yield return 0;
+	}
 	
 	int oldState =0;
 	public void SetTrigger(int newState)

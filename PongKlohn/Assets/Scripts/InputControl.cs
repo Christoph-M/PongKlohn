@@ -80,27 +80,6 @@ public class InputControl
 		}
 	}
 	
-	
-	public bool IsActionKeyActive(bool canShoot)
-	{
-		if(isAiPlayer)
-		{
-			if(!ai.GetBlock() || !ai.GetAttack(canShoot))
-			{
-				return true;
-			}
-		}
-		else
-		{
-			if(Input.GetAxis(block)!= 0 || Input.GetAxis(shoot) != 0)
-			{
-				return true;
-			}
-		}
-	
-		return false;
-	}
-	
 	public bool IsBlockKeyActive()
 	{
 		if(isAiPlayer)

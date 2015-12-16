@@ -11,7 +11,7 @@ public class StartScreen : UserInterface {
 	private UserInterface userInterfaceScript;
 
 	private Color textPulse;
-	private Color outlinePulse = Color.black;
+	private Color outlinePulse;
 	
 	private float t = 0.0f;
 	private bool one = false;
@@ -20,6 +20,7 @@ public class StartScreen : UserInterface {
 		userInterfaceScript = GetComponent<UserInterface> ();
 
 		textPulse = startScreen.GetComponentInChildren<Text> ().color;
+		outlinePulse = startScreen.GetComponentInChildren<Outline> ().effectColor;
 	}
 	
 	void Update () {
@@ -32,7 +33,7 @@ public class StartScreen : UserInterface {
 	void LateUpdate() {
 		if (startScreen.transform.FindChild ("Text").gameObject.activeSelf) {
 			textPulse = Color.Lerp (startScreen.GetComponentInChildren<Text> ().color, Color.clear, t);
-			outlinePulse = Color.Lerp (Color.black, Color.clear, t);
+			outlinePulse = Color.Lerp (startScreen.GetComponentInChildren<Outline> ().effectColor, Color.clear, t);
 			startScreen.transform.FindChild ("Press_Start").GetComponent<Text> ().color = textPulse;
 			startScreen.transform.FindChild ("Press_Start").GetComponent<Outline> ().effectColor = outlinePulse;
 			

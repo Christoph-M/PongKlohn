@@ -104,6 +104,11 @@ public class Player : MonoBehaviour
 	private bool isPowerShooting = false;
 	private bool inputAxisDown = false;
 	private bool isBuffing = false;
+	private int dashProgression = 0;
+	private bool isDashing = false;
+	private int buffProgression = 0;
+	private int stunProgression = 0;
+	private bool isInAction = false;
 	
 	void Update() 
 	{
@@ -116,6 +121,7 @@ public class Player : MonoBehaviour
 		
 		if(zuLangsamZumFangenDuMong)///////////////Stun
 		{
+			isInAction = true;
 			isStunned = true;
 		}
 		
@@ -131,6 +137,13 @@ public class Player : MonoBehaviour
 			isInAction = true;
 			isShooting = true;
 		}
+		
+		if (controls.IsPowerShootActive() && ICanShoot() && !isInAction)//Powershoot input
+		{
+			isInAction = true;
+			isPowerShooting = true;
+		}
+		
 
 		if (controls.IsBlockKeyActive() && !isInAction)//Block input
 		{
@@ -143,18 +156,11 @@ public class Player : MonoBehaviour
 			isBlocking = true;
 		}
 		
-		if (controls.IsDashActive() && !isInAction)//Dash input
+		if (controls.IsDashActive() && !isInAction && inputAxisDown)//Dash input
 		{
 			isInAction = true;
-			isBlocking = true;
+			isDashing = true;
 		}
-		
-		if (controls.IsPowerShootActive() && !isInAction)//Powershoot input
-		{
-			isInAction = true;
-			isBlocking = true;
-		}
-		
 		
 		if (isShooting)/////////Action Shoot//////////////////////
 		{		
@@ -162,6 +168,7 @@ public class Player : MonoBehaviour
 			{
 				shootProgression = 0;
 				action = 0;
+				isInAction = false;
 				isShooting = false;
 			}
 			else if(shootProgression == 1 && fireTimer.IsFinished())
@@ -178,7 +185,30 @@ public class Player : MonoBehaviour
 			}		
 		}
 		
-		if(isBlocking)///////////////////////Bock Action//////////////////////////
+		if (isPowerShooting)/////////Action PowerShoot//////////////////////
+		{		
+			if(shootProgression == 2 && waitAfterSoot.IsFinished())
+			{
+				shootProgression = 0;
+				action = 0;
+				isInAction = false;
+				isPowerShooting = false;
+			}
+			else if(shootProgression == 1 && fireTimer.IsFinished())
+			{
+				waitAfterSoot.SetTimer(0.5f);
+				shootProgression = 2;
+				Shoot(direction,false);
+			}
+			else if(shootProgression == 0)
+			{
+				action = 3;
+				fireTimer.SetTimer(1f);
+				shootProgression = 1;
+			}		
+		}
+		
+		if(isBlocking)///////////////////////Block Action//////////////////////////
 		{	
 			if(blockProgression == 2 && blockTimer.IsFinished())
 			{
@@ -200,12 +230,20 @@ public class Player : MonoBehaviour
 			}
 		}
 	
-		if(isBlocking && inputAxisDown && power >= dashEnergyCost)//////////////Dash
+		if(isDashing)//////////////Dash//////////////////////////////////////////
 		{
-			Debug.Log("DASH!!!!!!!!!!!!!");
-			inputAxisDown = false;
-			power -= dashEnergyCost;
-			isDashActive = true;
+			if(dashProgression == 1 )
+			{
+				action = 0;
+				isInAction = false;
+			}
+			else if(dashProgression == 0)
+			{
+				power -= dashEnergyCost;
+				action = 10;
+				dashProgression =1;
+			}
+			
 			animator.SetFloat("xAxis", direction.x * motionInverter);
 			animator.SetFloat("yAxis", direction.y * motionInverter);
 			myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
@@ -213,7 +251,45 @@ public class Player : MonoBehaviour
 		} 
 		else
 		{
-			inputAxisDown =	false;
+			if(!controls.IsDashActive())
+			{
+				inputAxisDown =	false;
+			}
+			
+		}
+		
+		if(isBuffing)///////////////////////Buff Action//////////////////////////
+		{	
+			if(blockProgression == 1)
+			{
+				action = 0;
+				if(!controls.IsBuffActive())
+				{
+					buffProgression = 0;
+					isBuffing = false;
+				}
+			}
+			else if(buffProgression == 0)
+			{
+				action = 6;
+				buffProgression =1;
+			}
+		}
+		
+		if(isStunned)///////////////////////isStunned Action//////////////////////////
+		{	
+			if(stunProgression == 1 && stunTimer.IsFinished())
+			{
+				action = 0;
+				isInAction = false;
+				isStunned = false;
+			}
+			else if(stunProgression == 0)
+			{
+				stunTimer.SetTimer(2f);
+				action = 6;
+				stunProgression =1;
+			}
 		}
 
 		if (canMovement)// Bewegt den spieler
@@ -240,7 +316,13 @@ public class Player : MonoBehaviour
 					canMovement = true;
 					animator.SetBool ("Block", false);
 					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
 					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					
 					oldState = newState;
 					break;
 				
@@ -253,7 +335,13 @@ public class Player : MonoBehaviour
 					canMovement = false;
 					animator.SetBool ("Block", true);
 					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
 					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					
 					oldState = newState;
 					break;
 				
@@ -266,7 +354,13 @@ public class Player : MonoBehaviour
 					canMovement = false;
 					animator.SetBool ("Block", true);
 					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
 					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					
 					oldState = newState;
 					break;
 				
@@ -279,7 +373,13 @@ public class Player : MonoBehaviour
 					canMovement = true;
 					animator.SetBool ("Block", false);
 					animator.SetBool ("Fire", true);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
 					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					
 					oldState = newState;
 					break;
 				
@@ -292,7 +392,13 @@ public class Player : MonoBehaviour
 					canMovement = false;
 					animator.SetBool ("Block", false);
 					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
 					animator.SetBool ("Stun", true);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					
 					oldState = newState;
 					break;
 				
@@ -305,7 +411,109 @@ public class Player : MonoBehaviour
 					canMovement = true;
 					animator.SetBool ("Block", false);
 					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
 					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					
+					oldState = newState;
+					break;
+				
+				case 6://Buff
+					catchTrigger.SetActive(true);
+					missTrigger.SetActive(false);/////////
+					blockTrigger.SetActive(false);
+					dashTrigger.SetActive(false);
+
+					canMovement = true;
+					animator.SetBool ("Block", false);
+					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", true);
+					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					
+					oldState = newState;
+					break;
+				
+				case 7://Powershoot
+					catchTrigger.SetActive(false);
+					missTrigger.SetActive(false);/////////
+					blockTrigger.SetActive(false);
+					dashTrigger.SetActive(false);
+
+					canMovement = true;
+					animator.SetBool ("Block", false);
+					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", true);
+					animator.SetBool ("Buff", false);
+					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					
+					oldState = newState;
+					break;
+				
+				case 8://win
+					catchTrigger.SetActive(false);
+					missTrigger.SetActive(false);/////////
+					blockTrigger.SetActive(false);
+					dashTrigger.SetActive(false);
+
+					canMovement = true;
+					animator.SetBool ("Block", false);
+					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
+					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", true);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", false);
+					animator.SetBool ("Dash", false);
+					
+					oldState = newState;
+					break;
+				
+				case 9://loose
+					catchTrigger.SetActive(false);
+					missTrigger.SetActive(false);/////////
+					blockTrigger.SetActive(false);
+					dashTrigger.SetActive(false);
+
+					canMovement = true;
+					animator.SetBool ("Block", false);
+					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
+					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", true);
+					animator.SetBool ("Dash", false);
+	
+					oldState = newState;
+					break;
+				
+				case 10://dash
+					catchTrigger.SetActive(false);
+					missTrigger.SetActive(false);/////////
+					blockTrigger.SetActive(false);
+					dashTrigger.SetActive(false);
+
+					canMovement = true;
+					animator.SetBool ("Block", false);
+					animator.SetBool ("Fire", false);
+					animator.SetBool ("PowerShoot", false);
+					animator.SetBool ("Buff", false);
+					animator.SetBool ("Stun", false);
+					animator.SetBool ("Win", false);
+					animator.SetBool ("Loose", false);
+					animator.SetBool ("Dash", true);
+				
 					oldState = newState;
 					break;
 			}

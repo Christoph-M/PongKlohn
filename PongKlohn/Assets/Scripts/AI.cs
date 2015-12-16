@@ -246,4 +246,14 @@ public class AI
 
 		return false;
 	}
+	
+	public bool GetBuff()
+	{
+		return false;
+	}
+	
+	public bool GetDash()
+	{
+		return false;
+	}
 }

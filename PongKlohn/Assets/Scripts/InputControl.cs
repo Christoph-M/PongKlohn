@@ -122,7 +122,6 @@ public class InputControl
 	{
 		if(isAiPlayer)
 		{
-			Debug.Log("AI Shoot:"+ att);
 			return ai.GetAttack(att);////////////////
 		}
 		
@@ -141,14 +140,13 @@ public class InputControl
 	{
 		if(isAiPlayer)
 		{
-			Debug.Log("AI Shoot:");
 			return ai.GetBuff();////////////////
 		}
 		
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(buff))
+			if(Input.GetAxis(buff) != 0f)
 			{
 				return true;
 			}
@@ -160,14 +158,13 @@ public class InputControl
 	{
 		if(isAiPlayer)
 		{
-			Debug.Log("AI Dash:"+ att);
 			return ai.GetDash();////////////////
 		}
 		
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(dash))
+			if(Input.GetAxis(dash) != 0)
 			{
 				return true;
 			}
@@ -179,14 +176,13 @@ public class InputControl
 	{
 		if(isAiPlayer)
 		{
-			Debug.Log("AI Power Shoot:");
-			return ai.GetAttack();////////////////
+			return ai.GetAttack(false);////////////////
 		}
 		
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(powerShoot))
+			if(Input.GetAxis(powerShoot) != 0f)
 			{
 				return true;
 			}

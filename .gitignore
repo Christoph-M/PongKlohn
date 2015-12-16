@@ -13,6 +13,7 @@
 *.csproj
 *.sln
 *.userprefs
+PongKlohn/PongKlohn/Assets/Standard Assets/**
 PongKlohn/Library/ShaderCache/**
 PongKlohn/Library/CurrentLayout.dwlt
 PongKlohn/Builds/**

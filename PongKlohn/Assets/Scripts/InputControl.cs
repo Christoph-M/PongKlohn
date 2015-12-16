@@ -176,7 +176,7 @@ public class InputControl
 	{
 		if(isAiPlayer)
 		{
-			return ai.GetAttack(false);////////////////
+			return ai.GetAttack(att);////////////////
 		}
 		
 		else

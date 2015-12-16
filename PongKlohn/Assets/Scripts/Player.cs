@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
 	private Timer fireTimer;
 	private Timer stunTimer;
 	private Timer waitAfterSoot;
+	private Timer dashTimer;
 
 	private Rigidbody2D myTransform;
 	private Animator animator;
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
 		fireTimer = new Timer();
 		stunTimer = new Timer();
 		waitAfterSoot = new Timer();
+		dashTimer = new Timer();
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 		animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
@@ -119,6 +121,7 @@ public class Player : MonoBehaviour
 		blockTimer.UpdateTimer();
 		catchTimer.UpdateTimer();
 		waitAfterSoot.UpdateTimer();
+		dashTimer.UpdateTimer();
 		
 		if(zuLangsamZumFangenDuMong)///////////////Stun
 		{
@@ -155,7 +158,7 @@ public class Player : MonoBehaviour
 			isBlocking = true;
 		}
 		
-		if (controls.IsDashActive() && !isInAction && inputAxisDown && !isDashActive)//Dash input
+		if (controls.IsDashActive() && !isInAction && inputAxisDown && !isDashActive && power >= dashEnergyCost)//Dash input
 		{
 			isDashActive = true;
 			isInAction = true;
@@ -163,9 +166,11 @@ public class Player : MonoBehaviour
 		}
 		
 		if (isShooting)/////////Action Shoot//////////////////////
-		{		
+		{	
+			Debug.Log("shoot enter");		
 			if(shootProgression == 2 && waitAfterSoot.IsFinished())
 			{
+				Debug.Log("shoot endet");
 				shootProgression = 0;
 				action = 0;
 				isInAction = false;
@@ -210,8 +215,10 @@ public class Player : MonoBehaviour
 		
 		if(isBlocking)///////////////////////Block Action//////////////////////////
 		{	
+			Debug.Log(" block Enter");
 			if(blockProgression == 2 && blockTimer.IsFinished())
 			{
+				Debug.Log("block endet");
 				action = 0;
 				blockProgression = 0;
 				isInAction = false;
@@ -230,10 +237,12 @@ public class Player : MonoBehaviour
 			}
 		}
 	
-		if(isDashing && power >= dashEnergyCost)//////////////Dash//////////////////////////////////////////
+		if(isDashing)//////////////Dash//////////////////////////////////////////
 		{
-			if(dashProgression == 1 )
+			Debug.Log("dash enter");
+			if(dashProgression == 1 && dashTimer.IsFinished())
 			{
+				Debug.Log("dash endet");
 				dashProgression = 0;
 				isDashing = false;
 				action = 0;
@@ -241,6 +250,8 @@ public class Player : MonoBehaviour
 			}
 			else if(dashProgression == 0)
 			{
+				Debug.Log("dash start");
+				dashTimer.SetTimer(0.2f);
 				power -= dashEnergyCost;
 				action = 10;
 				dashProgression =1;
@@ -257,8 +268,10 @@ public class Player : MonoBehaviour
 		
 		if(isBuffing)///////////////////////Buff Action//////////////////////////
 		{	
+		Debug.Log("Dash enter");
 			if(blockProgression == 1 && !controls.IsBuffActive())
 			{
+				Debug.Log("Dash Has endet");
 				action = 0;
 				buffProgression = 0;
 				isBuffing = false;
@@ -558,6 +571,8 @@ public class Player : MonoBehaviour
 	
 	private bool ICanShoot()
 	{
+		//Debug.Log(this.transform.name + ": " + turn);
+		
 		if(!gameScript.GetProjectileTransform() && turn)
 		{
 			return true;

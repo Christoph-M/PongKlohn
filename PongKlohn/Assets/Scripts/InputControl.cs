@@ -172,7 +172,7 @@ public class InputControl
 		}
 	}
 	
-	public bool IsPowerShootActive()
+	public bool IsPowerShootActive(bool att)
 	{
 		if(isAiPlayer)
 		{

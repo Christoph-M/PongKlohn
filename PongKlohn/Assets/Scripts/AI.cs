@@ -27,7 +27,7 @@ public class AI
 		playerTransform = p;
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 		resetPosition = playerTransform.position;
-        SetHumanAiPlayer();
+        SetLeftRightPlayer();
         
 
 	}
@@ -182,7 +182,7 @@ public class AI
         playerDistance = Vector3.Distance(leftPlayer.transform.position,  rightPlayer.transform.position);
     }
 
-    //assigns the left and right player by tag
+    
     private void SetPlayerMinMaxDistance()
     {
         SetballSpeed();
@@ -216,7 +216,9 @@ public class AI
             minimumPlayerDistance = 25.0f;
             maximumPlayerDistance = 30.0f;
         }
-    }public void SetHumanAiPlayer()
+
+        //assigns the left and right player by tag
+    }public void SetLeftRightPlayer()
     {
         rightPlayer = GameObject.FindGameObjectWithTag("Player2");
         leftPlayer = GameObject.FindGameObjectWithTag("Player1");
@@ -246,14 +248,41 @@ public class AI
 
 		return false;
 	}
-	
-	public bool GetBuff()
-	{
-		return false;
-	}
-	
-	public bool GetDash()
-	{
-		return false;
-	}
+
+    public bool GetDash()
+    {
+        if (ballTransform != null)
+        {
+            if (playerTransform == leftPlayer.transform)
+            {
+                if (playerTransform.position.x + 2.0f <= ballTransform.position.x && Vector3.Distance(playerTransform.position, ballTransform.position) >= blockBallDistance)
+                {
+                    return true;
+                }
+                
+            }
+            
+
+            else if (playerTransform == rightPlayer.transform)
+            {
+                if (playerTransform.position.x + -2.0f >= ballTransform.position.x && Vector3.Distance(playerTransform.position, ballTransform.position) >= blockBallDistance)
+                {
+                    return true;
+                }
+                
+            }
+           
+        }
+
+        return false;   
+    }
+
+    public bool GetBuff()
+    {
+        return true;
+    }
+
+
+       
+    
 }

@@ -94,21 +94,22 @@ public class Player : MonoBehaviour
 	private bool zuLangsamZumFangenDuMong = false;
 	private bool canMovement = true;
 	
-	private bool isStunned = false;
 	private int action = 5;
-	private bool isBlocking = false;
+
 	private int blockProgression = 0;
-	private bool isShooting = false;
 	private int shootProgression = 0;
-	private bool isDashActive = false;
-	private bool isPowerShooting = false;
-	private bool inputAxisDown = false;
-	private bool isBuffing = false;
 	private int dashProgression = 0;
-	private bool isDashing = false;
 	private int buffProgression = 0;
 	private int stunProgression = 0;
 	private bool isInAction = false;
+	private bool isDashing = false;
+	private bool isBuffing = false;
+	private bool isDashActive = false;
+	private bool isPowerShooting = false;
+	private bool inputAxisDown = false;
+	private bool isShooting = false;
+	private bool isBlocking = false;
+	private bool isStunned = false;
 	
 	void Update() 
 	{
@@ -124,21 +125,19 @@ public class Player : MonoBehaviour
 			isInAction = true;
 			isStunned = true;
 		}
-		
-		if (direction == Vector2.zero && controls.UpdateMovement() != Vector2.zero) {inputAxisDown = true;}
 
 		direction = controls.UpdateMovement();//zuweisung der Inputachsen
 		directionRaw = controls.UpdateMovementRaw();
 		
-		if (direction == Vector2.zero) {isDashActive = false;}
-
+		if (direction != Vector2.zero) {inputAxisDown = true;}
+		
 		if (controls.IsFireKeyActive(ICanShoot()) && !isInAction)//fire input
 		{
 			isInAction = true;
 			isShooting = true;
 		}
 		
-		if (controls.IsPowerShootActive() && ICanShoot() && !isInAction)//Powershoot input
+		if (controls.IsPowerShootActive(ICanShoot()) && !isInAction)//Powershoot input
 		{
 			isInAction = true;
 			isPowerShooting = true;
@@ -156,8 +155,9 @@ public class Player : MonoBehaviour
 			isBlocking = true;
 		}
 		
-		if (controls.IsDashActive() && !isInAction && inputAxisDown)//Dash input
+		if (controls.IsDashActive() && !isInAction && inputAxisDown && !isDashActive)//Dash input
 		{
+			isDashActive = true;
 			isInAction = true;
 			isDashing = true;
 		}
@@ -230,10 +230,12 @@ public class Player : MonoBehaviour
 			}
 		}
 	
-		if(isDashing)//////////////Dash//////////////////////////////////////////
+		if(isDashing && power >= dashEnergyCost)//////////////Dash//////////////////////////////////////////
 		{
 			if(dashProgression == 1 )
 			{
+				dashProgression = 0;
+				isDashing = false;
 				action = 0;
 				isInAction = false;
 			}
@@ -242,32 +244,25 @@ public class Player : MonoBehaviour
 				power -= dashEnergyCost;
 				action = 10;
 				dashProgression =1;
+				animator.SetFloat("xAxis", direction.x * motionInverter);
+				animator.SetFloat("yAxis", direction.y * motionInverter);
+				myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
 			}
-			
-			animator.SetFloat("xAxis", direction.x * motionInverter);
-			animator.SetFloat("yAxis", direction.y * motionInverter);
-			myTransform.AddForce (directionRaw * dashSpeed, ForceMode2D.Impulse);
-			//dashHasBeenTriggert = false;
 		} 
-		else
+		if(!controls.IsDashActive())
 		{
-			if(!controls.IsDashActive())
-			{
-				inputAxisDown =	false;
-			}
-			
-		}
+				isDashActive = false;		
+		}		
+		inputAxisDown =	false;
 		
 		if(isBuffing)///////////////////////Buff Action//////////////////////////
 		{	
-			if(blockProgression == 1)
+			if(blockProgression == 1 && !controls.IsBuffActive())
 			{
 				action = 0;
-				if(!controls.IsBuffActive())
-				{
-					buffProgression = 0;
-					isBuffing = false;
-				}
+				buffProgression = 0;
+				isBuffing = false;
+				
 			}
 			else if(buffProgression == 0)
 			{
@@ -501,7 +496,7 @@ public class Player : MonoBehaviour
 				case 10://dash
 					catchTrigger.SetActive(false);
 					missTrigger.SetActive(false);/////////
-					blockTrigger.SetActive(false);
+					blockTrigger.SetActive(true);
 					dashTrigger.SetActive(false);
 
 					canMovement = true;

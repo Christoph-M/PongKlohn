@@ -13,7 +13,7 @@ public class MainMenu : UserInterface {
 	}
 
 	public void Singleplayer() {
-
+		Application.LoadLevel(2);
 	}
 
 	public void Multiplayer() {

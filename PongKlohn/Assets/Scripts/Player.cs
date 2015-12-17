@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
 		} else if (controls.IsPowerShootActive(ICanShoot()) && !isInAction)//Powershoot input
 		{
 			//isInAction = true;
-			//isPowerShooting = true;
+//			isPowerShooting = true;
 		} else if (controls.IsBlockKeyActive() && !isInAction)//Block input
 		{
 			isInAction = true;
@@ -169,10 +169,10 @@ public class Player : MonoBehaviour
 		
 		if(isStunned)///////////////////////isStunned Action//////////////////////////
 		{
-			Debug.Log(this.transform.name + " stun enter");
+			//Debug.Log(this.transform.name + " stun enter");
 			if(stunProgression == 1 && stunTimer.IsFinished())
 			{
-				Debug.Log(this.transform.name + " stun end");
+				//Debug.Log(this.transform.name + " stun end");
 				action = 0;
 				isInAction = false;
 				isStunned = false;
@@ -186,10 +186,10 @@ public class Player : MonoBehaviour
 			}
 		} else if (isShooting)/////////Action Shoot//////////////////////
 		{	
-			Debug.Log(this.transform.name + " shoot enter");		
+			//Debug.Log(this.transform.name + " shoot enter");		
 			if(shootProgression == 2 && waitAfterSoot.IsFinished())
 			{
-				Debug.Log(this.transform.name + " shoot endet");
+				//Debug.Log(this.transform.name + " shoot endet");
 				shootProgression = 0;
 				action = 0;
 				isInAction = false;
@@ -209,10 +209,10 @@ public class Player : MonoBehaviour
 			}		
 		} else if (isPowerShooting)/////////Action PowerShoot//////////////////////
 		{
-			Debug.Log(this.transform.name + " powershoot enter");
+			//Debug.Log(this.transform.name + " powershoot enter");
 			if(shootProgression == 2 && waitAfterSoot.IsFinished())
 			{
-				Debug.Log(this.transform.name + " powershoot end");
+				//Debug.Log(this.transform.name + " powershoot end");
 				shootProgression = 0;
 				action = 0;
 				isInAction = false;
@@ -222,7 +222,7 @@ public class Player : MonoBehaviour
 			{
 				waitAfterSoot.SetTimer(0.5f);
 				shootProgression = 2;
-				Shoot(direction_,false);
+				Shoot(direction_,true);
 			}
 			else if(shootProgression == 0)
 			{
@@ -232,10 +232,10 @@ public class Player : MonoBehaviour
 			}		
 		} else if(isBlocking)///////////////////////Block Action//////////////////////////
 		{	
-			Debug.Log(this.transform.name + " block Enter");
+			//Debug.Log(this.transform.name + " block Enter");
 			if(blockProgression == 2 && blockTimer.IsFinished())
 			{
-				Debug.Log(this.transform.name + " block endet");
+				//Debug.Log(this.transform.name + " block endet");
 				action = 0;
 				blockProgression = 0;
 				isInAction = false;
@@ -254,10 +254,10 @@ public class Player : MonoBehaviour
 			}
 		} else if(isDashing)//////////////Dash//////////////////////////////////////////
 		{
-			Debug.Log(this.transform.name + " dash enter");
+			//Debug.Log(this.transform.name + " dash enter");
 			if(dashProgression == 1 && dashTimer.IsFinished())
 			{
-				Debug.Log(this.transform.name + " dash endet");
+				//Debug.Log(this.transform.name + " dash endet");
 				dashProgression = 0;
 				isDashing = false;
 				action = 0;
@@ -276,10 +276,10 @@ public class Player : MonoBehaviour
 			}
 		} else if(isBuffing)///////////////////////Buff Action//////////////////////////
 		{	
-		Debug.Log(this.transform.name + " Buff enter");
+		//Debug.Log(this.transform.name + " Buff enter");
 			if(blockProgression == 1 && !controls.IsBuffActive())
 			{
-				Debug.Log(this.transform.name + " Buff Has endet");
+				//Debug.Log(this.transform.name + " Buff Has endet");
 				action = 0;
 				buffProgression = 0;
 				isBuffing = false;
@@ -307,6 +307,7 @@ public class Player : MonoBehaviour
 					missTrigger.SetActive(false);
 					blockTrigger.SetActive(false);
 					dashTrigger.SetActive(false);
+					this.transform.FindChild("Block").gameObject.SetActive(false);
 
 					canMovement = true;
 					animator.SetBool ("Block", false);
@@ -345,6 +346,7 @@ public class Player : MonoBehaviour
 					missTrigger.SetActive(false);
 					blockTrigger.SetActive(true);///////////////
 					dashTrigger.SetActive(false);//////////////
+					this.transform.FindChild("Block").gameObject.SetActive(true);
 
 					canMovement = false;
 					animator.SetBool ("Block", true);

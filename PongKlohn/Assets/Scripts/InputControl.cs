@@ -161,7 +161,7 @@ public class InputControl
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(powerShoot) != 0f)
+			if(Input.GetAxis(powerShoot) != 0f && att)
 			{
 				return true;
 			}

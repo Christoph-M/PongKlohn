@@ -9,14 +9,17 @@ public class AI
 	private Transform playerTransform;
 	private Vector3 resetPosition ;
     private float playerDistance;
-    public float minimumPlayerDistance = 12.0f;
-    public float maximumPlayerDistance = 18.0f;
+    public float minimumPlayerDistanceReset = 30.0f;
+    public float maximumPlayerDistanceReset = 35.0f;
+    public float minimumPlayerDistance;
+    public float maximumPlayerDistance;
+    public float playerDistanceJump = 5.0f;
     private float playerBallDistance;
-    public float blockBallDistance = 3.75f;
+    public float blockBallDistance = 10f;
     private Vector3 nullPosition = Vector3.zero;
     //will be used to stop the characters from trembling by giving worldspace for tolerance
-    private float stopTrembling = 0.35f;
-    private float ballSpeed;
+    private float stopTrembling = 1.0f;
+    private float ballSpeed =0f;
 
 	private Player character;
     private GameObject leftPlayer;
@@ -24,6 +27,8 @@ public class AI
 	// Use this for initialization
 	public AI (Transform p) 
 	{
+        minimumPlayerDistance = minimumPlayerDistanceReset;
+        maximumPlayerDistance = maximumPlayerDistanceReset;
 		playerTransform = p;
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 		resetPosition = playerTransform.position;
@@ -42,11 +47,18 @@ public class AI
         else
         {
             ballSpeed = gameScript.minBallSpeed;
+           
 
         }
     }
+
+    private void resetMinMaxPlayerDistance()
+    {
+            minimumPlayerDistance = minimumPlayerDistanceReset;
+            maximumPlayerDistance = maximumPlayerDistanceReset;
+    }
 	//returns the position of the ball
-	private void GetBallPosition()
+	private void GetBallTransform()
 	{
 
 		ballTransform = gameScript.GetProjectileTransform ();
@@ -55,11 +67,12 @@ public class AI
 	//returns the vector2D-position, the AI is moving to
 	public Vector2 GetMovementInput()
 	{
-            SetPlayerMinMaxDistance();
-            SetPlayerDistance();
+            GetBallTransform();
             SetPlayerBallDistance();
+            SetPlayerDistance();
+            SetPlayerMinMaxDistance();
 
-			//creates the moving Axis for the player depending on the y-coord of the ball (whether to go up or down)                 
+            //creates the moving Axis for the player depending on the y-coord of the ball (whether to go up or down)                 
 			if (ballTransform != null) 
             {
                 if (playerTransform.transform.position.y < (ballTransform.transform.position.y - stopTrembling)) 
@@ -93,7 +106,47 @@ public class AI
             //manipulates the moving axis on the x-axis to reach critical balls
             if (ballTransform != null)
             {
-                if (playerBallDistance < 8.0f && ((ballTransform.transform.position.y - playerTransform.transform.position.y) > 3.5f) || (ballTransform.transform.position.y - playerTransform.transform.position.y) < -3.5f)
+                //creates the moving Axis for the player on the x-axis depending on measuring-result of the player-distance
+                if (Vector3.Distance(playerTransform.position, nullPosition) > 5.0f)
+                {
+                    if (playerDistance < minimumPlayerDistance)
+                    {
+                        if (playerTransform == rightPlayer.transform)
+                        {
+                            moveAxis.x = 1;
+                        }
+                        else if (playerTransform == leftPlayer.transform)
+                        {
+                            moveAxis.x = -1;
+                        }
+                    }
+                    else if (playerDistance > maximumPlayerDistance)
+                    {
+                        if (playerTransform == rightPlayer.transform)
+                        {
+                            moveAxis.x = -1;
+                        }
+                        else if (playerTransform == leftPlayer.transform)
+                        {
+                            moveAxis.x = 1;
+                        }
+                    }
+
+                    else { moveAxis.x = 0; }
+                }
+                else
+                {
+                    if (playerTransform == rightPlayer.transform)
+                    {
+                        moveAxis.x = 1;
+                    }
+                    else if (playerTransform == leftPlayer.transform)
+                    {
+                        moveAxis.x = -1;
+                    }
+                }
+
+                if (playerBallDistance < 8.0f && ((ballTransform.transform.position.y - playerTransform.transform.position.y) > 4.5f) || (ballTransform.transform.position.y - playerTransform.transform.position.y) < -4.5f)
                 {
 				    if(playerTransform == rightPlayer.transform)
 				    {
@@ -104,37 +157,7 @@ public class AI
 					    moveAxis.x = -1;
 				    }
                 }
-                else
-                {
-                    //creates the moving Axis for the player on the x-axis depending on measuring-result of the player-distance
-                    if (Vector3.Distance(playerTransform.position, nullPosition) > 5.0f)
-                    {
-                        if (playerDistance < minimumPlayerDistance)
-                        {
-                            if (playerTransform == rightPlayer.transform)
-                            {
-                                moveAxis.x = 1;
-                            }
-                            else if (playerTransform == leftPlayer.transform)
-                            {
-                                moveAxis.x = -1;
-                            }
-                        }
-                        else if (playerDistance > maximumPlayerDistance)
-                        {
-                            if (playerTransform == rightPlayer.transform)
-                            {
-                                moveAxis.x = -1;
-                            }
-                            else if (playerTransform == leftPlayer.transform)
-                            {
-                                moveAxis.x = 1;
-                            }
-                        }
-
-                        else { moveAxis.x = 0; }
-                    }
-                }
+               
  //                if(ballTransform.transform.position.x < 0.0f){moveAxis.x = -1;}
                 if(playerTransform == rightPlayer.transform)
                 {
@@ -185,40 +208,37 @@ public class AI
     
     private void SetPlayerMinMaxDistance()
     {
+        resetMinMaxPlayerDistance();
         SetballSpeed();
-        if(ballSpeed <=10)
+        if(ballSpeed > 10f)
         {
-            minimumPlayerDistance = 12.0f;
-            maximumPlayerDistance = 16.0f;
+            minimumPlayerDistance += playerDistanceJump;
+            maximumPlayerDistance += playerDistanceJump;
         }
-        else if(ballSpeed > 10 && ballSpeed <= 20.0f)
+        else if(ballSpeed >= 20.0f)
         {
-            minimumPlayerDistance = 15.0f;
-            maximumPlayerDistance = 19.0f;
+            minimumPlayerDistance += playerDistanceJump;
+            maximumPlayerDistance += playerDistanceJump;
         }
-        else if(ballSpeed > 20.0f && ballSpeed < 30.0f)
+        else if(ballSpeed >= 30.0f)
         {
-            minimumPlayerDistance = 18.0f;
-            maximumPlayerDistance = 22.0f;
+            minimumPlayerDistance += playerDistanceJump;
+            maximumPlayerDistance += playerDistanceJump;
         }
-        else if(ballSpeed >= 30.0f && ballSpeed < 40.0f)
+        else if (ballSpeed >= 40.0f)
         {
-            minimumPlayerDistance = 20.0f;
-            maximumPlayerDistance = 24.0f;
-        }
-        else if (ballSpeed >= 40.0f && ballSpeed < 50.0f)
-        {
-            minimumPlayerDistance = 23.0f;
-            maximumPlayerDistance = 27.0f;
+            minimumPlayerDistance += playerDistanceJump;
+            maximumPlayerDistance += playerDistanceJump;
         }
         else if (ballSpeed >= 50.0f)
         {
-            minimumPlayerDistance = 25.0f;
-            maximumPlayerDistance = 30.0f;
+            minimumPlayerDistance += playerDistanceJump;
+            maximumPlayerDistance += playerDistanceJump;
         }
 
         //assigns the left and right player by tag
-    }public void SetLeftRightPlayer()
+    }
+    public void SetLeftRightPlayer()
     {
         rightPlayer = GameObject.FindGameObjectWithTag("Player2");
         leftPlayer = GameObject.FindGameObjectWithTag("Player1");
@@ -229,7 +249,7 @@ public class AI
 	//option: whether the AI can attack or not
 	public bool GetAttack(bool isAttacking)
 	{
-		GetBallPosition ();
+		
 		if (isAttacking) {return true;}
 		else{return false;}
 	}
@@ -237,7 +257,7 @@ public class AI
 	// whether the AI can block or not (includes Dashing)
 	public bool GetBlock()
 	{
-		GetBallPosition();
+		GetBallTransform();
 		if(ballTransform!=null )
 		{ 
 			if (Vector3.Distance (ballTransform.position, playerTransform.transform.position) < blockBallDistance)

@@ -41,6 +41,22 @@ public class Ball : MonoBehaviour {
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
+
+		RaycastHit2D hit;
+		Vector2 startPoint = this.transform.position;
+		Vector2 hitPoint = Vector2.zero;
+		Vector2 startDirection = this.transform.right;
+		do {
+			hit = Physics2D.Raycast (startPoint, startDirection, Mathf.Infinity, -1, 0.09f, 0.11f);
+			hitPoint = (hit.collider.gameObject.tag == "WallTop") ? new Vector2(hit.point.x, hit.point.y - 0.01f) : new Vector2(hit.point.x, hit.point.y + 0.01f);
+			Vector2 exitDirection = Vector2.Reflect (startDirection, hit.normal);
+
+			Debug.DrawRay (startPoint, startDirection * 20.0f, Color.red, 3.0f);
+			Debug.DrawRay (hitPoint, exitDirection * 20.0f, Color.red, 3.0f);
+
+			startPoint = hitPoint;
+			startDirection = exitDirection;
+		} while (hit.collider.gameObject.tag.Contains ("Wall"));
 	}
 
 	void FixedUpdate() {
@@ -80,7 +96,7 @@ public class Ball : MonoBehaviour {
 			this.Goal (other.gameObject);
 		} else if (other.tag == "CatchTrigger") {
 			this.Catch (other.gameObject);
-		} else if (other.tag == "Wall") {
+		} else if (other.tag.Contains("Wall")) {
 			this.Bounce (other.gameObject);
 		} else if (other.tag == "MissTrigger") {
 			other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);

@@ -40,6 +40,7 @@ public class Game : MonoBehaviour {
 
 
 	private UserInterface uiScript;
+	private ScreenShake screenShakeScript;
 	private Transform projectile;
 
 	private const int p1 = 1;
@@ -52,6 +53,8 @@ public class Game : MonoBehaviour {
 
 	void Start() {
 		uiScript = GameObject.FindObjectOfType (typeof(UserInterface)) as UserInterface;
+		screenShakeScript = GameObject.FindObjectOfType (typeof(ScreenShake)) as ScreenShake;
+		Debug.Log (screenShakeScript);
 
 		player1.SetPlayer(player1Typ);
 		player2.SetPlayer(player2Typ);
@@ -177,20 +180,38 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	IEnumerator EndRound(int p){
+	public void ShakeScreen(int type = -1, int p = -1) {
+		switch (type) {
+			case 0:
+				screenShakeScript.BlockScreenShake (p); break;
+			case 1:
+				screenShakeScript.GoalScreenShake (); break;
+			case 2:
+				screenShakeScript.BounceScreenShake (); break;
+			case 3:
+				screenShakeScript.SpecialScreenShake (); break;
+			case 4:
+				screenShakeScript.BuffScreenShake (); break;
+			default:
+				break;
+		}
+	}
+
+
+	private IEnumerator EndRound(int p){
 		if (gameRound >= maxGameRounds) {
 			int winner = (player1Score > player2Score) ? p1 : p2;
 			uiScript.GetComponent<MatchUI> ().MatchEnd (winner);
 
-			this.EnablePlayers(false);
+			this.EnablePlayers (false);
 
-			yield return new WaitForSeconds(5);
+			yield return new WaitForSeconds (5);
 
 			if (winner == 1) {
-				Application.LoadLevel(0);
+				Application.LoadLevel (0);
 //				Application.LoadLevel(2);
 			} else {
-				Application.LoadLevel(0);
+				Application.LoadLevel (0);
 //				Application.LoadLevel(3);
 			}
 		} else {
@@ -200,12 +221,12 @@ public class Game : MonoBehaviour {
 			player2.health = playerHealth;
 			
 			if (p == 1) {
-				this.SetTurn(true);
+				this.SetTurn (true);
 			} else {
-				this.SetTurn(false);
+				this.SetTurn (false);
 			}
 
-			this.EnablePlayers(false);
+			this.EnablePlayers (false);
 			
 			++gameRound;
 		}

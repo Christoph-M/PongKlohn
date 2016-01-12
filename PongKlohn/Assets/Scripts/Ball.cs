@@ -56,9 +56,7 @@ public class Ball : MonoBehaviour {
 			Vector2 hitPoint = (hit.collider.gameObject.tag == "WallTop") ? new Vector2(hit.point.x, hit.point.y - 0.5f) : new Vector2(hit.point.x, hit.point.y + 0.5f);
 			Vector2 exitDirection = Vector2.Reflect (startDirection, hit.normal);
 
-			Debug.DrawRay (startPoint, startDirection * 20.0f, Color.red, 3.0f);
-			if (hit.collider.gameObject.tag == "Goal") break;
-			Debug.DrawRay (hitPoint, exitDirection * 20.0f, Color.red, 3.0f);
+			Debug.DrawLine (new Vector3(startPoint.x, startPoint.y, -6.0f), new Vector3(hitPoint.x, hitPoint.y, -6.0f), Color.red, 3.0f);
 
 			startPoint = hitPoint;
 			startDirection = exitDirection;
@@ -147,6 +145,8 @@ public class Ball : MonoBehaviour {
 		
 		this.DestroyBall ();
 		gameScript.ResetBallSpeed();
+
+		gameScript.ShakeScreen (1);
 	}
 
 	private void Catch(GameObject other) {
@@ -182,37 +182,44 @@ public class Ball : MonoBehaviour {
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
 		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+		gameScript.ShakeScreen (2);
 	}
 
 	private void Block(GameObject other) {
 		Debug.Log ("Blocked. Time: " + timeElapsed);
-		timeElapsed = 0.0f;
 
-		if (other.transform.parent.tag == "Player1" && !triggered) {
-			gameScript.Player1AddEnergy();
-		} else {
-			gameScript.Player2AddEnergy();
+		if (timeElapsed >= 0.1f) {
+			timeElapsed = 0.0f;
+
+			if (other.transform.parent.tag == "Player1" && !triggered) {
+				gameScript.Player1AddEnergy ();
+			} else {
+				gameScript.Player2AddEnergy ();
+			}
+		
+			triggered = true;
+
+			Vector2 playerDirection = other.transform.parent.position - this.transform.position;
+		
+			RaycastHit2D hit = Physics2D.Raycast (this.transform.position, playerDirection);
+			Vector2 exitDirection = Vector2.Reflect (playerDirection, hit.normal);
+		
+//				Debug.DrawRay (this.transform.position, playerDirection, Color.blue, 1000);
+//				Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
+//				Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
+		
+			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
+
+			this.gameObject.SetActive (false);
+		
+			other.GetComponentInParent<Player> ().Instance (other.GetComponentInParent<Player> ().balls [0], this.transform.position, Quaternion.AngleAxis (angle, Vector3.forward));
+
+			this.DestroyBall ();
+			gameScript.BallSpeedUp ();
+
+			gameScript.ShakeScreen (0, (other.transform.parent.tag == "Player1") ? 1 : 2);
 		}
-		
-		triggered = true;
-
-		Vector2 playerDirection = other.transform.parent.position - this.transform.position;
-		
-		RaycastHit2D hit = Physics2D.Raycast(this.transform.position, playerDirection);
-		Vector2 exitDirection = Vector2.Reflect(playerDirection, hit.normal);
-		
-//			Debug.DrawRay (this.transform.position, playerDirection, Color.blue, 1000);
-//			Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
-//			Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
-		
-		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
-
-		this.gameObject.SetActive (false);
-		
-		other.GetComponentInParent<Player>().Instance(other.GetComponentInParent<Player>().balls[0], this.transform.position, Quaternion.AngleAxis(angle, Vector3.forward));
-
-		this.DestroyBall ();
-		gameScript.BallSpeedUp ();
 	}
 
 	private void DestroyBall() {

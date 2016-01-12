@@ -24,11 +24,12 @@ public class Ball : MonoBehaviour {
 	private float wallLeft;
 	private float wallRight;
 
+	private List<Vector2> path = new List<Vector2>();
+
 	private bool triggered = false;
 	
 	void Start(){
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
-		gameScript.SetProjectileTransform (this.transform);
 
 		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
 		sinCosMovementScript = GameObject.FindObjectOfType (typeof(SinCosMovement)) as SinCosMovement;
@@ -41,6 +42,33 @@ public class Ball : MonoBehaviour {
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
+
+		StartCoroutine (CalcPath ());
+	}
+
+	IEnumerator CalcPath() {
+		RaycastHit2D hit;
+		Vector2 startPoint = this.transform.position;
+		Vector2 startDirection = this.transform.right;
+		do {
+			hit = Physics2D.Raycast (startPoint, startDirection, Mathf.Infinity, -1, 0.09f, 0.11f);
+
+			Vector2 hitPoint = (hit.collider.gameObject.tag == "WallTop") ? new Vector2(hit.point.x, hit.point.y - 0.5f) : new Vector2(hit.point.x, hit.point.y + 0.5f);
+			Vector2 exitDirection = Vector2.Reflect (startDirection, hit.normal);
+
+			Debug.DrawRay (startPoint, startDirection * 20.0f, Color.red, 3.0f);
+			if (hit.collider.gameObject.tag == "Goal") break;
+			Debug.DrawRay (hitPoint, exitDirection * 20.0f, Color.red, 3.0f);
+
+			startPoint = hitPoint;
+			startDirection = exitDirection;
+
+			path.Add (hitPoint);
+		} while (hit.collider.gameObject.tag.Contains ("Wall"));
+
+		gameScript.SetProjectileTransform (this.transform);
+
+		yield return 0;
 	}
 
 	void FixedUpdate() {
@@ -75,12 +103,18 @@ public class Ball : MonoBehaviour {
 		triggered = false;
 	}
 
+
+	public List<Vector2> GetPath() {
+		return path;
+	}
+
+
 	private void Trigger(GameObject other){
 		if (other.tag == "Goal") {
 			this.Goal (other.gameObject);
 		} else if (other.tag == "CatchTrigger") {
 			this.Catch (other.gameObject);
-		} else if (other.tag == "Wall") {
+		} else if (other.tag.Contains("Wall")) {
 			this.Bounce (other.gameObject);
 		} else if (other.tag == "MissTrigger") {
 			other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
@@ -122,7 +156,7 @@ public class Ball : MonoBehaviour {
 		this.SetTurn (other.transform.parent.tag);
 		
 		this.DestroyBall ();
-		gameScript.ResetBallSpeed();
+		gameScript.DecreaseBallSpeed();
 	}
 
 	private void Bounce(GameObject other) {
@@ -147,7 +181,7 @@ public class Ball : MonoBehaviour {
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
-		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);		
+		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 	}
 
 	private void Block(GameObject other) {

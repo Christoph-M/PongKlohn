@@ -13,8 +13,8 @@ public class Game : MonoBehaviour {
 	public int maxGameRounds = 3;
 
 	[Header("Player")]
-	public string player1Typ = "Player1"; 
-	public string player2Typ = "Player2";
+	public string player1Typ = "KeyP1"; 
+	public string player2Typ = "KeyP2";
 	[Space(10)]
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
@@ -29,9 +29,11 @@ public class Game : MonoBehaviour {
 	public int energyGain = 10;
 
 	[Header("Ball")]
-	public float minBallSpeed = 10.0f;
-	public float maxBallSpeed = 100.0f;
+	public float minBallSpeed;
+	public float maxBallSpeed;
+	public AnimationCurve ballSpeedUpCurve = AnimationCurve.EaseInOut(0.0f, 10.0f, 1.0f, 100.0f);
 	public float ballSpeedUpStep = 5.0f;
+	public float catchSpeedDec = 2.0f;
 
 	[Header("Timer")]
 	public float blockTime = 0.2f;
@@ -44,6 +46,7 @@ public class Game : MonoBehaviour {
 	private const int p2 = 2;
 
 	private float ballSpeed;
+	private float ballSpeedAtTime;
 	private int player1Score = 0;
 	private int player2Score = 0; 
 
@@ -58,6 +61,8 @@ public class Game : MonoBehaviour {
 		player2.power = playerEnergy;
 		
 
+		minBallSpeed = ballSpeedUpCurve.Evaluate (0.0f);
+		maxBallSpeed = ballSpeedUpCurve.Evaluate (1.0f);
 		ballSpeed = minBallSpeed;
 
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
@@ -98,15 +103,20 @@ public class Game : MonoBehaviour {
 
 	public void SetProjectileTransform(Transform trans) { projectile = trans; }
 	public Transform GetProjectileTransform() { return projectile; }
-	
-	public void BallSpeedUp(){
-		ballSpeed += ballSpeedUpStep;
 
-		if (ballSpeed > maxBallSpeed) ballSpeed = maxBallSpeed;
+	public void BallSpeedUp(){
+		ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
+		ballSpeed = ballSpeedUpCurve.Evaluate(ballSpeedAtTime);
+
+		if (ballSpeed > maxBallSpeed) {
+			ballSpeed = maxBallSpeed;
+			ballSpeedAtTime = 1.0f;
+		}
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }
-	public void ResetBallSpeed() { ballSpeed = minBallSpeed; }
+	public void DecreaseBallSpeed() { ballSpeed -= catchSpeedDec; }
+	public void ResetBallSpeed() { ballSpeed = minBallSpeed; ballSpeedAtTime = 0.0f; }
 
 	public void EnablePlayers(bool b) { player1.enabled = b; 
 								  		player2.enabled = b; }

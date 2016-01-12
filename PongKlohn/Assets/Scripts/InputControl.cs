@@ -16,7 +16,7 @@ public class InputControl
 	
 	public InputControl(string player,Transform playerTransform)
 	{
-		if(player == "Player1")
+		if(player == "KeyP1")
 		{
 			isAiPlayer = false;
 			xAxis = "HorizontalP1";
@@ -27,7 +27,8 @@ public class InputControl
 			buff = "BuffP1";
 			powerShoot = "PowerShootP1";
 		}
-		else if(player == "Player2")
+		
+		else if(player == "KeyP2")
 		{
 			isAiPlayer = false;
 			xAxis = "HorizontalP2";
@@ -38,6 +39,31 @@ public class InputControl
 			buff = "BuffP2";
 			powerShoot = "PowerShootP2";
 		}
+		
+		else if(player == "ConP1")
+		{
+			isAiPlayer = false;
+			xAxis = "ControllerHorizontalP1";
+			yAxis = "ControllerVerticalP1";
+			shoot = "ShootControler1";
+			block = "BlockControler1";
+			dash = "DashControler1";
+			buff = "BuffControler1";
+			powerShoot = "PowerShootControler1";
+		}
+		
+		else if(player == "ConP2")
+		{
+			isAiPlayer = false;
+			xAxis = "ControllerHorizontalP2";
+			yAxis = "ControllerVerticalP2";
+			shoot = "ShootControler2";
+			block = "BlockControler2";
+			dash = "DashControler2";
+			buff = "BuffControler2";
+			powerShoot = "PowerShootControler2";
+		}
+		
 		else if(player == "Ai")
 		{
 			isAiPlayer =true;

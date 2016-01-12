@@ -156,7 +156,7 @@ public class Ball : MonoBehaviour {
 		this.SetTurn (other.transform.parent.tag);
 		
 		this.DestroyBall ();
-		gameScript.ResetBallSpeed();
+		gameScript.DecreaseBallSpeed();
 	}
 
 	private void Bounce(GameObject other) {
@@ -181,7 +181,7 @@ public class Ball : MonoBehaviour {
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
-		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);		
+		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 	}
 
 	private void Block(GameObject other) {

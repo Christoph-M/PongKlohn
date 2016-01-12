@@ -24,11 +24,12 @@ public class Ball : MonoBehaviour {
 	private float wallLeft;
 	private float wallRight;
 
+	private List<Vector2> path = new List<Vector2>();
+
 	private bool triggered = false;
 	
 	void Start(){
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
-		gameScript.SetProjectileTransform (this.transform);
 
 		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
 		sinCosMovementScript = GameObject.FindObjectOfType (typeof(SinCosMovement)) as SinCosMovement;
@@ -42,21 +43,32 @@ public class Ball : MonoBehaviour {
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
 
+		StartCoroutine (CalcPath ());
+	}
+
+	IEnumerator CalcPath() {
 		RaycastHit2D hit;
 		Vector2 startPoint = this.transform.position;
-		Vector2 hitPoint = Vector2.zero;
 		Vector2 startDirection = this.transform.right;
 		do {
 			hit = Physics2D.Raycast (startPoint, startDirection, Mathf.Infinity, -1, 0.09f, 0.11f);
-			hitPoint = (hit.collider.gameObject.tag == "WallTop") ? new Vector2(hit.point.x, hit.point.y - 0.01f) : new Vector2(hit.point.x, hit.point.y + 0.01f);
+
+			Vector2 hitPoint = (hit.collider.gameObject.tag == "WallTop") ? new Vector2(hit.point.x, hit.point.y - 0.5f) : new Vector2(hit.point.x, hit.point.y + 0.5f);
 			Vector2 exitDirection = Vector2.Reflect (startDirection, hit.normal);
 
 			Debug.DrawRay (startPoint, startDirection * 20.0f, Color.red, 3.0f);
+			if (hit.collider.gameObject.tag == "Goal") break;
 			Debug.DrawRay (hitPoint, exitDirection * 20.0f, Color.red, 3.0f);
 
 			startPoint = hitPoint;
 			startDirection = exitDirection;
+
+			path.Add (hitPoint);
 		} while (hit.collider.gameObject.tag.Contains ("Wall"));
+
+		gameScript.SetProjectileTransform (this.transform);
+
+		yield return 0;
 	}
 
 	void FixedUpdate() {
@@ -90,6 +102,12 @@ public class Ball : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D other){
 		triggered = false;
 	}
+
+
+	public List<Vector2> GetPath() {
+		return path;
+	}
+
 
 	private void Trigger(GameObject other){
 		if (other.tag == "Goal") {

@@ -84,34 +84,34 @@ public class ScreenShake : MonoBehaviour {
 	}
 
 	private void GoalShake() {
-		float heightx = this.PerlinNoise (magnitudeGoal, intensityGoal);
-		float heighty = this.PerlinNoise (magnitudeGoal, intensityGoal);
+		float heightx = this.PerlinNoise (magnitudeGoal, intensityGoal, 0.0f);
+		float heighty = this.PerlinNoise (magnitudeGoal, intensityGoal, 1.0f);
 
 		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
 	}
 
 	private void BounceShake() {
-		float heightx = this.PerlinNoise (magnitudeBounce, intensityBounce);
-		float heighty = this.PerlinNoise (magnitudeBounce, intensityBounce);
+		float heightx = this.PerlinNoise (magnitudeBounce, intensityBounce, 0.0f);
+		float heighty = this.PerlinNoise (magnitudeBounce, intensityBounce, 1.0f);
 
 		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
 	}
 
 	private void SpecialShake() {
-		float heightx = this.PerlinNoise (magnitudeSpecial, intensitySpecial);
-		float heighty = this.PerlinNoise (magnitudeSpecial, intensitySpecial);
+		float heightx = this.PerlinNoise (magnitudeSpecial, intensitySpecial, 0.0f);
+		float heighty = this.PerlinNoise (magnitudeSpecial, intensitySpecial, 1.0f);
 
 		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
 	}
 
 	private void BuffShake() {
-		float heightx = this.PerlinNoise (magnitudeBuff, intensityBuff);
-		float heighty = this.PerlinNoise (magnitudeBuff, intensityBuff);
+		float heightx = this.PerlinNoise (magnitudeBuff, intensityBuff, 0.0f);
+		float heighty = this.PerlinNoise (magnitudeBuff, intensityBuff, 1.0f);
 
 		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
 	}
 
-	private float PerlinNoise(float mag, float intens) {
-		return mag * Mathf.PerlinNoise (Time.time * intens, 0.0f);
+	private float PerlinNoise(float mag, float intens, float y = 0.0f) {
+		return mag * Mathf.PerlinNoise (Time.time * intens, y);
 	}
 }

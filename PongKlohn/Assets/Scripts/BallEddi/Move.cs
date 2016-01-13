@@ -42,4 +42,8 @@ public class Move : MonoBehaviour
 		if(y_achse){transform.position += transform.TransformDirection(new Vector3(0,1,0)) * (Time.deltaTime * speed);}
 		if(z_achse){transform.position += transform.TransformDirection(new Vector3(0,0,1)) * (Time.deltaTime * speed);}
     }
+
+	public float GetBallSpeed() {
+		return speed;
+	}
 }

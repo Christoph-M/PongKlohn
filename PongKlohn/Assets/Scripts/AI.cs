@@ -85,7 +85,7 @@ public class AI
 					targetVector = bounceArray [(i + 1)] - bounceArray [i];
 				
 
-				SetM ( targetVector);
+//				SetM ( targetVector);
 
 
 			}

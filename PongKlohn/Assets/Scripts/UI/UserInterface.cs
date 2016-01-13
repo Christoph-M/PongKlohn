@@ -15,6 +15,7 @@ public class UserInterface : MonoBehaviour {
 	private VideoOptionsMenu videoOptionsMenuScript;
 	private AudioOptionsMenu audioOptionsMenuScript;
 	private GameplayOptionsMenu gameplayOptionsMenuScript;
+	private CharacterSelectionMenu characterSelectionMenuScript;
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +27,7 @@ public class UserInterface : MonoBehaviour {
 		videoOptionsMenuScript = GetComponent<VideoOptionsMenu> ();
 		audioOptionsMenuScript = GetComponent<AudioOptionsMenu> ();
 		gameplayOptionsMenuScript = GetComponent<GameplayOptionsMenu> ();
+		characterSelectionMenuScript = GetComponent<CharacterSelectionMenu> ();
 	}
 	
 	public void StartScreenSetActive (bool active) {
@@ -51,5 +53,9 @@ public class UserInterface : MonoBehaviour {
 
 	public void GameplayOptionsMenuSetActive (bool active) {
 		gameplayOptionsMenuScript.gameplayOptionsMenu.SetActive (active);
+	}
+
+	public void characterSelectionMenuSetActive (bool active) {
+		characterSelectionMenuScript.characterSelectionMenu.SetActive (active);
 	}
 }

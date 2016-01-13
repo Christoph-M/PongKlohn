@@ -17,7 +17,8 @@ public class MainMenu : UserInterface {
 	}
 
 	public void Multiplayer() {
-		Application.LoadLevel(1);
+		userInterfaceScript.MainMenuSetActive (false);
+		userInterfaceScript.characterSelectionMenuSetActive (true);
 	}
 
 	public void Arcade() {

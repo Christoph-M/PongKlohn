@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class Player : MonoBehaviour 
 {	
 	public Transform ballSpohorn;
@@ -140,7 +141,7 @@ public class Player : MonoBehaviour
 		blockTimer.UpdateTimer();
 		catchTimer.UpdateTimer();
 		waitAfterSoot.UpdateTimer();
-		dashTimer.UpdateTimer();
+		//dashTimer.UpdateTimer();
 		
 		if(zuLangsamZumFangenDuMong)///////////////Stun
 		{
@@ -161,8 +162,9 @@ public class Player : MonoBehaviour
 		} else if (controls.IsBuffActive() && !isInAction)//Buff input
 		{
 			//isBlocking = true;
-		} else if (controls.IsDashActive() && !isInAction && direction_ != Vector2.zero && power >= dashEnergyCost)//Dash input
+		} else if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero)// && power >= dashEnergyCost)//Dash input
 		{
+			power -= dashEnergyCost;
 			isInAction = true;
 			isDashing = true;
 		}
@@ -255,24 +257,27 @@ public class Player : MonoBehaviour
 		} else if(isDashing)//////////////Dash//////////////////////////////////////////
 		{
 			//Debug.Log(this.transform.name + " dash enter");
-			if(dashProgression == 1 && dashTimer.IsFinished())
+			if(dashProgression == 1)
 			{
-				//Debug.Log(this.transform.name + " dash endet");
+				Debug.Log(this.transform.name + " dash endet");
 				dashProgression = 0;
 				isDashing = false;
 				action = 0;
 				isInAction = false;
+				
 			}
 			else if(dashProgression == 0)
 			{
 				Debug.Log(this.transform.name + " dash start");
-				dashTimer.SetTimer(0.2f);
-				power -= dashEnergyCost;
 				action = 10;
-				dashProgression =1;
-				animator.SetFloat("xAxis", direction_.x * motionInverter);
-				animator.SetFloat("yAxis", direction_.y * motionInverter);
-				myTransform.AddForce (directionRaw_ * dashSpeed, ForceMode2D.Impulse);
+				
+				if(MoveTo(directionRaw_))
+				{
+					dashProgression = 1;
+				}
+				//animator.SetFloat("xAxis", direction_.x * motionInverter);
+				//animator.SetFloat("yAxis", direction_.y * motionInverter);
+				//myTransform.AddForce (directionRaw_ * dashSpeed, ForceMode2D.Impulse);
 			}
 		} else if(isBuffing)///////////////////////Buff Action//////////////////////////
 		{	
@@ -612,6 +617,58 @@ public class Player : MonoBehaviour
 			}
 		}
 		
+		return false;
+	}
+	
+	Vector3 dir = Vector3.zero;
+	Vector3 oldDir = Vector3.zero;
+	public AnimationCurve curve = AnimationCurve.EaseInOut(0,0,0,0);
+	float easeTime = 0.3f;
+	float startValue = 0;
+	float endValue = 1f;
+	private bool move(Vector3 direction)///////////////////////MOVE
+	{
+		if(direction != dir)
+		{
+			//effect
+			curve = AnimationCurve.EaseInOut(Time.time,0f,Time.time + easeTime,1f);
+			startValue = Time.time;
+			dir = direction;
+		}	
+	
+		transform.position += Vector3.Lerp(oldDir, dir, curve.Evaluate(Time.time- startValue));
+		return false;
+	}
+	
+	public Vector3 startVec = Vector3.zero;
+	public Vector3 endVec = Vector3.zero;
+	public float dashLength = 50f;//Dasch Distance
+	public float dashTime = 5f;//Dash dauer
+	public AnimationCurve dashCurve;
+	bool dashBool = true;
+	private bool MoveTo(Vector3 direction)/////////////////////////MoveTo (Dash)
+	{
+		if(dashBool)
+		{
+			dashBool = false;
+			//effect
+			startVec = transform.position;
+			endVec = (direction * dashLength);
+			dashCurve = AnimationCurve.EaseInOut(0f,0f,dashTime,1f);
+			startValue = Time.time;
+			//dir = direction;
+		}	
+		float deltatime = Time.time - startValue;
+		//animator.SetFloat("xAxis", dir.x * deltatime/dashTime * motionInverter);
+		//animator.SetFloat("yAxis", dir.y * deltatime/dashTime * motionInverter);
+		transform.position = startVec + (endVec * dashCurve.Evaluate(deltatime));
+		//Debug.Log("deltatime:"+deltatime);
+		if(deltatime >= dashTime)
+		{
+			Debug.Log("Dash Ende: "+ deltatime);
+			dashBool = true;
+			return true;
+		}
 		return false;
 	}
 }

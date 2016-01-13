@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class ScreenShake : MonoBehaviour {
+	public float camResetTime = 0.2f;
+
 	[Header("Block Shake")]
 	public float magnitudeBlock = 1.0f;
 	public float intensityBlock = 1.0f;
@@ -28,6 +30,8 @@ public class ScreenShake : MonoBehaviour {
 	public float timeBuff = 0.2f;
 
 
+	private Vector3 velocity = Vector3.zero;
+
 	private int mode = -1;
 
 	void Update() {
@@ -42,6 +46,8 @@ public class ScreenShake : MonoBehaviour {
 				this.SpecialShake (); break;
 			case 4:
 				this.BuffShake (); break;
+			case 5:
+				this.ResetCamera (); break;
 			default:
 				break;
 		}
@@ -74,6 +80,11 @@ public class ScreenShake : MonoBehaviour {
 
 		yield return new WaitForSeconds (t);
 
+		mode = 5;
+
+		yield return new WaitUntil(() => this.transform.position == Vector3.zero);
+
+		this.transform.position = Vector3.zero;
 		mode = -1;
 	}
 
@@ -109,6 +120,10 @@ public class ScreenShake : MonoBehaviour {
 		float heighty = this.PerlinNoise (magnitudeBuff, intensityBuff, 1.0f);
 
 		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
+	}
+
+	private void ResetCamera() {
+		this.transform.position = Vector3.SmoothDamp (this.transform.position, Vector3.zero, ref velocity, camResetTime);
 	}
 
 	private float PerlinNoise(float mag, float intens, float y = 0.0f) {

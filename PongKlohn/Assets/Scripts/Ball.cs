@@ -3,34 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Ball : MonoBehaviour {
+	[Header("^^Put Move Script Above Ball Script^^")]
+	[Space(10)]
 //__________________________Public_____________________________
 	public bool move = true;
 	public bool sinCosMove = false;
 	public bool linearRotation = false;
 	public bool sinCosRotation = false;
 
+	[Space(10)]
+	public int maxPredictionCount = 15;
+
 //__________________________Protected_____________________________
+	protected Game gameScript;
+	protected Move moveScript;
+	protected SinCosMovement sinCosMovementScript;
+	protected LinearRotation linearRotationScript;
+	protected SinCosRotation sinCosRotationScript;
+
 	protected const float fieldHeight = 22.0f;
 	protected const float fieldWidth = 60.0f;
+	protected float wallTop;
+	protected float wallBottom;
+	protected float wallLeft;
+	protected float wallRight;
 
-//__________________________Private_____________________________
-	private Game gameScript;
-	private Move moveScript;
-	private SinCosMovement sinCosMovementScript;
-	private LinearRotation linearRotationScript;
-	private SinCosRotation sinCosRotationScript;
-
-	private Transform myTransform;
-
-	private float wallTop;
-	private float wallBottom;
-	private float wallLeft;
-	private float wallRight;
-
-	private List<Vector2> path = new List<Vector2>();
+	protected List<Vector2> path = new List<Vector2>();
 
 //__________________________MonoMethods_____________________________
-	void Start(){
+	protected void Start(){
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 
 		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
@@ -48,7 +49,7 @@ public class Ball : MonoBehaviour {
 		StartCoroutine (CalcPath ());
 	}
 
-	IEnumerator CalcPath() {
+	protected IEnumerator CalcPath() {
 		RaycastHit2D hit;
 		Vector2 startPoint = this.transform.position;
 		Vector2 startDirection = this.transform.right;
@@ -80,14 +81,14 @@ public class Ball : MonoBehaviour {
 			startDirection = exitDirection;
 
 			path.Add (hitPoint);
-		} while (hit.collider.gameObject.tag.Contains ("Wall"));
+		} while (hit.collider.gameObject.tag.Contains ("Wall") && path.Count <= maxPredictionCount);
 
 		gameScript.SetProjectileTransform (this.transform);
 
 		yield return 0;
 	}
 
-	void FixedUpdate() {
+	protected void FixedUpdate() {
 		if (move) moveScript.Update_ ();
 		if (sinCosMove) sinCosMovementScript.Update_ ();
 		if (linearRotation) linearRotationScript.Update_ ();
@@ -106,12 +107,12 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	float timeElapsed = 0.0f;
-	void LateUpdate() {
+	protected float timeElapsed = 0.0f;
+	protected void LateUpdate() {
 		timeElapsed += Time.deltaTime;
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
+	protected void OnTriggerEnter2D(Collider2D other){
 		this.Trigger (other.gameObject);
 	}
 
@@ -238,7 +239,7 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	private void DestroyBall() {
+	protected  void DestroyBall() {
 		Object.Destroy (this.gameObject);
 
 		gameScript.SetProjectileTransform (null);

@@ -13,8 +13,8 @@ public class Game : MonoBehaviour {
 	public int maxGameRounds = 3;
 
 	[Header("Player")]
-	public string player1Typ = "Player1"; 
-	public string player2Typ = "Player2";
+	public string player1Typ = "KeyP1"; 
+	public string player2Typ = "KeyP2";
 	[Space(10)]
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
@@ -29,26 +29,32 @@ public class Game : MonoBehaviour {
 	public int energyGain = 10;
 
 	[Header("Ball")]
-	public float minBallSpeed = 10.0f;
-	public float maxBallSpeed = 100.0f;
+	public float minBallSpeed;
+	public float maxBallSpeed;
+	public AnimationCurve ballSpeedUpCurve = AnimationCurve.EaseInOut(0.0f, 10.0f, 1.0f, 100.0f);
 	public float ballSpeedUpStep = 5.0f;
+	public float catchSpeedDec = 2.0f;
 
 	[Header("Timer")]
 	public float blockTime = 0.2f;
 
 
 	private UserInterface uiScript;
+	private ScreenShake screenShakeScript;
 	private Transform projectile;
 
 	private const int p1 = 1;
 	private const int p2 = 2;
 
 	private float ballSpeed;
+	private float ballSpeedAtTime;
 	private int player1Score = 0;
 	private int player2Score = 0; 
 
 	void Start() {
 		uiScript = GameObject.FindObjectOfType (typeof(UserInterface)) as UserInterface;
+		screenShakeScript = GameObject.FindObjectOfType (typeof(ScreenShake)) as ScreenShake;
+		Debug.Log (screenShakeScript);
 
 		player1.SetPlayer(player1Typ);
 		player2.SetPlayer(player2Typ);
@@ -58,6 +64,8 @@ public class Game : MonoBehaviour {
 		player2.power = playerEnergy;
 		
 
+		minBallSpeed = ballSpeedUpCurve.Evaluate (0.0f);
+		maxBallSpeed = ballSpeedUpCurve.Evaluate (1.0f);
 		ballSpeed = minBallSpeed;
 
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
@@ -96,17 +104,22 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	public void SetProjectileTransform(Transform trans) { projectile = trans; }
+	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.newTargetVector = true;}
 	public Transform GetProjectileTransform() { return projectile; }
-	
-	public void BallSpeedUp(){
-		ballSpeed += ballSpeedUpStep;
 
-		if (ballSpeed > maxBallSpeed) ballSpeed = maxBallSpeed;
+	public void BallSpeedUp(){
+		ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
+		ballSpeed = ballSpeedUpCurve.Evaluate(ballSpeedAtTime);
+
+		if (ballSpeed > maxBallSpeed) {
+			ballSpeed = maxBallSpeed;
+			ballSpeedAtTime = 1.0f;
+		}
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }
-	public void ResetBallSpeed() { ballSpeed = minBallSpeed; }
+	public void DecreaseBallSpeed() { ballSpeed -= catchSpeedDec; }
+	public void ResetBallSpeed() { ballSpeed = minBallSpeed; ballSpeedAtTime = 0.0f; }
 
 	public void EnablePlayers(bool b) { player1.enabled = b; 
 								  		player2.enabled = b; }
@@ -167,20 +180,38 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	IEnumerator EndRound(int p){
+	public void ShakeScreen(int type = -1, int p = -1) {
+		switch (type) {
+			case 0:
+				screenShakeScript.BlockScreenShake (p); break;
+			case 1:
+				screenShakeScript.GoalScreenShake (); break;
+			case 2:
+				screenShakeScript.BounceScreenShake (); break;
+			case 3:
+				screenShakeScript.SpecialScreenShake (); break;
+			case 4:
+				screenShakeScript.BuffScreenShake (); break;
+			default:
+				break;
+		}
+	}
+
+
+	private IEnumerator EndRound(int p){
 		if (gameRound >= maxGameRounds) {
 			int winner = (player1Score > player2Score) ? p1 : p2;
 			uiScript.GetComponent<MatchUI> ().MatchEnd (winner);
 
-			this.EnablePlayers(false);
+			this.EnablePlayers (false);
 
-			yield return new WaitForSeconds(5);
+			yield return new WaitForSeconds (5);
 
 			if (winner == 1) {
-				Application.LoadLevel(0);
+				Application.LoadLevel (0);
 //				Application.LoadLevel(2);
 			} else {
-				Application.LoadLevel(0);
+				Application.LoadLevel (0);
 //				Application.LoadLevel(3);
 			}
 		} else {
@@ -190,12 +221,12 @@ public class Game : MonoBehaviour {
 			player2.health = playerHealth;
 			
 			if (p == 1) {
-				this.SetTurn(true);
+				this.SetTurn (true);
 			} else {
-				this.SetTurn(false);
+				this.SetTurn (false);
 			}
 
-			this.EnablePlayers(false);
+			this.EnablePlayers (false);
 			
 			++gameRound;
 		}

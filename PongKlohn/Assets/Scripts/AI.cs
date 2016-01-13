@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AI 
 {
@@ -24,6 +25,14 @@ public class AI
 	private Player character;
     private GameObject leftPlayer;
     private GameObject rightPlayer;
+
+	private enum State {defensiv, agressiv, neutral};
+	private State state;
+	private  List<Vector2> bounceArray;
+	private Vector2 targetVector;
+	private Vector2 originVector;
+
+	public static bool newTargetVector;
 	// Use this for initialization
 	public AI (Transform p) 
 	{
@@ -64,6 +73,68 @@ public class AI
 		ballTransform = gameScript.GetProjectileTransform ();
 	}
 
+
+	private Vector3 CalculatePath ()
+	{
+		bounceArray = ballTransform.gameObject.GetComponent<Ball>().GetPath();
+		for (int i = 0; i <= (bounceArray.Count - 1); i++)
+		{
+			if(bounceArray[(i+1)] != null)
+			{
+				if((playerTransform.position.x <= bounceArray[i].x && playerTransform.position.x >= bounceArray[(i+1)].x) || (playerTransform.position.x >= bounceArray[i].x && playerTransform.position.x <= bounceArray[(i+1)].x) )
+					targetVector = bounceArray [(i + 1)] - bounceArray [i];
+				
+
+//				SetM ( targetVector);
+
+
+			}
+		}
+
+		return targetVector;
+		newTargetVector = false;
+	}
+
+	private void SetSteigung(Vector2 targetVector)
+	{
+		float m = targetVector.y / targetVector.x;
+		//targetVector.x = 0f;
+		//targetVector.y = m * targetVector.x;
+	}
+	private void MoveToTargetVector()
+	{
+		
+
+		if (playerTransform.position !=new Vector3( targetVector.x, targetVector.y))
+		{
+			if (playerTransform.position.y < (targetVector.y - stopTrembling)) 
+			{
+				
+				moveAxis.y = 1;
+			}
+			else if (playerTransform.transform.position.y > (targetVector.y + stopTrembling))
+			{
+				moveAxis.y = -1;
+			}
+
+			if(playerTransform == rightPlayer.transform)
+			{
+				if (targetVector.x > rightPlayer.transform.position.x) { moveAxis.x = 1; }
+				else if (targetVector.x < rightPlayer.transform.position.x) { moveAxis.x = -1; }
+				else { moveAxis.x = 0; }
+			}
+			else if(playerTransform== leftPlayer.transform)
+			{
+				if (targetVector.x < leftPlayer.transform.position.x) { moveAxis.x = -1; }
+				else if (targetVector.x > rightPlayer.transform.position.x) { moveAxis.x = 1; }
+				else { moveAxis.x = 0; }
+			}
+		}
+
+
+	}
+
+
 	//returns the vector2D-position, the AI is moving to
 	public Vector2 GetMovementInput()
 	{
@@ -71,6 +142,9 @@ public class AI
             SetPlayerBallDistance();
             SetPlayerDistance();
             SetPlayerMinMaxDistance();
+		if (newTargetVector == true) {
+			CalculatePath ();
+		}
 
             //creates the moving Axis for the player depending on the y-coord of the ball (whether to go up or down)                 
 			if (ballTransform != null) 
@@ -168,6 +242,7 @@ public class AI
                     if (ballTransform.transform.position.x < leftPlayer.transform.position.x) { moveAxis.x = -1; }
                 }
             
+			MoveToTargetVector ();
                    
             
             }  
@@ -188,6 +263,9 @@ public class AI
                 }
             }
            
+
+
+
 		return moveAxis;
 	}
 

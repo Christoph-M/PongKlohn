@@ -28,6 +28,9 @@ public class Move : MonoBehaviour
 			speed = game.GetBallSpeed ();
 		}
 
+		this.GetComponent<CircleCollider2D> ().radius = 0.5f / (speed * 2.5f);
+		this.transform.localScale = new Vector3(speed * 2.5f, this.transform.localScale.y, this.transform.localScale.z);
+
 		if(x_achse){transform.rotation *= Quaternion.AngleAxis(angle,new Vector3(0,0,1));}
 		if(y_achse){transform.rotation *= Quaternion.AngleAxis(angle,new Vector3(1,0,0));}
 		if(z_achse){transform.rotation *= Quaternion.AngleAxis(angle,new Vector3(0,1,0));}
@@ -39,4 +42,8 @@ public class Move : MonoBehaviour
 		if(y_achse){transform.position += transform.TransformDirection(new Vector3(0,1,0)) * (Time.deltaTime * speed);}
 		if(z_achse){transform.position += transform.TransformDirection(new Vector3(0,0,1)) * (Time.deltaTime * speed);}
     }
+
+	public float GetBallSpeed() {
+		return speed;
+	}
 }

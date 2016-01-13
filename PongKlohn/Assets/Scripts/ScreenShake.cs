@@ -82,8 +82,9 @@ public class ScreenShake : MonoBehaviour {
 
 		mode = 5;
 
-		yield return new WaitForSeconds (0.5f);
+		yield return new WaitUntil(() => this.transform.position == Vector3.zero);
 
+		this.transform.position = Vector3.zero;
 		mode = -1;
 	}
 

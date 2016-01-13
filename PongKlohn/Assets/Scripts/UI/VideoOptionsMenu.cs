@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class VideoOptionsMenu : MonoBehaviour {
+public class VideoOptionsMenu : UserInterface {
 	public GameObject videoOptionsMenu;
 
 

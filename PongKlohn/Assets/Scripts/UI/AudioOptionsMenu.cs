@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class AudioOptionsMenu : MonoBehaviour {
+public class AudioOptionsMenu : UserInterface {
 	public GameObject audioOptionsMenu;
 
 

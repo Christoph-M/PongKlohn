@@ -3,11 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Ball : MonoBehaviour {
+	[Header("^^Put Move Script Above Ball Script^^")]
+	[Space(10)]
 //__________________________Public_____________________________
 	public bool move = true;
 	public bool sinCosMove = false;
 	public bool linearRotation = false;
 	public bool sinCosRotation = false;
+
+	[Space(10)]
+	public int maxPredictionCount = 15;
 
 //__________________________Protected_____________________________
 	protected const float fieldHeight = 22.0f;
@@ -80,7 +85,7 @@ public class Ball : MonoBehaviour {
 			startDirection = exitDirection;
 
 			path.Add (hitPoint);
-		} while (hit.collider.gameObject.tag.Contains ("Wall"));
+		} while (hit.collider.gameObject.tag.Contains ("Wall") && path.Count <= maxPredictionCount);
 
 		gameScript.SetProjectileTransform (this.transform);
 

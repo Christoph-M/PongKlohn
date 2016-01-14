@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CharacterSelectionMenu : UserInterface {
 	public GameObject characterSelectionMenu;
@@ -16,38 +18,43 @@ public class CharacterSelectionMenu : UserInterface {
 	private const int p1 = 1;
 	private const int p2 = 2;
 
-	private int characterP1 = 1;
-	private int characterP2 = 1;
+	private List<int> characters = new List<int> { 1, 1 };
+	private List<int> crystals = new List<int> { -1, -1 };
+
+	private bool p1Ready = false;
+	private bool p2Ready = false;
 
 	void Start() {
 		userInterfaceScript = GetComponent<UserInterface> ();
 
 		player1 = characterSelectionMenu.transform.FindChild ("Player1");
 		player2 = characterSelectionMenu.transform.FindChild ("Player2");
+
+		StartCoroutine (SetGame ());
 	}
 
 	public void Player1SelectRight() {
-		int old = characterP1;
+		int old = characters[p1 - 1];
 
-		if (characterP1 < maxCharacters) {
-			++characterP1;
+		if (characters[p1 - 1] < maxCharacters) {
+			++characters[p1 - 1];
 		} else {
-			characterP1 = 1;
+			characters[p1 - 1] = 1;
 		}
 
-		this.SwitchCharacter (p1, characterP1, old);
+		this.SwitchCharacter (p1, characters[p1 - 1], old);
 	}
 
 	public void Player1SelectLeft() {
-		int old = characterP1;
+		int old = characters[p1 - 1];
 
-		if (characterP1 > 1) {
-			--characterP1;
+		if (characters[p1 - 1] > 1) {
+			--characters[p1 - 1];
 		} else {
-			characterP1 = maxCharacters;
+			characters[p1 - 1] = maxCharacters;
 		}
 
-		this.SwitchCharacter (p1, characterP1, old);
+		this.SwitchCharacter (p1, characters[p1 - 1], old);
 	}
 
 	public void SelectPlayer1() {
@@ -55,51 +62,53 @@ public class CharacterSelectionMenu : UserInterface {
 	}
 
 	public void Crystal1OneEnter() {
-		this.CrystalText (p1, "Crystal 1");
+		this.CrystalText (p1, "Crystal One");
 	}
 
 	public void Crystal1TwoEnter() {
-		this.CrystalText (p1, "Crystal 2");
+		this.CrystalText (p1, "Crystal Two");
 	}
 
 	public void Crystal1ThreeEnter() {
-		this.CrystalText (p1, "Crystal 3");
+		this.CrystalText (p1, "Crystal Three");
 	}
 
-	public void Crystal1One() {
+	public void CrystalP1(int crystal) {
+		crystals[p1 - 1] = crystal;
 
+		this.ReadyActive (p1, true);
 	}
 
-	public void Crystal1Two() {
+	public void Player1Ready() {
+		GameObject glow = player1.FindChild ("Glow").gameObject;
 
-	}
+		p1Ready = !p1Ready;
 
-	public void Crystal1Three() {
-
+		glow.SetActive (p1Ready);
 	}
 
 	public void Player2SelectRight() {
-		int old = characterP2;
+		int old = characters[p2 - 1];
 
-		if (characterP2 < maxCharacters) {
-			++characterP2;
+		if (characters[p2 - 1] < maxCharacters) {
+			++characters[p2 - 1];
 		} else {
-			characterP2 = 1;
+			characters[p2 - 1] = 1;
 		}
 
-		this.SwitchCharacter (p2, characterP2, old);
+		this.SwitchCharacter (p2, characters[p2 - 1], old);
 	}
 
 	public void Player2SelectLeft() {
-		int old = characterP2;
+		int old = characters[p2 - 1];
 
-		if (characterP2 > 1) {
-			--characterP2;
+		if (characters[p2 - 1] > 1) {
+			--characters[p2 - 1];
 		} else {
-			characterP2 = maxCharacters;
+			characters[p2 - 1] = maxCharacters;
 		}
 
-		this.SwitchCharacter (p2, characterP2, old);
+		this.SwitchCharacter (p2, characters[p2 - 1], old);
 	}
 
 	public void SelectPlayer2() {
@@ -107,31 +116,33 @@ public class CharacterSelectionMenu : UserInterface {
 	}
 
 	public void Crystal2OneEnter() {
-		this.CrystalText (p2, "Crystal 1");
+		this.CrystalText (p2, "Crystal One");
 	}
 
 	public void Crystal2TwoEnter() {
-		this.CrystalText (p2, "Crystal 2");
+		this.CrystalText (p2, "Crystal Two");
 	}
 
 	public void Crystal2ThreeEnter() {
-		this.CrystalText (p2, "Crystal 3");
+		this.CrystalText (p2, "Crystal Three");
 	}
 
-	public void Crystal2One() {
+	public void CrystalP2(int crystal) {
+		crystals[p2 - 1] = crystal;
 
+		this.ReadyActive (p2, true);
 	}
 
-	public void Crystal2Two() {
+	public void Player2Ready() {
+		GameObject glow = player2.FindChild ("Glow").gameObject;
 
-	}
+		p2Ready = !p2Ready;
 
-	public void Crystal2Three() {
-
+		glow.SetActive (p2Ready);
 	}
 
 	public void Back() {
-		userInterfaceScript.characterSelectionMenuSetActive (false);
+		userInterfaceScript.CharacterSelectionMenuSetActive (false);
 		userInterfaceScript.MainMenuSetActive (true);
 	}
 
@@ -145,18 +156,20 @@ public class CharacterSelectionMenu : UserInterface {
 	}
 
 	private void PlayerSelect(int player) {
-		GameObject glow = (player == 1) ? player1.FindChild ("Glow").gameObject : player2.FindChild ("Glow").gameObject;
 		GameObject sButtons = (player == 1) ? player1.FindChild ("Select_Buttons").gameObject : player2.FindChild ("Select_Buttons").gameObject;
 		GameObject cButtons = (player == 1) ? player1.FindChild ("Crystal_Buttons").gameObject : player2.FindChild ("Crystal_Buttons").gameObject;
 
-		if (!glow.activeSelf) {
-			glow.SetActive (true);
+		if (!cButtons.activeSelf) {
 			sButtons.SetActive (false);
 			cButtons.SetActive (true);
+
+			if (crystals[player - 1] > 0) {
+				this.ReadyActive (player, true);
+			}
 		} else {
-			glow.SetActive (false);
 			sButtons.SetActive (true);
 			cButtons.SetActive (false);
+			this.ReadyActive (player, false);
 			this.CrystalText (player, "");
 		}
 	}
@@ -165,5 +178,44 @@ public class CharacterSelectionMenu : UserInterface {
 		Text textBox = (player == 1) ? player1.FindChild ("Text_Box").GetComponent<Text> () : player2.FindChild ("Text_Box").GetComponent<Text> ();
 
 		textBox.text = text;
+	}
+
+	private void ReadyActive(int player, bool enabled) {
+		GameObject readyButton = (player == 1) ? player1.FindChild ("Ready").gameObject : player2.FindChild ("Ready").gameObject;
+
+		if (!enabled) readyButton.GetComponent<Toggle> ().isOn = false;
+
+		readyButton.SetActive (enabled);
+	}
+
+	private IEnumerator SetGame() {
+		yield return new WaitUntil (() => p1Ready && p2Ready);
+
+		this.DisableMenu ();
+
+		userInterfaceScript.SetPlayer (characters[p1 - 1], crystals[p1 - 1]);
+		userInterfaceScript.SetPlayer (characters[p2 - 1], crystals[p2 - 1]);
+
+		yield return new WaitForSeconds (3);
+
+		StartCoroutine(userInterfaceScript.StartGame (2, 1));
+
+		yield return 0;
+	}
+
+	private void DisableMenu() {
+		characterSelectionMenu.transform.FindChild ("Back").gameObject.SetActive (false);
+
+		foreach (Button button in characterSelectionMenu.GetComponentsInChildren<Button>()) {
+			button.interactable = false;
+		}
+
+		foreach (EventTrigger eTrigger in characterSelectionMenu.GetComponentsInChildren<EventTrigger>()) {
+			eTrigger.enabled = false;
+		}
+
+		foreach (Toggle toggle in characterSelectionMenu.GetComponentsInChildren<Toggle>()) {
+			toggle.interactable = false;
+		}
 	}
 }

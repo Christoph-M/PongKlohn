@@ -13,16 +13,12 @@ public class MainMenu : UserInterface {
 	}
 
 	public void Singleplayer() {
-		Application.LoadLevel(2);
+		StartCoroutine(userInterfaceScript.StartGame (3, 1));
 	}
 
 	public void Multiplayer() {
 		userInterfaceScript.MainMenuSetActive (false);
-		userInterfaceScript.characterSelectionMenuSetActive (true);
-	}
-
-	public void Arcade() {
-
+		userInterfaceScript.CharacterSelectionMenuSetActive (true);
 	}
 
 	public void OptionsMenu() {

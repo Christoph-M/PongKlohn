@@ -1,12 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using UnityEngine.SceneManagement;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Game : MonoBehaviour {
 	[Header("GameObject References")]
-	public Player player1;
-	public Player player2;
+	public List<GameObject> charactersP1 = new List<GameObject>();
+	public List<GameObject> charactersP2 = new List<GameObject>();
+	[Space(10)]
+	public Transform playerEmpty;
+	public UserInterface uiScript;
+	public ScreenShake screenShakeScript;
 	
 	[Header("Game")]
 	public int gameRound = 1;
@@ -15,6 +21,9 @@ public class Game : MonoBehaviour {
 	[Header("Player")]
 	public string player1Typ = "KeyP1"; 
 	public string player2Typ = "KeyP2";
+	[Space(10)]
+	public Vector3 player1Spawn = new Vector3(-21.0f, 0.0f, -1.0f);
+	public Vector3 player2Spawn = new Vector3(21.0f, 0.0f, -1.0f);
 	[Space(10)]
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
@@ -39,9 +48,11 @@ public class Game : MonoBehaviour {
 	public float blockTime = 0.2f;
 
 
-	private UserInterface uiScript;
-	private ScreenShake screenShakeScript;
+	private MasterScript masterScript;
 	private Transform projectile;
+
+	private Player player1;
+	private Player player2;
 
 	private const int p1 = 1;
 	private const int p2 = 2;
@@ -49,32 +60,19 @@ public class Game : MonoBehaviour {
 	private float ballSpeed;
 	private float ballSpeedAtTime;
 	private int player1Score = 0;
-	private int player2Score = 0; 
+	private int player2Score = 0;
+
+	private int scene;
 
 	void Start() {
-		uiScript = GameObject.FindObjectOfType (typeof(UserInterface)) as UserInterface;
-		screenShakeScript = GameObject.FindObjectOfType (typeof(ScreenShake)) as ScreenShake;
-		Debug.Log (screenShakeScript);
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 
-		player1.SetPlayer(player1Typ);
-		player2.SetPlayer(player2Typ);
-		player1.health = playerHealth;
-		player2.health = playerHealth;
-		player1.power = playerEnergy;
-		player2.power = playerEnergy;
+		StartCoroutine (SpawnPlayers ());
 		
 
 		minBallSpeed = ballSpeedUpCurve.Evaluate (0.0f);
 		maxBallSpeed = ballSpeedUpCurve.Evaluate (1.0f);
 		ballSpeed = minBallSpeed;
-
-		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
-			player1.setTurn(true);
-			player2.setTurn(false);
-		} else {
-			player1.setTurn(false);
-			player2.setTurn(true);
-		}
 	}
 
 	void LateUpdate() {		
@@ -120,6 +118,14 @@ public class Game : MonoBehaviour {
 	public float GetBallSpeed() { return ballSpeed; }
 	public void DecreaseBallSpeed() { ballSpeed -= catchSpeedDec; }
 	public void ResetBallSpeed() { ballSpeed = minBallSpeed; ballSpeedAtTime = 0.0f; }
+
+	public Player GetPlayer(int player) {
+		if (player == 1) {
+			return player1;
+		} else {
+			return player2;
+		}
+	}
 
 	public void EnablePlayers(bool b) { player1.enabled = b; 
 								  		player2.enabled = b; }
@@ -181,22 +187,73 @@ public class Game : MonoBehaviour {
 	}
 
 	public void ShakeScreen(int type = -1, int p = -1) {
-		switch (type) {
+		if (screenShakeScript) {
+			switch (type) {
 			case 0:
-				screenShakeScript.BlockScreenShake (p); break;
+				screenShakeScript.BlockScreenShake (p);
+				break;
 			case 1:
-				screenShakeScript.GoalScreenShake (); break;
+				screenShakeScript.GoalScreenShake ();
+				break;
 			case 2:
-				screenShakeScript.BounceScreenShake (); break;
+				screenShakeScript.BounceScreenShake ();
+				break;
 			case 3:
-				screenShakeScript.SpecialScreenShake (); break;
+				screenShakeScript.SpecialScreenShake ();
+				break;
 			case 4:
-				screenShakeScript.BuffScreenShake (); break;
+				screenShakeScript.BuffScreenShake ();
+				break;
 			default:
 				break;
+			}
 		}
 	}
 
+
+	private IEnumerator SpawnPlayers() {
+		int charP1 = masterScript.GetCharacter (1) - 1;
+		int charP2 = masterScript.GetCharacter (2) - 1;
+
+//		yield return new WaitForSeconds(0.1f);
+
+		GameObject p1 = Instantiate (charactersP1 [charP1], player1Spawn, new Quaternion ()) as GameObject;
+		GameObject p2 = Instantiate (charactersP2 [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
+
+		player1 = p1.GetComponent<Player> ();
+		player2 = p2.GetComponent<Player> ();
+
+		player1.tag = "Player1";
+		player2.tag = "Player2";
+		player1.name = "Player_01";
+		player2.name = "Player_02";
+		player1.transform.SetParent (playerEmpty);
+		player2.transform.SetParent (playerEmpty);
+		player2.InvertMotion = true;
+
+		player1.SetPlayer(player1Typ);
+		player2.SetPlayer(player2Typ);
+		player1.health = playerHealth;
+		player2.health = playerHealth;
+		player1.power = playerEnergy;
+		player2.power = playerEnergy;
+
+		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
+			player1.setTurn(true);
+			player2.setTurn(false);
+		} else {
+			player1.setTurn(false);
+			player2.setTurn(true);
+		}
+
+		if (player1Typ == "Ai" || player2Typ == "Ai") {
+			scene = 3;
+		} else {
+			scene = 2;
+		}
+
+		yield return 0;
+	}
 
 	private IEnumerator EndRound(int p){
 		if (gameRound >= maxGameRounds) {
@@ -205,15 +262,24 @@ public class Game : MonoBehaviour {
 
 			this.EnablePlayers (false);
 
+			uiScript.MatchUISetActive (false);
+			uiScript.WinScreenMenuSetActive (true);
+
 			yield return new WaitForSeconds (5);
 
-			if (winner == 1) {
-				Application.LoadLevel (0);
-//				Application.LoadLevel(2);
-			} else {
-				Application.LoadLevel (0);
-//				Application.LoadLevel(3);
-			}
+//			if (winner == 1) {
+//				masterScript.LoadScene (1);
+//
+//				yield return new WaitUntil(() => SceneManager.GetSceneAt(1).isLoaded);
+//
+//				masterScript.UnloadScene (scene);
+//			} else {
+//				masterScript.LoadScene (1);
+//
+//				yield return new WaitUntil(() => SceneManager.GetSceneAt(1).isLoaded);
+//
+//				masterScript.UnloadScene (scene);
+//			}
 		} else {
 			uiScript.GetComponent<MatchUI> ().RoundEnd (p);
 			

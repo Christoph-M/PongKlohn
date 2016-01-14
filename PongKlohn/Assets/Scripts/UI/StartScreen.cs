@@ -10,8 +10,8 @@ public class StartScreen : UserInterface {
 
 	private UserInterface userInterfaceScript;
 
-	private Color textPulse;
-	private Color outlinePulse;
+	private Image pressStart;
+	private Image backplane;
 	
 	private float t = 0.0f;
 	private bool one = false;
@@ -19,8 +19,8 @@ public class StartScreen : UserInterface {
 	void Start() {
 		userInterfaceScript = GetComponent<UserInterface> ();
 
-		textPulse = startScreen.GetComponentInChildren<Text> ().color;
-		outlinePulse = startScreen.GetComponentInChildren<Outline> ().effectColor;
+		pressStart = startScreen.transform.FindChild("Press_Start").GetComponent<Image>();
+		backplane = startScreen.transform.FindChild("Backplane").GetComponent<Image>();
 	}
 	
 	void Update () {
@@ -29,23 +29,22 @@ public class StartScreen : UserInterface {
 			userInterfaceScript.MainMenuSetActive(true);
 		}
 	}
-	
+
 	void LateUpdate() {
-		if (startScreen.transform.FindChild ("Text").gameObject.activeSelf) {
-			textPulse = Color.Lerp (startScreen.GetComponentInChildren<Text> ().color, Color.clear, t);
-			outlinePulse = Color.Lerp (startScreen.GetComponentInChildren<Outline> ().effectColor, Color.clear, t);
-			startScreen.transform.FindChild ("Press_Start").GetComponent<Text> ().color = textPulse;
-			startScreen.transform.FindChild ("Press_Start").GetComponent<Outline> ().effectColor = outlinePulse;
-			
-			if (!one) {
-				t += Time.deltaTime / textPulseDuration;
-				if (t >= 1)
-					one = true;
-			} else if (one) {
-				t -= Time.deltaTime / textPulseDuration;
-				if (t <= 0)
-					one = false;
-			}
+		if (t < textPulseDuration && !one) {
+			pressStart.CrossFadeAlpha (0, textPulseDuration - 0.8f, false);
+			backplane.CrossFadeAlpha (0, textPulseDuration - 0.8f, false);
+
+			t += Time.deltaTime / textPulseDuration;
+			if (t >= 1)
+				one = true;
+		} else if (one) {
+			pressStart.CrossFadeAlpha (255, (textPulseDuration - 0.8f) * 1000, false);
+			backplane.CrossFadeAlpha (255, (textPulseDuration - 0.8f) * 1000, false);
+
+			t -= Time.deltaTime / textPulseDuration;
+			if (t <= 0)
+				one = false;
 		}
 	}
 }

@@ -3,71 +3,101 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class MatchUI : UserInterface {
+	public GameObject matchUI;
+
+	private Image healthBarP1;
+	private Image healthBarP2;
+	private Image energyBarP1;
+	private Image energyBarP2;
+
+	private float hp1;
+	private float hp2;
+	private float ep1;
+	private float ep2;
+
 	void Start () {
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
+
+		healthBarP1 = matchUI.transform.FindChild ("Health_P1").FindChild ("healthbar").GetComponent<Image> ();
+		healthBarP2 = matchUI.transform.FindChild ("Health_P2").FindChild ("healthbar").GetComponent<Image> ();
+		energyBarP1 = matchUI.transform.FindChild ("Energy_P1").FindChild ("specialbar").GetComponent<Image> ();
+		energyBarP2 = matchUI.transform.FindChild ("Energy_P2").FindChild ("specialbar").GetComponent<Image> ();
 	}
 	
-	private Timer uiTimer = new Timer(7.0f);
+	private Timer uiTimer = new Timer(8.0f);
 	void Update() {
 		this.RoundStart(uiTimer.UpdateTimer());
 	}
 
 	void LateUpdate() {
-		canvas.transform.FindChild ("Player_1_Life").GetComponent<Text> ().text = "" + gameScript.player1.health;
-		canvas.transform.FindChild ("Player_2_Life").GetComponent<Text> ().text = "" + gameScript.player2.health;
-		canvas.transform.FindChild ("Player_1_Energy").GetComponent<Text> ().text = "" + gameScript.player1.power;
-		canvas.transform.FindChild ("Player_2_Energy").GetComponent<Text> ().text = "" + gameScript.player2.power;
+		hp1 = (float)((float)gameScript.GetPlayer (1).health / (float)gameScript.playerHealth);
+		hp2 = (float)((float)gameScript.GetPlayer (2).health / (float)gameScript.playerHealth);
+		ep1 = (float)((float)gameScript.GetPlayer (1).power / (float)gameScript.maxPlayerEnergy);
+		ep2 = (float)((float)gameScript.GetPlayer (2).power / (float)gameScript.maxPlayerEnergy);
+
+		healthBarP1.fillAmount = hp1;
+		healthBarP2.fillAmount = hp2;
+		energyBarP1.fillAmount = ep1;
+		energyBarP2.fillAmount = ep2;
 	}
 	
 	public void RoundEnd(int p){
-		canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins\nRound " + gameScript.gameRound + "!";
-		canvas.transform.FindChild ("Player_Win").gameObject.SetActive (true);
-		canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (false);
-		canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (false);
-		canvas.transform.FindChild ("Player_1_Energy").gameObject.SetActive (false);
-		canvas.transform.FindChild ("Player_2_Energy").gameObject.SetActive (false);
+		matchUI.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins\nRound " + gameScript.gameRound + "!";
+		matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (true);
+		matchUI.transform.FindChild ("Health_P1").gameObject.SetActive (false);
+		matchUI.transform.FindChild ("Health_P2").gameObject.SetActive (false);
+		matchUI.transform.FindChild ("Energy_P1").gameObject.SetActive (false);
+		matchUI.transform.FindChild ("Energy_P2").gameObject.SetActive (false);
 		
-		uiTimer.SetTimer(10.0f);
+		uiTimer.SetTimer(11.0f);
 	}
 
 	public void MatchEnd(int p){
-		canvas.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins Match!";
-		canvas.transform.FindChild ("Player_Win").gameObject.SetActive (true);
-		canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (false);
-		canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (false);
-		canvas.transform.FindChild ("Player_1_Energy").gameObject.SetActive (false);
-		canvas.transform.FindChild ("Player_2_Energy").gameObject.SetActive (false);
+		matchUI.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins Match!";
+		matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (true);
+		matchUI.transform.FindChild ("Health_P1").gameObject.SetActive (false);
+		matchUI.transform.FindChild ("Health_P2").gameObject.SetActive (false);
+		matchUI.transform.FindChild ("Energy_P1").gameObject.SetActive (false);
+		matchUI.transform.FindChild ("Energy_P2").gameObject.SetActive (false);
 	}
 
 	private void RoundStart(float t) {
 		switch ((int)t) {
+		case 8:
+			matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (false);
+			break;
 		case 7:
-			canvas.transform.FindChild ("Player_Win").gameObject.SetActive (false);
+			matchUI.transform.FindChild ("BackplaneR").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("Round_" + gameScript.gameRound).gameObject.SetActive(true);
 			break;
 		case 6:
-			canvas.transform.FindChild ("Round").GetComponent<Text> ().text = "Round " + gameScript.gameRound;
-			canvas.transform.FindChild ("Round").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("BackplaneR").gameObject.SetActive (false);
+			matchUI.transform.FindChild ("Round_" + gameScript.gameRound).gameObject.SetActive (false);
 			break;
 		case 5:
-			canvas.transform.FindChild ("Round").gameObject.SetActive (false);
+			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("2").gameObject.SetActive (true);
 			break;
 		case 4:
-			canvas.transform.FindChild ("Count_Down").GetComponent<Text> ().text = "2";
-			canvas.transform.FindChild ("Count_Down").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("2").gameObject.SetActive (false);
+			matchUI.transform.FindChild ("1").gameObject.SetActive (true);
 			break;
 		case 3:
-			canvas.transform.FindChild ("Count_Down").GetComponent<Text> ().text = "1";
+			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (false);
+			matchUI.transform.FindChild ("1").gameObject.SetActive (false);
 			break;
 		case 2:
-			canvas.transform.FindChild ("Count_Down").gameObject.SetActive (false);
-			canvas.transform.FindChild ("FIGHT").gameObject.SetActive (true);
+			gameScript.ShakeScreen (1);
+			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("FIGHT").gameObject.SetActive (true);
 			break;
 		case 1:
-			canvas.transform.FindChild ("FIGHT").gameObject.SetActive (false);
-			canvas.transform.FindChild ("Player_1_Life").gameObject.SetActive (true);
-			canvas.transform.FindChild ("Player_2_Life").gameObject.SetActive (true);
-			canvas.transform.FindChild ("Player_1_Energy").gameObject.SetActive (true);
-			canvas.transform.FindChild ("Player_2_Energy").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (false);
+			matchUI.transform.FindChild ("FIGHT").gameObject.SetActive (false);
+			matchUI.transform.FindChild ("Health_P1").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("Health_P2").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("Energy_P1").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("Energy_P2").gameObject.SetActive (true);
 
 			gameScript.EnablePlayers(true);
 

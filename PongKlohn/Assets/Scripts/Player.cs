@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 	private Timer stunTimer;
 	private Timer waitAfterSoot;
 	private Timer dashTimer;
-
+	
 	private Rigidbody2D myTransform;
 	private Animator animator;
 	
@@ -33,6 +33,10 @@ public class Player : MonoBehaviour
 	private GameObject blockTrigger;
 	private GameObject dashTrigger;
 	private GameObject missTrigger;
+	public GameObject smoke;
+	public GameObject fangShild;
+	public GameObject blockShild;
+	public AnimationCurve fangCurve = AnimationCurve.EaseInOut(0f,0f,1f,0.666f);
 	
 	private InputControl controls;
 	
@@ -42,6 +46,7 @@ public class Player : MonoBehaviour
 	
 	void Start() 
 	{
+		fangShild.transform.localScale = Vector3.zero;
 		catchTimer = new Timer();
 		blockTimer  = new Timer();
 		fireTimer = new Timer();
@@ -113,22 +118,45 @@ public class Player : MonoBehaviour
 	private bool isShooting = false;
 	private bool isBlocking = false;
 	private bool isStunned = false;
+	private float fangShildTimer = 0f;
+	private float blockLoad = 0F;
+	public float blockMoveMod = 1f;
 	
 	void Update() 
 	{
+		//Debug.Log("turn"+turn);
+		if(ICanShoot())
+		{
+			if(fangShildTimer<1f)
+			{
+				fangShildTimer += Time.deltaTime * 1f;
+			}
+		}
+		else
+		{	
+			if(fangShildTimer>0f)
+			{
+				fangShildTimer -= Time.deltaTime * 2f;
+			}
+			
+			
+		}
+		fangShild.transform.localScale = Vector3.one * fangCurve.Evaluate(fangShildTimer);
+
 		direction = controls.UpdateMovement();//zuweisung der Inputachsen
 		directionRaw = controls.UpdateMovementRaw();
 		
-		StartCoroutine(this.MovePlayer(direction));
+		StartCoroutine(this.MovePlayer(directionRaw));
 		StartCoroutine(this.PerformAction(direction, directionRaw));
 	}
 	
 	IEnumerator MovePlayer(Vector2 direction_) {
 		if (canMovement)// Bewegt den spieler
 		{
-			animator.SetFloat("xAxis", direction_.x * motionInverter);
-			animator.SetFloat("yAxis", direction_.y * motionInverter);
-			myTransform.AddForce (direction_ * speed);
+			//animator.SetFloat("xAxis", direction_.x * motionInverter);
+			//animator.SetFloat("yAxis", direction_.y * motionInverter);
+			move(direction_,speed * blockMoveMod);
+			//myTransform.AddForce (direction_ * speed);
 		}
 		
 		yield return 0;
@@ -188,6 +216,7 @@ public class Player : MonoBehaviour
 			}
 		} else if (isShooting)/////////Action Shoot//////////////////////
 		{	
+			
 			//Debug.Log(this.transform.name + " shoot enter");		
 			if(shootProgression == 2 && waitAfterSoot.IsFinished())
 			{
@@ -199,7 +228,7 @@ public class Player : MonoBehaviour
 			}
 			else if(shootProgression == 1 && fireTimer.IsFinished())
 			{
-				waitAfterSoot.SetTimer(0.5f);
+				waitAfterSoot.SetTimer(0.1f);
 				shootProgression = 2;
 				Shoot(direction_,false);
 			}
@@ -234,18 +263,23 @@ public class Player : MonoBehaviour
 			}		
 		} else if(isBlocking)///////////////////////Block Action//////////////////////////
 		{	
+			blockShild.transform.localScale = new Vector3(0.6f,0.6f+(blockLoad*0.5f),0.6f);
 			//Debug.Log(this.transform.name + " block Enter");
 			if(blockProgression == 2 && blockTimer.IsFinished())
 			{
 				//Debug.Log(this.transform.name + " block endet");
 				action = 0;
+				blockMoveMod = 1f;
 				blockProgression = 0;
 				isInAction = false;
 				isBlocking = false;
+				blockLoad = 0f;
 			}
 			else if(blockProgression == 1)
 			{
-				if(!controls.IsBlockKeyActive()){blockProgression = 2;}
+				if(!controls.IsBlockKeyActive()){blockProgression = 2;blockMoveMod = 1f;}
+				if(blockLoad<1){blockLoad+=(0.5f * Time.deltaTime);}
+				blockMoveMod = 0.5f;
 				blockTimer.SetTimer(blockTime);
 				action = 2;
 			}
@@ -270,7 +304,6 @@ public class Player : MonoBehaviour
 			{
 				Debug.Log(this.transform.name + " dash start");
 				action = 10;
-				
 				if(MoveTo(directionRaw_))
 				{
 					dashProgression = 1;
@@ -353,7 +386,7 @@ public class Player : MonoBehaviour
 					dashTrigger.SetActive(false);//////////////
 					this.transform.FindChild("Block").gameObject.SetActive(true);
 
-					canMovement = false;
+					canMovement = true;
 					animator.SetBool ("Block", true);
 					animator.SetBool ("Fire", false);
 					animator.SetBool ("PowerShoot", false);
@@ -506,7 +539,7 @@ public class Player : MonoBehaviour
 					blockTrigger.SetActive(true);
 					dashTrigger.SetActive(false);
 
-					canMovement = true;
+					canMovement = false;
 					animator.SetBool ("Block", false);
 					animator.SetBool ("Fire", false);
 					animator.SetBool ("PowerShoot", false);
@@ -620,25 +653,67 @@ public class Player : MonoBehaviour
 		return false;
 	}
 	
+	private float collisionRange = 1f;
 	Vector3 dir = Vector3.zero;
 	Vector3 oldDir = Vector3.zero;
 	public AnimationCurve curve = AnimationCurve.EaseInOut(0,0,0,0);
+	public AnimationCurve curveBande = AnimationCurve.EaseInOut(3f,0f,1f,1f);
+	private float curvepoint = 0f;
 	float easeTime = 0.3f;
 	float startValue = 0;
-	float endValue = 1f;
-	private bool move(Vector3 direction)///////////////////////MOVE
-	{
+	float deltatime2 = 0f;
+	RaycastHit2D playerRayHit;
+	private float bandenDist = 0f;
+	private Vector3 lerpDir = Vector3.zero;
+	private bool collisionMerker = true;
+	private Vector3 moveTarget = Vector3.zero;
+	private Vector3 moveStart = Vector3.zero;
+	
+	
+	private bool move(Vector3 direction,float moveSpeed)///////////////////////MOVE
+	{			
+		if(direction != Vector3.zero)
+		{
+			playerRayHit = Physics2D.Raycast (new Vector2(transform.position.x,transform.position.y), direction, Mathf.Infinity, -1, 0.09f, 0.11f);
+			moveTarget =  new Vector3(playerRayHit.point.x,playerRayHit.point.y,0f) - (direction * collisionRange);
+			moveStart =  new Vector3(playerRayHit.point.x,playerRayHit.point.y,0f) - (direction * collisionRange *3f);
+		}
+		
+		bandenDist = Vector3.Distance(new Vector3(playerRayHit.point.x,playerRayHit.point.y,transform.position.z),transform.position);	
+		
+		
 		if(direction != dir)
 		{
-			//effect
-			curve = AnimationCurve.EaseInOut(Time.time,0f,Time.time + easeTime,1f);
+			if (direction != Vector3.zero){
+				Instance(smoke,this.transform.position, Quaternion.LookRotation(direction,Vector3.forward));
+			}
+			curve = AnimationCurve.EaseInOut(0f,0f,easeTime,1f);
 			startValue = Time.time;
+			//oldDir = dir;
+			oldDir = lerpDir;
 			dir = direction;
-		}	
-	
-		transform.position += Vector3.Lerp(oldDir, dir, curve.Evaluate(Time.time- startValue));
+		}
+		
+		//lerpDir = direction*schbeltasse*Time.dateTime;
+		float deltatime = Time.time - startValue;
+		lerpDir = Vector3.Lerp(oldDir, direction, curve.Evaluate(deltatime));
+		
+		//Vector3 dasding = lerpDir * curveBande.Evaluate(bandenDist);
+		if(bandenDist >= 3f)
+		{
+			curvepoint = 1f;
+			transform.position += lerpDir *  moveSpeed * Time.deltaTime;
+		}
+		else
+		{
+			curvepoint =  curveBande.Evaluate(bandenDist);
+			transform.position = Vector3.Lerp(moveStart, moveTarget,curvepoint);
+		}
+		animator.SetFloat("xAxis", lerpDir.x * motionInverter * curvepoint);
+		animator.SetFloat("yAxis", lerpDir.y * motionInverter * curvepoint);
 		return false;
 	}
+		
 	
 	public Vector3 startVec = Vector3.zero;
 	public Vector3 endVec = Vector3.zero;
@@ -665,7 +740,7 @@ public class Player : MonoBehaviour
 		//Debug.Log("deltatime:"+deltatime);
 		if(deltatime >= dashTime)
 		{
-			Debug.Log("Dash Ende: "+ deltatime);
+			//Debug.Log("Dash Ende: "+ deltatime);
 			dashBool = true;
 			return true;
 		}

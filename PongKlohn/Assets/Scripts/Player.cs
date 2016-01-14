@@ -43,9 +43,11 @@ public class Player : MonoBehaviour
 	private bool turn;
 
 	private float motionInverter = 1;
+	private AudioLoop audioDing;
 	
 	void Start() 
 	{
+		audioDing = GameObject.FindObjectOfType (typeof(AudioLoop)) as AudioLoop;
 		fangShild.transform.localScale = Vector3.zero;
 		catchTimer = new Timer();
 		blockTimer  = new Timer();
@@ -177,6 +179,7 @@ public class Player : MonoBehaviour
 			isStunned = true;
 		} else if (controls.IsFireKeyActive(ICanShoot()) && !isInAction)//fire input
 		{
+			audioDing.SetSrei();
 			isInAction = true;
 			isShooting = true;
 		} else if (controls.IsPowerShootActive(ICanShoot()) && !isInAction)//Powershoot input
@@ -185,13 +188,15 @@ public class Player : MonoBehaviour
 //			isPowerShooting = true;
 		} else if (controls.IsBlockKeyActive() && !isInAction)//Block input
 		{
+			audioDing.SetSrei();
 			isInAction = true;
 			isBlocking = true;
 		} else if (controls.IsBuffActive() && !isInAction)//Buff input
 		{
 			//isBlocking = true;
-		} else if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero)// && power >= dashEnergyCost)//Dash input
+		} else if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero && power >= dashEnergyCost)//Dash input
 		{
+			audioDing.SetSrei();
 			power -= dashEnergyCost;
 			isInAction = true;
 			isDashing = true;
@@ -228,14 +233,14 @@ public class Player : MonoBehaviour
 			}
 			else if(shootProgression == 1 && fireTimer.IsFinished())
 			{
-				waitAfterSoot.SetTimer(0.1f);
+				waitAfterSoot.SetTimer(0.5f);
 				shootProgression = 2;
 				Shoot(direction_,false);
 			}
 			else if(shootProgression == 0)
 			{
 				action = 3;
-				fireTimer.SetTimer(1f);
+				fireTimer.SetTimer(1.5f);
 				shootProgression = 1;
 			}		
 		} else if (isPowerShooting)/////////Action PowerShoot//////////////////////
@@ -277,11 +282,12 @@ public class Player : MonoBehaviour
 			}
 			else if(blockProgression == 1)
 			{
-				if(!controls.IsBlockKeyActive()){blockProgression = 2;blockMoveMod = 1f;}
+				
 				if(blockLoad<1){blockLoad+=(0.5f * Time.deltaTime);}
 				blockMoveMod = 0.5f;
 				blockTimer.SetTimer(blockTime);
 				action = 2;
+				if(!controls.IsBlockKeyActive()){blockProgression = 2;blockMoveMod = 1f;}
 			}
 			else if(blockProgression == 0)
 			{
@@ -540,7 +546,7 @@ public class Player : MonoBehaviour
 					dashTrigger.SetActive(false);
 
 					canMovement = false;
-					animator.SetBool ("Block", false);
+					animator.SetBool ("Block", true);
 					animator.SetBool ("Fire", false);
 					animator.SetBool ("PowerShoot", false);
 					animator.SetBool ("Buff", false);
@@ -665,22 +671,23 @@ public class Player : MonoBehaviour
 	RaycastHit2D playerRayHit;
 	private float bandenDist = 0f;
 	private Vector3 lerpDir = Vector3.zero;
-	private bool collisionMerker = true;
-	private Vector3 moveTarget = Vector3.zero;
-	private Vector3 moveStart = Vector3.zero;
-	
+	private float maxX = 0f;
+	private float maxY = 0f;
+	private Vector3 maxValue = Vector3.zero;
 	
 	private bool move(Vector3 direction,float moveSpeed)///////////////////////MOVE
 	{			
-		if(direction != Vector3.zero)
+		if(direction.x != 0f)
 		{
-			playerRayHit = Physics2D.Raycast (new Vector2(transform.position.x,transform.position.y), direction, Mathf.Infinity, -1, 0.09f, 0.11f);
-			moveTarget =  new Vector3(playerRayHit.point.x,playerRayHit.point.y,0f) - (direction * collisionRange);
-			moveStart =  new Vector3(playerRayHit.point.x,playerRayHit.point.y,0f) - (direction * collisionRange *3f);
+			playerRayHit = Physics2D.Raycast (new Vector2(transform.position.x,transform.position.y), new Vector2(direction.x,0), Mathf.Infinity, -1, 0.07f, 0.11f);
+			maxValue.x = playerRayHit.point.x;
 		}
 		
-		bandenDist = Vector3.Distance(new Vector3(playerRayHit.point.x,playerRayHit.point.y,transform.position.z),transform.position);	
-		
+		if(direction.y != 0f)
+		{
+			playerRayHit = Physics2D.Raycast (new Vector2(transform.position.x,transform.position.y), new Vector2(0,direction.y), Mathf.Infinity, -1, 0.07f, 0.11f);
+			maxValue.y = playerRayHit.point.y;
+		}	
 		
 		if(direction != dir)
 		{
@@ -696,21 +703,16 @@ public class Player : MonoBehaviour
 		
 		//lerpDir = direction*schbeltasse*Time.dateTime;
 		float deltatime = Time.time - startValue;
+		Vector3 diff = (maxValue-transform.position);
+		//Debug.Log("diff"+diff);
+		if(diff.x<0){diff.x*=-1;}
+		if(diff.y<0){diff.y*=-1;}
+		if(diff.x<2f){direction.x=0F;}
+		if(diff.y<2f){direction.y=0F;}
 		lerpDir = Vector3.Lerp(oldDir, direction, curve.Evaluate(deltatime));
-		
-		//Vector3 dasding = lerpDir * curveBande.Evaluate(bandenDist);
-		if(bandenDist >= 3f)
-		{
-			curvepoint = 1f;
-			transform.position += lerpDir *  moveSpeed * Time.deltaTime;
-		}
-		else
-		{
-			curvepoint =  curveBande.Evaluate(bandenDist);
-			transform.position = Vector3.Lerp(moveStart, moveTarget,curvepoint);
-		}
-		animator.SetFloat("xAxis", lerpDir.x * motionInverter * curvepoint);
-		animator.SetFloat("yAxis", lerpDir.y * motionInverter * curvepoint);
+		transform.position += lerpDir *  moveSpeed * Time.deltaTime;
+		animator.SetFloat("xAxis", lerpDir.x * motionInverter);
+		animator.SetFloat("yAxis", lerpDir.y * motionInverter);
 		return false;
 	}
 		
@@ -720,15 +722,26 @@ public class Player : MonoBehaviour
 	public float dashLength = 50f;//Dasch Distance
 	public float dashTime = 5f;//Dash dauer
 	public AnimationCurve dashCurve;
+	private float hitLength = 0f;
 	bool dashBool = true;
 	private bool MoveTo(Vector3 direction)/////////////////////////MoveTo (Dash)
 	{
 		if(dashBool)
 		{
+			maxValue = Vector3.zero; 
+			playerRayHit = Physics2D.Raycast (new Vector2(transform.position.x,transform.position.y), new Vector2(direction.x,direction.y), Mathf.Infinity, -1, 0.07f, 0.11f);
+			float distMax = playerRayHit.distance;
+			
 			dashBool = false;
 			//effect
 			startVec = transform.position;
 			endVec = (direction * dashLength);
+
+			if(endVec.sqrMagnitude>distMax)
+			{
+				endVec = Vector3.ClampMagnitude(endVec, distMax);
+			}
+			
 			dashCurve = AnimationCurve.EaseInOut(0f,0f,dashTime,1f);
 			startValue = Time.time;
 			//dir = direction;

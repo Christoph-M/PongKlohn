@@ -22,7 +22,7 @@ public class Ball : MonoBehaviour {
 	protected SinCosRotation sinCosRotationScript;
 
 	protected const float fieldHeight = 22.0f;
-	protected const float fieldWidth = 60.0f;
+	protected const float fieldWidth = 70.0f;
 	protected float wallTop;
 	protected float wallBottom;
 	protected float wallLeft;

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class Player : MonoBehaviour 
 {	
 	public Transform ballSpohorn;
@@ -15,6 +16,13 @@ public class Player : MonoBehaviour
 	public float speed { get; set; }
 	public float dashSpeed { get; set; }
 	public bool InvertMotion = false;
+
+	protected const float fieldHeight = 22.0f;
+	protected const float fieldWidth = 70.0f;
+	protected float wallTop;
+	protected float wallBottom;
+	protected float wallLeft;
+	protected float wallRight;
 	
 	private Timer catchTimer;
 	private Timer blockTimer;
@@ -22,7 +30,7 @@ public class Player : MonoBehaviour
 	private Timer stunTimer;
 	private Timer waitAfterSoot;
 	private Timer dashTimer;
-
+	
 	private Rigidbody2D myTransform;
 	private Animator animator;
 	
@@ -32,15 +40,22 @@ public class Player : MonoBehaviour
 	private GameObject blockTrigger;
 	private GameObject dashTrigger;
 	private GameObject missTrigger;
+	public GameObject smoke;
+	public GameObject fangShild;
+	public GameObject blockShild;
+	public AnimationCurve fangCurve = AnimationCurve.EaseInOut(0f,0f,1f,0.666f);
 	
 	private InputControl controls;
 	
 	private bool turn;
 
 	private float motionInverter = 1;
+	private AudioLoop audioDing;
 	
 	void Start() 
 	{
+		audioDing = GameObject.FindObjectOfType (typeof(AudioLoop)) as AudioLoop;
+		fangShild.transform.localScale = Vector3.zero;
 		catchTimer = new Timer();
 		blockTimer  = new Timer();
 		fireTimer = new Timer();
@@ -80,6 +95,11 @@ public class Player : MonoBehaviour
 		missTrigger.SetActive(false);
 		blockTrigger.SetActive(false);
 		dashTrigger.SetActive(false);
+
+		wallTop = fieldHeight / 2;
+		wallBottom = -fieldHeight / 2;
+		wallRight = fieldWidth / 2;
+		wallLeft = -fieldWidth / 2;
 		
 		if (InvertMotion) //Spieler Steht Links oder Recht   Steuerung anpassen
 		{
@@ -112,22 +132,62 @@ public class Player : MonoBehaviour
 	private bool isShooting = false;
 	private bool isBlocking = false;
 	private bool isStunned = false;
+	private float fangShildTimer = 0f;
+	private float blockLoad = 0F;
+	public float blockMoveMod = 1f;
 	
 	void Update() 
 	{
+		//Debug.Log("turn"+turn);
+		if(ICanShoot())
+		{
+			if(fangShildTimer<1f)
+			{
+				fangShildTimer += Time.deltaTime * 1f;
+			}
+		}
+		else
+		{	
+			if(fangShildTimer>0f)
+			{
+				fangShildTimer -= Time.deltaTime * 2f;
+			}
+			
+			
+		}
+		fangShild.transform.localScale = Vector3.one * fangCurve.Evaluate(fangShildTimer);
+
 		direction = controls.UpdateMovement();//zuweisung der Inputachsen
 		directionRaw = controls.UpdateMovementRaw();
 		
-		StartCoroutine(this.MovePlayer(direction));
+		StartCoroutine(this.MovePlayer(directionRaw));
 		StartCoroutine(this.PerformAction(direction, directionRaw));
+		StartCoroutine (this.KeepPlayerInField ());
+	}
+
+	IEnumerator KeepPlayerInField() {
+		if (this.transform.position.x > wallRight) {
+			this.transform.position = new Vector3(wallRight, this.transform.position.y, this.transform.position.z);
+		} else if (this.transform.position.x < wallLeft) {
+			this.transform.position = new Vector3(wallLeft, this.transform.position.y, this.transform.position.z);
+		}
+
+		if (this.transform.position.y > wallTop) {
+			this.transform.position = new Vector3(this.transform.position.x, wallTop, this.transform.position.z);
+		} else if (this.transform.position.y < wallBottom) {
+			this.transform.position = new Vector3(this.transform.position.x, wallBottom, this.transform.position.z);
+		}
+
+		yield return 0;
 	}
 	
 	IEnumerator MovePlayer(Vector2 direction_) {
 		if (canMovement)// Bewegt den spieler
 		{
-			animator.SetFloat("xAxis", direction_.x * motionInverter);
-			animator.SetFloat("yAxis", direction_.y * motionInverter);
-			myTransform.AddForce (direction_ * speed);
+			//animator.SetFloat("xAxis", direction_.x * motionInverter);
+			//animator.SetFloat("yAxis", direction_.y * motionInverter);
+			move(direction_,speed * blockMoveMod);
+			//myTransform.AddForce (direction_ * speed);
 		}
 		
 		yield return 0;
@@ -140,7 +200,7 @@ public class Player : MonoBehaviour
 		blockTimer.UpdateTimer();
 		catchTimer.UpdateTimer();
 		waitAfterSoot.UpdateTimer();
-		dashTimer.UpdateTimer();
+		//dashTimer.UpdateTimer();
 		
 		if(zuLangsamZumFangenDuMong)///////////////Stun
 		{
@@ -148,6 +208,7 @@ public class Player : MonoBehaviour
 			isStunned = true;
 		} else if (controls.IsFireKeyActive(ICanShoot()) && !isInAction)//fire input
 		{
+			audioDing.SetSrei();
 			isInAction = true;
 			isShooting = true;
 		} else if (controls.IsPowerShootActive(ICanShoot()) && !isInAction)//Powershoot input
@@ -156,13 +217,16 @@ public class Player : MonoBehaviour
 //			isPowerShooting = true;
 		} else if (controls.IsBlockKeyActive() && !isInAction)//Block input
 		{
+			audioDing.SetSrei();
 			isInAction = true;
 			isBlocking = true;
 		} else if (controls.IsBuffActive() && !isInAction)//Buff input
 		{
 			//isBlocking = true;
-		} else if (controls.IsDashActive() && !isInAction && direction_ != Vector2.zero && power >= dashEnergyCost)//Dash input
+		} else if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero && power >= dashEnergyCost)//Dash input
 		{
+			audioDing.SetSrei();
+			power -= dashEnergyCost;
 			isInAction = true;
 			isDashing = true;
 		}
@@ -186,6 +250,7 @@ public class Player : MonoBehaviour
 			}
 		} else if (isShooting)/////////Action Shoot//////////////////////
 		{	
+			
 			//Debug.Log(this.transform.name + " shoot enter");		
 			if(shootProgression == 2 && waitAfterSoot.IsFinished())
 			{
@@ -204,7 +269,7 @@ public class Player : MonoBehaviour
 			else if(shootProgression == 0)
 			{
 				action = 3;
-				fireTimer.SetTimer(1f);
+				fireTimer.SetTimer(1.5f);
 				shootProgression = 1;
 			}		
 		} else if (isPowerShooting)/////////Action PowerShoot//////////////////////
@@ -232,20 +297,26 @@ public class Player : MonoBehaviour
 			}		
 		} else if(isBlocking)///////////////////////Block Action//////////////////////////
 		{	
+			blockShild.transform.localScale = new Vector3(0.6f,0.6f+(blockLoad*0.5f),0.6f);
 			//Debug.Log(this.transform.name + " block Enter");
 			if(blockProgression == 2 && blockTimer.IsFinished())
 			{
 				//Debug.Log(this.transform.name + " block endet");
 				action = 0;
+				blockMoveMod = 1f;
 				blockProgression = 0;
 				isInAction = false;
 				isBlocking = false;
+				blockLoad = 0f;
 			}
 			else if(blockProgression == 1)
 			{
-				if(!controls.IsBlockKeyActive()){blockProgression = 2;}
+				
+				if(blockLoad<1){blockLoad+=(0.5f * Time.deltaTime);}
+				blockMoveMod = 0.5f;
 				blockTimer.SetTimer(blockTime);
 				action = 2;
+				if(!controls.IsBlockKeyActive()){blockProgression = 2;blockMoveMod = 1f;}
 			}
 			else if(blockProgression == 0)
 			{
@@ -255,24 +326,26 @@ public class Player : MonoBehaviour
 		} else if(isDashing)//////////////Dash//////////////////////////////////////////
 		{
 			//Debug.Log(this.transform.name + " dash enter");
-			if(dashProgression == 1 && dashTimer.IsFinished())
+			if(dashProgression == 1)
 			{
-				//Debug.Log(this.transform.name + " dash endet");
+				Debug.Log(this.transform.name + " dash endet");
 				dashProgression = 0;
 				isDashing = false;
 				action = 0;
 				isInAction = false;
+				
 			}
 			else if(dashProgression == 0)
 			{
 				Debug.Log(this.transform.name + " dash start");
-				dashTimer.SetTimer(0.2f);
-				power -= dashEnergyCost;
 				action = 10;
-				dashProgression =1;
-				animator.SetFloat("xAxis", direction_.x * motionInverter);
-				animator.SetFloat("yAxis", direction_.y * motionInverter);
-				myTransform.AddForce (directionRaw_ * dashSpeed, ForceMode2D.Impulse);
+				if(MoveTo(directionRaw_))
+				{
+					dashProgression = 1;
+				}
+				//animator.SetFloat("xAxis", direction_.x * motionInverter);
+				//animator.SetFloat("yAxis", direction_.y * motionInverter);
+				//myTransform.AddForce (directionRaw_ * dashSpeed, ForceMode2D.Impulse);
 			}
 		} else if(isBuffing)///////////////////////Buff Action//////////////////////////
 		{	
@@ -348,7 +421,7 @@ public class Player : MonoBehaviour
 					dashTrigger.SetActive(false);//////////////
 					this.transform.FindChild("Block").gameObject.SetActive(true);
 
-					canMovement = false;
+					canMovement = true;
 					animator.SetBool ("Block", true);
 					animator.SetBool ("Fire", false);
 					animator.SetBool ("PowerShoot", false);
@@ -501,8 +574,8 @@ public class Player : MonoBehaviour
 					blockTrigger.SetActive(true);
 					dashTrigger.SetActive(false);
 
-					canMovement = true;
-					animator.SetBool ("Block", false);
+					canMovement = false;
+					animator.SetBool ("Block", true);
 					animator.SetBool ("Fire", false);
 					animator.SetBool ("PowerShoot", false);
 					animator.SetBool ("Buff", false);
@@ -613,5 +686,120 @@ public class Player : MonoBehaviour
 		}
 		
 		return false;
+	}
+	
+	private float collisionRange = 1f;
+	Vector3 dir = Vector3.zero;
+	Vector3 oldDir = Vector3.zero;
+    private AnimationCurve curve = AnimationCurve.EaseInOut(0f,0f,0.3f,1f);
+	private AnimationCurve curveBande = AnimationCurve.EaseInOut(3f,1f,1f,0f);
+	private float curvepoint = 0f;
+	float easeTime = 0.3f;
+	float startValue = 0;
+	float deltatime2 = 0f;
+	RaycastHit2D playerRayHit;
+	private float bandenDist = 0f;
+	private Vector3 lerpDir = Vector3.zero;
+	private float maxX = 0f;
+	private float maxY = 0f;
+	private Vector3 lerpCurve = Vector3.zero;
+	
+	private bool move(Vector3 direction,float moveSpeed)///////////////////////MOVE
+	{
+		if(direction != dir)
+		{
+			if (direction != Vector3.zero){
+				Instance(smoke,this.transform.position, Quaternion.LookRotation(direction,Vector3.forward));
+			}
+			startValue = Time.time;
+			//oldDir = dir;
+			oldDir = lerpDir;
+			dir = direction;
+		}
+
+		lerpDir = Vector3.Lerp (oldDir, direction,curve.Evaluate(Time.time - startValue));
+		lerpDir = Vector3.ClampMagnitude (lerpDir, 1.0f);
+
+		if (lerpDir.x > 0.0f) {
+			lerpCurve.x = curveBande.Evaluate(this.AbstandRight());
+		}
+		if (lerpDir.x < 0.0f) {
+			lerpCurve.x = curveBande.Evaluate(this.AbstandLeft());
+		}
+		if (lerpDir.y > 0.0f) {
+			lerpCurve.y = curveBande.Evaluate(this.AbstandTop());
+		}
+		if (lerpDir.y < 0.0f) {
+			lerpCurve.y = curveBande.Evaluate(this.AbstandBottom());
+		}
+
+		transform.position += new Vector3 ((Time.deltaTime * speed * lerpDir.x * lerpCurve.x), (Time.deltaTime * speed * lerpDir.y * lerpCurve.y), 0.0f);
+		animator.SetFloat("xAxis", lerpDir.x * motionInverter * lerpCurve.x);
+		animator.SetFloat("yAxis", lerpDir.y * motionInverter * lerpCurve.y);
+		return false;
+	}
+		
+
+	public Vector3 startVec = Vector3.zero;
+	public Vector3 endVec = Vector3.zero;
+	public float dashLength = 50f;//Dasch Distance
+	public float dashTime = 5f;//Dash dauer
+	public AnimationCurve dashCurve;
+	private float hitLength = 0f;
+	bool dashBool = true;
+	private bool MoveTo(Vector3 direction)/////////////////////////MoveTo (Dash)
+	{
+		if(dashBool)
+		{
+			playerRayHit = Physics2D.Raycast (new Vector2(transform.position.x,transform.position.y), new Vector2(direction.x,direction.y), Mathf.Infinity, -1, 0.07f, 0.11f);
+			float distMax = playerRayHit.distance;
+
+			dashBool = false;
+			//effect
+			startVec = transform.position;
+			endVec = (direction * dashLength);
+
+			if(endVec.sqrMagnitude>distMax)
+			{
+				endVec = Vector3.ClampMagnitude(endVec, distMax);
+			}
+
+			dashCurve = AnimationCurve.EaseInOut(0f,0f,dashTime,0.9f);
+			startValue = Time.time;
+			//dir = direction;
+		}	
+		float deltatime = Time.time - startValue;
+		animator.SetFloat("xAxis", dir.x * deltatime/dashTime * motionInverter);
+		animator.SetFloat("yAxis", dir.y * deltatime/dashTime * motionInverter);
+		transform.position = startVec + (endVec * dashCurve.Evaluate(deltatime));
+		Debug.Log ("start: " + startVec + ", 2: " + endVec);
+		//Debug.Log("deltatime:"+deltatime);
+		if(deltatime >= dashTime)
+		{
+			//Debug.Log("Dash Ende: "+ deltatime);
+			dashBool = true;
+			return true;
+		}
+		return false;
+	}
+
+	private float AbstandTop() { return wallTop - transform.position.y; }
+
+	private float AbstandBottom() { return transform.position.y - wallBottom; }
+
+	private float AbstandRight() {
+		if (InvertMotion) {
+			return wallRight - transform.position.x;
+		} else {
+			return  -5 - transform.position.x;
+		}
+	}
+
+	private float AbstandLeft() { 
+		if (InvertMotion) {
+			return transform.position.x - 5;
+		} else {
+			return transform.position.x - wallLeft;
+		}
 	}
 }

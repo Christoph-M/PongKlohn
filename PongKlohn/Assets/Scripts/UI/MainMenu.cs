@@ -13,10 +13,16 @@ public class MainMenu : UserInterface {
 	}
 
 	public void Singleplayer() {
-		StartCoroutine(userInterfaceScript.StartGame (3, 1));
+		userInterfaceScript.SetPlayerType (1, "KeyP1");
+		userInterfaceScript.SetPlayerType (2, "Ai");
+
+		StartCoroutine(userInterfaceScript.StartGame (2, 1));
 	}
 
 	public void Multiplayer() {
+		userInterfaceScript.SetPlayerType (1, "KeyP1");
+		userInterfaceScript.SetPlayerType (2, "KeyP2");
+
 		userInterfaceScript.MainMenuSetActive (false);
 		userInterfaceScript.CharacterSelectionMenuSetActive (true);
 	}

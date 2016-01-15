@@ -111,6 +111,10 @@ public class UserInterface : MonoBehaviour {
 		masterScript.SetCrystal (crystal);
 	}
 
+	public void SetPlayerType(int player, string type) {
+		masterScript.SetPlayerType (player, type);
+	}
+
 	public void SetActiveMenu(int menu) {
 		masterScript.SetActiveMenu (menu);
 	}

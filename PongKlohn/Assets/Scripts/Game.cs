@@ -19,11 +19,8 @@ public class Game : MonoBehaviour {
 	public int maxGameRounds = 3;
 
 	[Header("Player")]
-	public string player1Typ = "KeyP1"; 
-	public string player2Typ = "KeyP2";
-	[Space(10)]
-	public Vector3 player1Spawn = new Vector3(-21.0f, 0.0f, -1.0f);
-	public Vector3 player2Spawn = new Vector3(21.0f, 0.0f, -1.0f);
+	public Vector3 player1Spawn = new Vector3(-21.0f, 0.0f, -0.23f);
+	public Vector3 player2Spawn = new Vector3(21.0f, 0.0f, -0.23f);
 	[Space(10)]
 	public float playerSpeed = 15.0f;
 	public float dashSpeed = 5.0f;
@@ -230,9 +227,9 @@ public class Game : MonoBehaviour {
 		player1.transform.SetParent (playerEmpty);
 		player2.transform.SetParent (playerEmpty);
 		player2.InvertMotion = true;
-
-		player1.SetPlayer(player1Typ);
-		player2.SetPlayer(player2Typ);
+		Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
+		player1.SetPlayer(masterScript.GetPlayerType(1));
+		player2.SetPlayer(masterScript.GetPlayerType(2));
 		player1.health = playerHealth;
 		player2.health = playerHealth;
 		player1.power = playerEnergy;
@@ -246,7 +243,7 @@ public class Game : MonoBehaviour {
 			player2.setTurn(true);
 		}
 
-		if (player1Typ == "Ai" || player2Typ == "Ai") {
+		if (masterScript.GetPlayerType(1) == "Ai" || masterScript.GetPlayerType(2) == "Ai") {
 			scene = 3;
 		} else {
 			scene = 2;

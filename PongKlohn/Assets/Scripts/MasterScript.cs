@@ -8,6 +8,8 @@ public class MasterScript : MonoBehaviour {
 
 	private List<int> crystals = new List<int>();
 
+	private List<string> playerType = new List<string>{ "KeyP1", "KeyP2" };
+
 	private int activeMenu = 1;
 	private bool inMatch = false;
 
@@ -42,6 +44,14 @@ public class MasterScript : MonoBehaviour {
 
 	public int GetCrystal(int player) {
 		return crystals [player - 1];
+	}
+
+	public void SetPlayerType(int player, string type) {
+		playerType [player - 1] = type;
+	}
+
+	public string GetPlayerType(int player) {
+		return playerType [player - 1];
 	}
 
 	public void SetActiveMenu(int menu) {

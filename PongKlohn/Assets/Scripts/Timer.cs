@@ -11,7 +11,7 @@ public class Timer
 	}
 	public Timer()
 	{
-		Debug.Log("Timer Set up");
+		//Debug.Log("Timer Set up");
 	}
 	
 	public float UpdateTimer() 

@@ -99,7 +99,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.newTargetVector = true;}
+	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.newTargetVectorCountLeft = true;}
 	public Transform GetProjectileTransform() { return projectile; }
 
 	public void BallSpeedUp(){

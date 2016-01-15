@@ -742,38 +742,60 @@ public class Player : MonoBehaviour
 
 	public Vector3 startVec = Vector3.zero;
 	public Vector3 endVec = Vector3.zero;
-	public float dashLength = 50f;//Dasch Distance
+	public float dashLength = 5f;//Dasch Distance
 	public float dashTime = 5f;//Dash dauer
 	public AnimationCurve dashCurve;
 	private float hitLength = 0f;
 	bool dashBool = true;
+	Vector3 oldValue = Vector3.zero;
+	Vector3 newValue = Vector3.zero;
+	Vector3 wallDistance = Vector3.zero;
+
 	private bool MoveTo(Vector3 direction)/////////////////////////MoveTo (Dash)
 	{
 		if(dashBool)
 		{
-			playerRayHit = Physics2D.Raycast (new Vector2(transform.position.x,transform.position.y), new Vector2(direction.x,direction.y), Mathf.Infinity, -1, 0.07f, 0.11f);
-			float distMax = playerRayHit.distance;
+			startVec = transform.position;
+			lerpDir = Vector3.ClampMagnitude (direction, 1.0f);
+			endVec =  startVec + (lerpDir * dashLength);
 
+			if (lerpDir.x > 0.0f) {
+				wallDistance.x = this.AbstandRight();
+			}
+			if (lerpDir.x < 0.0f) {
+				wallDistance.x = this.AbstandLeft();
+			}
+			if (lerpDir.y > 0.0f) {
+				wallDistance.y = this.AbstandTop();
+			}
+			if (lerpDir.y < 0.0f) {
+				wallDistance.y = this.AbstandBottom();
+			}
+
+			//if(endVec.x)
+			transform.position += new Vector3 ((Time.deltaTime * speed * lerpDir.x * lerpCurve.x), (Time.deltaTime * speed * lerpDir.y * lerpCurve.y), 0.0f);
+			animator.SetFloat("xAxis", lerpDir.x * motionInverter * lerpCurve.x);
+			animator.SetFloat("yAxis", lerpDir.y * motionInverter * lerpCurve.y);
 			dashBool = false;
 			//effect
 			startVec = transform.position;
 			endVec = (direction * dashLength);
 
-			if(endVec.sqrMagnitude>distMax)
-			{
-				endVec = Vector3.ClampMagnitude(endVec, distMax);
-			}
-
 			dashCurve = AnimationCurve.EaseInOut(0f,0f,dashTime,0.9f);
 			startValue = Time.time;
+			oldValue = Vector3.Lerp (startVec, endVec, dashCurve.Evaluate (Time.time - startValue));
 			//dir = direction;
-		}	
+		}
+
+		newValue = Vector3.Lerp (startVec, endVec, dashCurve.Evaluate (Time.time - startValue));
+		transform.position += newValue - oldValue;
+		oldValue = newValue;
 		float deltatime = Time.time - startValue;
-		animator.SetFloat("xAxis", dir.x * deltatime/dashTime * motionInverter);
-		animator.SetFloat("yAxis", dir.y * deltatime/dashTime * motionInverter);
-		transform.position = startVec + (endVec * dashCurve.Evaluate(deltatime));
-		Debug.Log ("start: " + startVec + ", 2: " + endVec);
-		//Debug.Log("deltatime:"+deltatime);
+//		animator.SetFloat("xAxis", dir.x * deltatime/dashTime * motionInverter);
+//		animator.SetFloat("yAxis", dir.y * deltatime/dashTime * motionInverter);
+//		transform.position = startVec + (endVec * dashCurve.Evaluate(deltatime));
+//		Debug.Log ("start: " + startVec + ", 2: " + endVec);
+//		//Debug.Log("deltatime:"+deltatime);
 		if(deltatime >= dashTime)
 		{
 			//Debug.Log("Dash Ende: "+ deltatime);

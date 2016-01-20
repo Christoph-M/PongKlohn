@@ -328,7 +328,7 @@ public class Player : MonoBehaviour
 			//Debug.Log(this.transform.name + " dash enter");
 			if(dashProgression == 1)
 			{
-				Debug.Log(this.transform.name + " dash endet");
+				//Debug.Log(this.transform.name + " dash endet");
 				dashProgression = 0;
 				isDashing = false;
 				action = 0;
@@ -337,7 +337,7 @@ public class Player : MonoBehaviour
 			}
 			else if(dashProgression == 0)
 			{
-				Debug.Log(this.transform.name + " dash start");
+				//Debug.Log(this.transform.name + " dash start");
 				action = 10;
 				if(MoveTo(directionRaw_))
 				{
@@ -742,57 +742,63 @@ public class Player : MonoBehaviour
 
 	public Vector3 startVec = Vector3.zero;
 	public Vector3 endVec = Vector3.zero;
-	public float dashLength = 5f;//Dasch Distance
-	public float dashTime = 5f;//Dash dauer
+	private float dashLength = 7f;//Dasch Distance
+	private float dashTime = 0.2f;//Dash dauer
 	public AnimationCurve dashCurve;
 	private float hitLength = 0f;
 	bool dashBool = true;
 	Vector3 oldValue = Vector3.zero;
 	Vector3 newValue = Vector3.zero;
 	Vector3 wallDistance = Vector3.zero;
-
+	Vector3 lerpedDash = Vector3.zero;
+	
+	
 	private bool MoveTo(Vector3 direction)/////////////////////////MoveTo (Dash)
 	{
 		if(dashBool)
 		{
-			startVec = transform.position;
-			lerpDir = Vector3.ClampMagnitude (direction, 1.0f);
-			endVec =  startVec + (lerpDir * dashLength);
-
-			if (lerpDir.x > 0.0f) {
-				wallDistance.x = this.AbstandRight();
-			}
-			if (lerpDir.x < 0.0f) {
-				wallDistance.x = this.AbstandLeft();
-			}
-			if (lerpDir.y > 0.0f) {
-				wallDistance.y = this.AbstandTop();
-			}
-			if (lerpDir.y < 0.0f) {
-				wallDistance.y = this.AbstandBottom();
-			}
-
-			//if(endVec.x)
-			transform.position += new Vector3 ((Time.deltaTime * speed * lerpDir.x * lerpCurve.x), (Time.deltaTime * speed * lerpDir.y * lerpCurve.y), 0.0f);
-			animator.SetFloat("xAxis", lerpDir.x * motionInverter * lerpCurve.x);
-			animator.SetFloat("yAxis", lerpDir.y * motionInverter * lerpCurve.y);
+			Debug.Log("Dash start: ");
+			
 			dashBool = false;
-			//effect
 			startVec = transform.position;
-			endVec = (direction * dashLength);
-
-			dashCurve = AnimationCurve.EaseInOut(0f,0f,dashTime,0.9f);
+			lerpedDash = Vector3.ClampMagnitude (direction, 1.0f);
+			endVec =  startVec + (lerpedDash * dashLength);
 			startValue = Time.time;
-			oldValue = Vector3.Lerp (startVec, endVec, dashCurve.Evaluate (Time.time - startValue));
-			//dir = direction;
+			oldValue = transform.position;
+			
+			if (lerpedDash.x > 0.0f) {
+				wallDistance.x = this.AbstandRight();
+				if(wallDistance.x < lerpedDash.x * dashLength){endVec.x = startVec.x + wallDistance.x;}
+			}
+			if (lerpedDash.x < 0.0f) {
+				wallDistance.x = this.AbstandLeft();
+				if(wallDistance.x < lerpedDash.x * dashLength){endVec.x = startVec.x - wallDistance.x;}
+			}
+			if (lerpedDash.y > 0.0f) {
+				wallDistance.y = this.AbstandTop();
+				if(wallDistance.y < lerpedDash.y * dashLength){endVec.y = startVec.y + wallDistance.y;}
+			}
+			if (lerpedDash.y < 0.0f) {
+				wallDistance.y = this.AbstandBottom();
+				if(wallDistance.y < lerpedDash.y * dashLength){endVec.y = startVec.y - wallDistance.y;}
+			}
+			
+			//if(endVec.x)
+			//transform.position += new Vector3 ((Time.deltaTime * speed * lerpDir.x * lerpCurve.x), (Time.deltaTime * speed * lerpDir.y * lerpCurve.y), 0.0f);
+
+
+			dashCurve = AnimationCurve.EaseInOut(0f,0f,dashTime,1f);
 		}
 
+		animator.SetFloat("xAxis", direction.x);
+		animator.SetFloat("yAxis", direction.y);
+		
 		newValue = Vector3.Lerp (startVec, endVec, dashCurve.Evaluate (Time.time - startValue));
-		transform.position += newValue - oldValue;
+		transform.position += (newValue - oldValue);
 		oldValue = newValue;
 		float deltatime = Time.time - startValue;
-//		animator.SetFloat("xAxis", dir.x * deltatime/dashTime * motionInverter);
-//		animator.SetFloat("yAxis", dir.y * deltatime/dashTime * motionInverter);
+		//animator.SetFloat("xAxis", dir.x * deltatime/dashTime * motionInverter);
+		//animator.SetFloat("yAxis", dir.y * deltatime/dashTime * motionInverter);
 //		transform.position = startVec + (endVec * dashCurve.Evaluate(deltatime));
 //		Debug.Log ("start: " + startVec + ", 2: " + endVec);
 //		//Debug.Log("deltatime:"+deltatime);

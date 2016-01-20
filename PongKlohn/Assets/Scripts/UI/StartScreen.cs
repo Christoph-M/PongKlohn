@@ -32,15 +32,15 @@ public class StartScreen : UserInterface {
 
 	void LateUpdate() {
 		if (t < textPulseDuration && !one) {
-			pressStart.CrossFadeAlpha (0, textPulseDuration - 0.8f, false);
-			backplane.CrossFadeAlpha (0, textPulseDuration - 0.8f, false);
+			pressStart.CrossFadeAlpha (0, textPulseDuration - 1.0f, false);
+			backplane.CrossFadeAlpha (0, textPulseDuration - 1.0f, false);
 
 			t += Time.deltaTime / textPulseDuration;
 			if (t >= 1)
 				one = true;
 		} else if (one) {
-			pressStart.CrossFadeAlpha (255, (textPulseDuration - 0.8f) * 1000, false);
-			backplane.CrossFadeAlpha (255, (textPulseDuration - 0.8f) * 1000, false);
+			pressStart.CrossFadeAlpha (255, (textPulseDuration - 1.0f) * 1000, false);
+			backplane.CrossFadeAlpha (255, (textPulseDuration - 1.0f) * 1000, false);
 
 			t -= Time.deltaTime / textPulseDuration;
 			if (t <= 0)

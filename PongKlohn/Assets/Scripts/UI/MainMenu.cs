@@ -20,7 +20,7 @@ public class MainMenu : UserInterface {
 	}
 
 	public void Multiplayer() {
-		userInterfaceScript.SetPlayerType (1, "ConP1");
+		userInterfaceScript.SetPlayerType (1, "KeyP1");
 		userInterfaceScript.SetPlayerType (2, "KeyP2");
 
 		userInterfaceScript.MainMenuSetActive (false);

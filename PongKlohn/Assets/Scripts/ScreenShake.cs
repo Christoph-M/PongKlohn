@@ -30,9 +30,16 @@ public class ScreenShake : MonoBehaviour {
 	public float timeBuff = 0.2f;
 
 
+	private Game gameScript;
+
+	private Transform projectile;
 	private Vector3 velocity = Vector3.zero;
 
 	private int mode = -1;
+
+	void Start() {
+		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
+	}
 
 	void Update() {
 		switch (mode) {
@@ -50,6 +57,14 @@ public class ScreenShake : MonoBehaviour {
 				this.ResetCamera (); break;
 			default:
 				break;
+		}
+	}
+
+	void LateUpdate() {
+		if (gameScript.GetProjectileTransform ()) {
+			this.transform.position = new Vector3 (gameScript.GetProjectileTransform ().position.x / 10, this.transform.position.y, this.transform.position.z);
+		} else {
+			StartCoroutine(this.ShakeScreen(5, 0.1f));
 		}
 	}
 

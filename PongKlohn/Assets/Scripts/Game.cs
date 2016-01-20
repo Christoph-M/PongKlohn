@@ -76,15 +76,15 @@ public class Game : MonoBehaviour {
 		StartCoroutine(UpdatePlayer(playerSpeed, dashSpeed, blockTime, dashEnergyCost));
 	}
 	
-	IEnumerator UpdatePlayer(float playerSpee, float dashSpee, float blockTim, int dashEnergyCos){
-		player1.speed = playerSpee;
-		player2.speed = playerSpee;
-		player1.dashSpeed = dashSpee;
-		player2.dashSpeed = dashSpee;
-		player1.blockTime = blockTim;
-		player2.blockTime = blockTim;
-		player1.dashEnergyCost = dashEnergyCos;
-		player2.dashEnergyCost = dashEnergyCos;
+	IEnumerator UpdatePlayer(float playerSpeed, float dashSpeed, float blockTime, int dashEnergyCost){
+		player1.speed = playerSpeed;
+		player2.speed = playerSpeed;
+		player1.dashSpeed = dashSpeed;
+		player2.dashSpeed = dashSpeed;
+		player1.blockTime = blockTime;
+		player2.blockTime = blockTime;
+		player1.dashEnergyCost = dashEnergyCost;
+		player2.dashEnergyCost = dashEnergyCost;
 		
 		yield return 0;
 	}
@@ -113,7 +113,17 @@ public class Game : MonoBehaviour {
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }
-	public void DecreaseBallSpeed() { ballSpeed -= catchSpeedDec; }
+
+	public void DecreaseBallSpeed() {
+		ballSpeedAtTime -= catchSpeedDec / (maxBallSpeed - minBallSpeed);
+		ballSpeed -= catchSpeedDec;
+
+		if (ballSpeed < minBallSpeed) {
+			ballSpeed = minBallSpeed;
+			ballSpeedAtTime = 0.0f;
+		}
+	}
+
 	public void ResetBallSpeed() { ballSpeed = minBallSpeed; ballSpeedAtTime = 0.0f; }
 
 	public Player GetPlayer(int player) {

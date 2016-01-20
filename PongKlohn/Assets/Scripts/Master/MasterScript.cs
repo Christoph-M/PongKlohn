@@ -4,11 +4,24 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MasterScript : MonoBehaviour {
-	private List<int> characters = new List<int>();
+	public List<GameObject> players;
+	public List<GameObject> projectiles;
+	[Space(10)]
+	public List<Scene> scenesUI;
+	public List<Scene> scenesGame;
+	[Space(10)]
+	public List<GameObject> assets;
 
-	private List<int> crystals = new List<int>();
+	public List<AnimationCurve> curves;
+
+
+	private List<int> characters = new List<int>{ 1, 1 };
+
+	private List<int> crystals = new List<int>{ 1, 1 };
 
 	private List<string> playerType = new List<string>{ "KeyP1", "KeyP2" };
+
+	private GameObject projectile;
 
 	private int activeMenu = 1;
 	private bool inMatch = false;

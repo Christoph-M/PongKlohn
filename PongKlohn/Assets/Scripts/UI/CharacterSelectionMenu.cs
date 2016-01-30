@@ -12,6 +12,8 @@ public class CharacterSelectionMenu : UserInterface {
 
 	private UserInterface userInterfaceScript;
 
+	private EventSystem eventSystem;
+
 	private Transform player1;
 	private Transform player2;
 
@@ -26,6 +28,10 @@ public class CharacterSelectionMenu : UserInterface {
 
 	void Start() {
 		userInterfaceScript = GetComponent<UserInterface> ();
+
+		eventSystem = EventSystem.current;
+
+		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
 
 		player1 = characterSelectionMenu.transform.FindChild ("Player1");
 		player2 = characterSelectionMenu.transform.FindChild ("Player2");
@@ -142,8 +148,8 @@ public class CharacterSelectionMenu : UserInterface {
 	}
 
 	public void Back() {
-		userInterfaceScript.CharacterSelectionMenuSetActive (false);
 		userInterfaceScript.MainMenuSetActive (true);
+		userInterfaceScript.CharacterSelectionMenuSetActive (false);
 	}
 
 
@@ -198,7 +204,7 @@ public class CharacterSelectionMenu : UserInterface {
 
 		yield return new WaitForSeconds (3);
 
-		StartCoroutine(userInterfaceScript.StartGame (2, 1));
+		StartCoroutine(userInterfaceScript.StartGame (5, 4));
 
 		yield return 0;
 	}

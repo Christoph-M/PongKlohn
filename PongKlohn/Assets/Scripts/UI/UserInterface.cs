@@ -44,58 +44,82 @@ public class UserInterface : MonoBehaviour {
 		matchUIScript = GetComponent<MatchUI> ();
 		winScreenMenuScript = GetComponent<WinScreenMenu> ();
 
-		if (!masterScript.GetInMatch()) {
-			switch (masterScript.GetActiveMenu ()) {
-			case startScreen:
-				this.StartScreenSetActive (true); break;
-			case mainMenu:
-				this.MainMenuSetActive (true); break;
-			case optionsMenu:
-				this.OptionsMenuSetActive (true); break;
-			case videoOptions:
-				this.VideoOptionsMenuSetActive (true); break;
-			case audioOptions:
-				this.AudioOptionsMenuSetActive (true); break;
-			case gameOptions:
-				this.GameplayOptionsMenuSetActive (true); break;
-			case charSelect:
-				this.CharacterSelectionMenuSetActive (true); break;
-			case 8:
-				break;
-			default:
-				break;
-			}
-		}
+//		if (!masterScript.GetInMatch()) {
+//			switch (masterScript.GetActiveMenu ()) {
+//			case startScreen:
+//				this.StartScreenSetActive (true); break;
+//			case mainMenu:
+//				this.MainMenuSetActive (true); break;
+//			case optionsMenu:
+//				this.OptionsMenuSetActive (true); break;
+//			case videoOptions:
+//				this.VideoOptionsMenuSetActive (true); break;
+//			case audioOptions:
+//				this.AudioOptionsMenuSetActive (true); break;
+//			case gameOptions:
+//				this.GameplayOptionsMenuSetActive (true); break;
+//			case charSelect:
+//				this.CharacterSelectionMenuSetActive (true); break;
+//			case 8:
+//				break;
+//			default:
+//				break;
+//			}
+//		}
 	}
 	
 	public void StartScreenSetActive (bool active) {
-		startScreenScript.startScreen.transform.FindChild ("Text").gameObject.SetActive(active);
-		startScreenScript.startScreen.transform.FindChild ("Backplane").gameObject.SetActive(active);
-		startScreenScript.startScreen.transform.FindChild ("Press_Start").gameObject.SetActive(active);
+		if (active) {
+			masterScript.LoadScene ("StartScreen");
+		} else {
+			masterScript.UnloadScene ("StartScreen");
+		}
+
+//		startScreenScript.startScreen.transform.FindChild ("Text").gameObject.SetActive(active);
+//		startScreenScript.startScreen.transform.FindChild ("Backplane").gameObject.SetActive(active);
+//		startScreenScript.startScreen.transform.FindChild ("Press_Start").gameObject.SetActive(active);
 	}
 	
 	public void MainMenuSetActive (bool active) {
-		mainMenuScript.mainMenu.SetActive (active);
+		if (active) {
+			masterScript.LoadScene ("MainMenu");
+		} else {
+			masterScript.UnloadScene ("MainMenu");
+		}
+
+//		mainMenuScript.mainMenu.SetActive (active);
 	}
 
 	public void OptionsMenuSetActive (bool active) {
-		optionsMenuScript.optionsMenu.SetActive (active);
+		if (active) {
+			masterScript.LoadScene ("OptionsMenu");
+		} else {
+			masterScript.UnloadScene ("OptionsMenu");
+		}
+
+//		optionsMenuScript.optionsMenu.SetActive (active);
 	}
 
 	public void VideoOptionsMenuSetActive (bool active) {
-		videoOptionsMenuScript.videoOptionsMenu.SetActive (active);
+//		videoOptionsMenuScript.videoOptionsMenu.SetActive (active);
 	}
 
 	public void AudioOptionsMenuSetActive (bool active) {
-		audioOptionsMenuScript.audioOptionsMenu.SetActive (active);
+//		audioOptionsMenuScript.audioOptionsMenu.SetActive (active);
 	}
 
 	public void GameplayOptionsMenuSetActive (bool active) {
-		gameplayOptionsMenuScript.gameplayOptionsMenu.SetActive (active);
+//		gameplayOptionsMenuScript.gameplayOptionsMenu.SetActive (active);
 	}
 
 	public void CharacterSelectionMenuSetActive (bool active) {
-		characterSelectionMenuScript.characterSelectionMenu.SetActive (active);
+		if (active) {
+			masterScript.LoadScene ("CharacterSelect");
+		} else {
+			masterScript.UnloadScene ("CharacterSelect");
+		}
+
+//		characterSelectionMenuScript.characterSelectionMenu.SetActive (active);
 	}
 
 	public void MatchUISetActive (bool active) {

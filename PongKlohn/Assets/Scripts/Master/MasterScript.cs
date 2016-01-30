@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ public class MasterScript : MonoBehaviour {
 	public List<AnimationCurve> curves;
 
 
+	private EventSystem eventSystem;
+
 	private List<int> characters = new List<int>{ 1, 1 };
 
 	private List<int> crystals = new List<int>{ 1, 1 };
@@ -27,19 +30,30 @@ public class MasterScript : MonoBehaviour {
 	private bool inMatch = false;
 
 	void Start () {
+		eventSystem = EventSystem.current;
+
 		this.LoadScene (1);
 	}
 
 	public void LoadScene(int scene) {
 		SceneManager.LoadScene (scene, LoadSceneMode.Additive);
-		StartCoroutine (SetActiveScene (scene));
+		StartCoroutine (SetActiveScene ());
 	}
 
-	private IEnumerator SetActiveScene(int scene) {
+	public void LoadScene(string scene) {
+		SceneManager.LoadScene (scene, LoadSceneMode.Additive);
+		StartCoroutine (SetActiveScene ());
+	}
+
+	private IEnumerator SetActiveScene() {
 		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneAt(1)));
 	}
 
 	public void UnloadScene(int scene) {
+		SceneManager.UnloadScene (scene);
+	}
+
+	public void UnloadScene(string scene) {
 		SceneManager.UnloadScene (scene);
 	}
 

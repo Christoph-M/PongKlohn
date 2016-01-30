@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class OptionsMenu : UserInterface {
@@ -8,8 +9,14 @@ public class OptionsMenu : UserInterface {
 
 	private UserInterface userInterfaceScript;
 
+	private EventSystem eventSystem;
+
 	void Start() {
 		userInterfaceScript = GetComponent<UserInterface> ();
+
+		eventSystem = EventSystem.current;
+
+		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
 	}
 
 	public void Video() {
@@ -28,7 +35,7 @@ public class OptionsMenu : UserInterface {
 	}
 
 	public void Back() {
-		userInterfaceScript.OptionsMenuSetActive (false);
 		userInterfaceScript.MainMenuSetActive (true);
+		userInterfaceScript.OptionsMenuSetActive (false);
 	}
 }

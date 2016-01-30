@@ -25,8 +25,8 @@ public class StartScreen : UserInterface {
 	
 	void Update () {
 		if (Input.anyKeyDown && startScreen.transform.FindChild ("Text").gameObject.activeSelf) {
-			userInterfaceScript.StartScreenSetActive (false);
 			userInterfaceScript.MainMenuSetActive(true);
+			userInterfaceScript.StartScreenSetActive (false);
 		}
 	}
 

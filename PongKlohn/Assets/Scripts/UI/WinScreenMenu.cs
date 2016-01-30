@@ -13,16 +13,16 @@ public class WinScreenMenu : UserInterface {
 	}
 	
 	public void Rematch() {
-		StartCoroutine (userInterfaceScript.StartGame (2, 2));
+		StartCoroutine (userInterfaceScript.StartGame (5, 5));
 	}
 
 	public void CharSelect() {
 		userInterfaceScript.SetActiveMenu (charSelect);
 
-		StartCoroutine (userInterfaceScript.EndGame (2));
+		StartCoroutine (userInterfaceScript.EndGame (5));
 	}
 
 	public void Quit() {
-		StartCoroutine (userInterfaceScript.EndGame (2));
+		StartCoroutine (userInterfaceScript.EndGame (5));
 	}
 }

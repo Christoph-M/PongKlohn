@@ -2,8 +2,14 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class MatchUI : UserInterface {
+public class MatchUI : MonoBehaviour {
 	public GameObject matchUI;
+
+
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
+
+	private Game gameScript;
 
 	private Image healthBarP1;
 	private Image healthBarP2;
@@ -16,6 +22,9 @@ public class MatchUI : UserInterface {
 	private float ep2;
 
 	void Start () {
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 
 		healthBarP1 = matchUI.transform.FindChild ("Health_P1").FindChild ("healthbar").GetComponent<Image> ();

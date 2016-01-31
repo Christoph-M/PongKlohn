@@ -2,13 +2,14 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class StartScreen : UserInterface {
+public class StartScreen : MonoBehaviour {
 	public GameObject startScreen;
 
 	public float textPulseDuration = 1.0f;
 	
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
 
 	private Image pressStart;
 	private Image backplane;
@@ -17,7 +18,8 @@ public class StartScreen : UserInterface {
 	private bool one = false;
 	
 	void Start() {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 
 		pressStart = startScreen.transform.FindChild("Press_Start").GetComponent<Image>();
 		backplane = startScreen.transform.FindChild("Backplane").GetComponent<Image>();
@@ -25,8 +27,7 @@ public class StartScreen : UserInterface {
 	
 	void Update () {
 		if (Input.anyKeyDown && startScreen.transform.FindChild ("Text").gameObject.activeSelf) {
-			userInterfaceScript.MainMenuSetActive(true);
-			userInterfaceScript.StartScreenSetActive (false);
+			StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(2), sceneHandlerScript.GetScene(1)));
 		}
 	}
 

@@ -3,17 +3,41 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-public class SceneHandler 
-{
+public class SceneHandler : MonoBehaviour {
 
-	public void LoadMainMenue()
+	private MasterScript masterScript;
+
+	void Start() {
+		masterScript = this.GetComponent<MasterScript> ();
+	}
+
+	public IEnumerator LoadMenu(string menuL, string menuUL)
 	{
-//		SceneManager.LoadScene (Scenes.GameScene, LoadSceneMode.Additive);
-		//StartCoroutine (SetActiveScene (scene));
-//		SceneManager.LoadScene (Scenes.UIScene, LoadSceneMode.Single);
-		//StartCoroutine (SetActiveScene (scene));
-		//SetActiveUI(UIs.MainUI);??
-		//return UIs.MainUI;??	
+		masterScript.LoadScene (menuL);
+
+		yield return new WaitUntil(() => SceneManager.GetSceneByName(menuL).isLoaded);
+
+		masterScript.UnloadScene (menuUL);
+	}
+
+	public IEnumerator StartGame(string sceneL, string sceneUL) {
+		masterScript.SetInMatch(true);
+
+		masterScript.LoadScene (sceneL);
+
+		yield return new WaitUntil(() => SceneManager.GetSceneByName(sceneL).isLoaded);
+
+		masterScript.UnloadScene (sceneUL);
+	}
+
+	public IEnumerator EndGame(string scene) {
+		masterScript.SetInMatch(false);
+
+		masterScript.LoadScene (scene);
+
+		yield return new WaitUntil(() => SceneManager.GetSceneByName(scene).isLoaded);
+
+		masterScript.UnloadScene (this.GetScene(6));
 	}
 	
 	public void LoadMatchSelection()
@@ -70,6 +94,10 @@ public class SceneHandler
 //		Tools.LoadMachtElements(player1 , Player2 );
 		//SetActiveUI(UIs.MachtGameOverUI);??
 		//return UIs.MachtGameOverUI;??
+	}
+
+	public string GetScene(int i) {
+		return masterScript.scenes [i];
 	}
 	
 	enum UIs

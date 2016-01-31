@@ -269,10 +269,11 @@ public class Game : MonoBehaviour {
 
 			this.EnablePlayers (false);
 
-			uiScript.MatchUISetActive (false);
-			uiScript.WinScreenMenuSetActive (true);
+			masterScript.LoadScene (masterScript.scenes [5]);
 
-			yield return new WaitForSeconds (5);
+			yield return new WaitUntil(() => SceneManager.GetSceneByName(masterScript.scenes [5]).isLoaded);
+
+			masterScript.UnloadScene (masterScript.scenes [6]);
 
 //			if (winner == 1) {
 //				masterScript.LoadScene (1);

@@ -4,13 +4,14 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharacterSelectionMenu : UserInterface {
+public class CharacterSelectionMenu : MonoBehaviour {
 	public GameObject characterSelectionMenu;
 
 	public int maxCharacters = 2;
 
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
 
 	private EventSystem eventSystem;
 
@@ -27,7 +28,8 @@ public class CharacterSelectionMenu : UserInterface {
 	private bool p2Ready = false;
 
 	void Start() {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 
 		eventSystem = EventSystem.current;
 
@@ -148,8 +150,7 @@ public class CharacterSelectionMenu : UserInterface {
 	}
 
 	public void Back() {
-		userInterfaceScript.MainMenuSetActive (true);
-		userInterfaceScript.CharacterSelectionMenuSetActive (false);
+		StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(2), sceneHandlerScript.GetScene(4)));
 	}
 
 
@@ -199,12 +200,14 @@ public class CharacterSelectionMenu : UserInterface {
 
 		this.DisableMenu ();
 
-		userInterfaceScript.SetPlayer (characters[p1 - 1], crystals[p1 - 1]);
-		userInterfaceScript.SetPlayer (characters[p2 - 1], crystals[p2 - 1]);
+		masterScript.SetCharacter (p1, characters [p1 - 1]);
+		masterScript.SetCrystal (p1, crystals[p1 - 1]);
+		masterScript.SetCharacter (p2, characters [p2 - 1]);
+		masterScript.SetCrystal (p2, crystals[p2 - 1]);
 
 		yield return new WaitForSeconds (3);
 
-		StartCoroutine(userInterfaceScript.StartGame (5, 4));
+		StartCoroutine(sceneHandlerScript.StartGame (sceneHandlerScript.GetScene(6), sceneHandlerScript.GetScene(4)));
 
 		yield return 0;
 	}

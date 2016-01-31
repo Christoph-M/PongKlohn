@@ -8,8 +8,7 @@ public class MasterScript : MonoBehaviour {
 	public List<GameObject> players;
 	public List<GameObject> projectiles;
 	[Space(10)]
-	public List<Scene> scenesUI;
-	public List<Scene> scenesGame;
+	public List<string> scenes;
 	[Space(10)]
 	public List<GameObject> assets;
 
@@ -32,41 +31,32 @@ public class MasterScript : MonoBehaviour {
 	void Start () {
 		eventSystem = EventSystem.current;
 
-		this.LoadScene (1);
-	}
-
-	public void LoadScene(int scene) {
-		SceneManager.LoadScene (scene, LoadSceneMode.Additive);
-		StartCoroutine (SetActiveScene ());
+		this.LoadScene (scenes[1]);
 	}
 
 	public void LoadScene(string scene) {
 		SceneManager.LoadScene (scene, LoadSceneMode.Additive);
-		StartCoroutine (SetActiveScene ());
+		StartCoroutine (SetActiveScene (scene));
 	}
 
-	private IEnumerator SetActiveScene() {
-		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneAt(1)));
-	}
-
-	public void UnloadScene(int scene) {
-		SceneManager.UnloadScene (scene);
+	private IEnumerator SetActiveScene(string scene) {
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene)));
 	}
 
 	public void UnloadScene(string scene) {
 		SceneManager.UnloadScene (scene);
 	}
 
-	public void SetCharacter(int character) {
-		characters.Add (character);
+	public void SetCharacter(int player, int character) {
+		characters[player - 1] = character;
 	}
 
 	public int GetCharacter(int player) {
 		return characters [player - 1];
 	}
 
-	public void SetCrystal(int crystal) {
-		crystals.Add (crystal);
+	public void SetCrystal(int player, int crystal) {
+		crystals[player - 1] =  crystal;
 	}
 
 	public int GetCrystal(int player) {

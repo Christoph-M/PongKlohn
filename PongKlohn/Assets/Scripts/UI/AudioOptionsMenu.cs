@@ -2,14 +2,16 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class AudioOptionsMenu : UserInterface {
+public class AudioOptionsMenu : MonoBehaviour {
 	public GameObject audioOptionsMenu;
 
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
 
 	void Start () {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 	}
 
 	public void Mute() {
@@ -29,7 +31,6 @@ public class AudioOptionsMenu : UserInterface {
 	}
 
 	public void Back() {
-		userInterfaceScript.AudioOptionsMenuSetActive (false);
-		userInterfaceScript.OptionsMenuSetActive (true);
+		
 	}
 }

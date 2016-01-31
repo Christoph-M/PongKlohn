@@ -6,10 +6,12 @@ public class GameplayOptionsMenu : MonoBehaviour {
 	public GameObject gameplayOptionsMenu;
 
 
-	private UserInterface userinterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
 
 	void Start () {
-		userinterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 	}
 
 	public void AiHandicap() {
@@ -33,7 +35,6 @@ public class GameplayOptionsMenu : MonoBehaviour {
 	}
 
 	public void Back() {
-		userinterfaceScript.GameplayOptionsMenuSetActive (false);
-		userinterfaceScript.OptionsMenuSetActive (true);
+		
 	}
 }

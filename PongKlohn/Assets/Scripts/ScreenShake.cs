@@ -63,8 +63,6 @@ public class ScreenShake : MonoBehaviour {
 	void LateUpdate() {
 		if (gameScript.GetProjectileTransform ()) {
 			this.transform.position = new Vector3 (gameScript.GetProjectileTransform ().position.x / 10, this.transform.position.y, this.transform.position.z);
-		} else {
-			StartCoroutine(this.ShakeScreen(5, 0.1f));
 		}
 	}
 

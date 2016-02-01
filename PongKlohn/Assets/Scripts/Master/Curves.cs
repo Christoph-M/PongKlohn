@@ -7,7 +7,7 @@ public class Curves : MonoBehaviour {
 	public AnimationCurve Curve1 = AnimationCurve.EaseInOut(0f,0f,1f,1f);
 	public AnimationCurve Curve2 = AnimationCurve.EaseInOut(0f,0f,1f,1f);
 	public AnimationCurve Curve3 = AnimationCurve.EaseInOut(0f,0f,1f,1f);
-	
+
 	public float GetCurve(float value,int curve)
 	{
 		if(curve == 0){return Curve0.Evaluate(value);}

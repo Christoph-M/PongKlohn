@@ -108,7 +108,8 @@ public class MatchUI : MonoBehaviour {
 			matchUI.transform.FindChild ("Energy_P1").gameObject.SetActive (true);
 			matchUI.transform.FindChild ("Energy_P2").gameObject.SetActive (true);
 
-			gameScript.EnablePlayers(true);
+			gameScript.EnablePlayers (true);
+			gameScript.EnableProjectile ();
 
 			break;
 		}

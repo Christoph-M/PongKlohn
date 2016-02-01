@@ -17,7 +17,7 @@ public class Move : MonoBehaviour
 	private Game game;
 
 	private float speed;
-	
+
 	void Start()
     {
 		game = GameObject.FindObjectOfType (typeof(Game)) as Game;

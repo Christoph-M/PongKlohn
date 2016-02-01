@@ -47,6 +47,7 @@ public class Game : MonoBehaviour {
 
 
 	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
 	private Transform projectile;
 
 	private Player player1;
@@ -62,6 +63,7 @@ public class Game : MonoBehaviour {
 
 	void Awake() {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 
 		StartCoroutine (SpawnGameObjects ());
 		
@@ -135,6 +137,9 @@ public class Game : MonoBehaviour {
 
 	public void EnablePlayers(bool b) { player1.enabled = b; 
 								  		player2.enabled = b; }
+
+	private bool enableProjectile = false;
+	public void EnableProjectile() { enableProjectile = true; }
 
 	public void Player1Scored(bool isWall) {
 		if (player2.health > 0) {
@@ -255,9 +260,15 @@ public class Game : MonoBehaviour {
 		projectiles.name = "Projectile";
 
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
-			// Balls farts to the left
+			projectiles.tag = "BallP1";
+
+			float angle = UnityEngine.Random.Range (0.0f, 45.0f);
+			projectiles.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0,0,1));
 		} else {
-			// Balls farts to the right
+			projectiles.tag = "BallP2";
+
+			float angle = UnityEngine.Random.Range (180.0f, 225.0f);
+			projectiles.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0,0,1));
 		}
 
 		// Wait until game scene is active
@@ -265,6 +276,11 @@ public class Game : MonoBehaviour {
 
 		this.enabled = true;
 		uiScript.enabled = true;
+
+		yield return new WaitUntil (() => enableProjectile);
+
+		projectiles.GetComponent<Move> ().enabled = true;
+		projectiles.GetComponent<Ball> ().enabled = true;
 	}
 
 	private IEnumerator EndRound(int p){
@@ -274,11 +290,9 @@ public class Game : MonoBehaviour {
 
 			this.EnablePlayers (false);
 
-			masterScript.LoadScene (masterScript.scenes [5]);
+			StartCoroutine(sceneHandlerScript.EndGame ((int)MasterScript.Scene.winScreen));
 
-			yield return new WaitUntil(() => SceneManager.GetSceneByName(masterScript.scenes [5]).isLoaded);
-
-			masterScript.UnloadScene (masterScript.scenes [6]);
+			yield return 0;
 
 //			if (winner == 1) {
 //				masterScript.LoadScene (1);

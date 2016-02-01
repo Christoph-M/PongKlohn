@@ -28,10 +28,10 @@ public class Ball : MonoBehaviour {
 	protected float wallLeft;
 	protected float wallRight;
 
-	protected List<Vector2> path = new List<Vector2>();
+	protected List<Vector2> path;
 
 //__________________________MonoMethods_____________________________
-	protected void Start(){
+	void Awake() {
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 
 		moveScript = GameObject.FindObjectOfType (typeof(Move)) as Move;
@@ -45,16 +45,26 @@ public class Ball : MonoBehaviour {
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
+	}
 
+	void OnEnable(){
 		StartCoroutine (CalcPath ());
+
+		if (this.tag == "BallP1") {
+			this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
+		} else {
+			this.transform.FindChild ("Elektro B R").gameObject.SetActive(true);
+		}
 	}
 
 	protected IEnumerator CalcPath() {
+		path = new List<Vector2>();
+
 		RaycastHit2D hit;
 		Vector2 startPoint = this.transform.position;
 		Vector2 startDirection = this.transform.right;
 
-		path.Add (this.transform.position);
+		path.Add (startPoint);
 
 		do {
 			hit = Physics2D.Raycast (startPoint, startDirection, Mathf.Infinity, -1, 0.09f, 0.11f);
@@ -193,15 +203,24 @@ public class Ball : MonoBehaviour {
 		
 			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
-			this.gameObject.SetActive (false);
+			this.enabled = false;
 
 			Player playerScript = other.GetComponentInParent<Player> ();
 			//playerScript.Instance (playerScript.balls [0], this.transform.position, Quaternion.AngleAxis (angle, Vector3.forward));
 
-			this.DestroyBall ();
+			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+
+			foreach (Transform child in this.transform) {
+				child.gameObject.SetActive (false);
+			}
+
+			this.SetTurn (other.transform.parent.tag);
+
 			gameScript.BallSpeedUp ();
 
 			gameScript.ShakeScreen (0, (playerTag == "Player1") ? 1 : 2);
+
+			this.enabled = true;
 		}
 	}
 
@@ -209,10 +228,14 @@ public class Ball : MonoBehaviour {
 		Debug.Log ("Catched. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
 
+		this.enabled = false;
+
 		this.SetTurn (other.transform.parent.tag);
 
-		this.DestroyBall ();
+		this.ResetBall ();
 		gameScript.DecreaseBallSpeed();
+
+		this.enabled = true;
 	}
 
 	private void Goal(GameObject other) {
@@ -225,25 +248,39 @@ public class Ball : MonoBehaviour {
 			gameScript.Player1Scored (false);
 		}
 
+		this.enabled = false;
+
 		this.SetTurn (other.name);
 
-		this.DestroyBall ();
+		this.ResetBall ();
 		gameScript.ResetBallSpeed();
 
 		gameScript.ShakeScreen (1);
+
+		this.enabled = true;
 	}
 
 //__________________________HelperMethods_____________________________
 	private void SetTurn(string name) {
 		if (name == "Goal_Red" || name == "Player1") {
-			gameScript.SetTurn (false);
+			this.tag = "BallP1";
 		} else {
-			gameScript.SetTurn (true);
+			this.tag = "BallP2";
 		}
 	}
 
 	protected  void DestroyBall() {
 		Object.Destroy (this.gameObject);
+
+		gameScript.SetProjectileTransform (null);
+	}
+
+	private void ResetBall() {
+		foreach (Transform child in this.transform) {
+			child.gameObject.SetActive (false);
+		}
+
+		this.transform.position = Vector3.zero;
 
 		gameScript.SetProjectileTransform (null);
 	}

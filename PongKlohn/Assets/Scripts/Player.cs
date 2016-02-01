@@ -90,7 +90,9 @@ public class Player : MonoBehaviour
 	public int specialCost = 0;
 	public int buffCost = 0;
     private bool blockWasHit = false;
-    private float kristall = 0;
+    private int crystal = 0;
+    private MasterScript masterScript;
+    private float buffMoveMod = 1;
 
     void Start() 
 	{
@@ -106,7 +108,18 @@ public class Player : MonoBehaviour
 		dashTimer = new Timer();
 		buffTimer = new Timer();
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
-		animator = GetComponent<Animator>();
+        masterScript = GameObject.FindObjectOfType(typeof(MasterScript)) as MasterScript;
+        int c;
+        if (this.tag == "Player1")
+        {
+            c = 1;
+        }
+        else
+        {
+            c = 2;
+        }
+        crystal = masterScript.GetCrystal(c);
+        animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
 		
 		//var children = gameObject.GetComponentsInChildren<Transform>() as GameObject;// finde Trigger  
@@ -183,7 +196,7 @@ public class Player : MonoBehaviour
 		{
 			//animator.SetFloat("xAxis", direction_.x * motionInverter);
 			//animator.SetFloat("yAxis", direction_.y * motionInverter);
-			move(direction_,speed * blockMoveMod);
+			move(direction_,speed * blockMoveMod * buffMoveMod);
 			//myTransform.AddForce (direction_ * speed);
 		}
 		
@@ -196,7 +209,8 @@ public class Player : MonoBehaviour
 		directionRaw_ = dirRaw_;
 		
 		SetTrigger(action);
-		stunTimer.UpdateTimer();
+
+        stunTimer.UpdateTimer();
 		fireTimer.UpdateTimer();
 		blockTimer.UpdateTimer();
 		catchTimer.UpdateTimer();
@@ -234,6 +248,11 @@ public class Player : MonoBehaviour
 		}
 		else{isPowerShooting = false;}
 		
+        if(buffCoolDown.IsFinished())
+        {
+            buffMoveMod = 1;
+        }
+
 		if(Actions(actionIndex))
 		{
 			isInAction = false;
@@ -243,8 +262,14 @@ public class Player : MonoBehaviour
 		
 		yield return 0;
 	}
-	
-	private float startValue = 0F;
+
+    public GameObject Instance(GameObject ball, Vector3 position, Quaternion rotation)
+    {
+        //Debug.Log("Insnciere ball");
+        return Instantiate(ball, position, rotation) as GameObject;
+    }
+
+    private float startValue = 0F;
 	private bool move(Vector3 direction,float moveSpeed)///////////////////////MOVE
 	{
 		if(direction != dir)
@@ -362,12 +387,6 @@ public class Player : MonoBehaviour
 		dashHasBeenTriggert = dt;
 	}
 	
-	public GameObject Instance(GameObject ball, Vector3 position, Quaternion rotation)
-	{
-		//Debug.Log("Insnciere ball");
-		return Instantiate(ball, position, rotation) as GameObject;
-	}
-	
 	public Vector3 GetProjectilePositin() 
 	{
 		return myTransform.gameObject.transform.position;
@@ -387,9 +406,9 @@ public class Player : MonoBehaviour
     private float blockEffectRotSpeed = 0f;
     private float ballSpeedup = 0f;
 
-    public Vector2 GetBlockMode()
+    public float GetBlockMode()
     {
-        return new Vector2(ballSpeedup,kristall);
+        return ballSpeedup;
     }
 
     public bool SetBlock(string mode)
@@ -497,7 +516,10 @@ public class Player : MonoBehaviour
                     {
                         SetBlock("Block");
                     }
-					if(!controls.IsBlockKeyActive()){blockProgression = 2;}
+					if(!controls.IsBlockKeyActive() && !controls.IsPowerShootActive(true) )
+                    {
+                        blockProgression = 2;
+                    }
 				}
 				else if(blockProgression == 0)
 				{
@@ -544,15 +566,15 @@ public class Player : MonoBehaviour
 
     private void PerformBuff()
     {
-        if(kristall == 0f)
+        if(crystal == 0f)
         {
-            ///Mod1
+            buffMoveMod = 1.5f;
         }
-        if (kristall == 1f)
+        if (crystal == 1f)
         {
-            ///Mod2
+            ///Mod2 
         }
-        if (kristall == 2f)
+        if (crystal == 2f)
         {
             ///Mod2
         }

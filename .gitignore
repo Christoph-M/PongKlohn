@@ -14,6 +14,7 @@
 *.sln
 *.userprefs
 *.blend1
+PongKlohn/.vs/**
 PongKlohn/Library/ShaderCache/**
 PongKlohn/Library/CurrentLayout.dwlt
 PongKlohn/Builds/**

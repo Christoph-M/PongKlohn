@@ -196,7 +196,7 @@ public class Ball : MonoBehaviour {
 			this.gameObject.SetActive (false);
 
 			Player playerScript = other.GetComponentInParent<Player> ();
-			playerScript.Instance (playerScript.balls [0], this.transform.position, Quaternion.AngleAxis (angle, Vector3.forward));
+			//playerScript.Instance (playerScript.balls [0], this.transform.position, Quaternion.AngleAxis (angle, Vector3.forward));
 
 			this.DestroyBall ();
 			gameScript.BallSpeedUp ();

@@ -150,7 +150,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 	}
 
 	public void Back() {
-		StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(2), sceneHandlerScript.GetScene(4)));
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.characterSelect));
 	}
 
 
@@ -207,7 +207,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 
 		yield return new WaitForSeconds (3);
 
-		StartCoroutine(sceneHandlerScript.StartGame (sceneHandlerScript.GetScene(6), sceneHandlerScript.GetScene(4)));
+		StartCoroutine(sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.characterSelect));
 
 		yield return 0;
 	}

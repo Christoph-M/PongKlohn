@@ -27,8 +27,9 @@ public class StartScreen : MonoBehaviour {
 	
 	void Update () {
 		if (Input.anyKeyDown && startScreen.transform.FindChild ("Text").gameObject.activeSelf) {
-			StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(2), sceneHandlerScript.GetScene(1)));
+			StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.startScreen));
 		}
+
 	}
 
 	void LateUpdate() {

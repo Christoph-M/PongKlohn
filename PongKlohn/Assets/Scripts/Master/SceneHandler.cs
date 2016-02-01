@@ -11,33 +11,33 @@ public class SceneHandler : MonoBehaviour {
 		masterScript = this.GetComponent<MasterScript> ();
 	}
 
-	public IEnumerator LoadMenu(string menuL, string menuUL)
+	public IEnumerator LoadMenu(int menuL, int menuUL)
 	{
-		masterScript.LoadScene (menuL);
+		masterScript.LoadScene (this.GetScene(menuL));
 
-		yield return new WaitUntil(() => SceneManager.GetSceneByName(menuL).isLoaded);
+		yield return new WaitUntil(() => SceneManager.GetSceneByName(this.GetScene(menuL)).isLoaded);
 
-		masterScript.UnloadScene (menuUL);
+		masterScript.UnloadScene (this.GetScene(menuUL));
 	}
 
-	public IEnumerator StartGame(string sceneL, string sceneUL) {
+	public IEnumerator StartGame(int sceneL, int sceneUL) {
 		masterScript.SetInMatch(true);
 
-		masterScript.LoadScene (sceneL);
+		masterScript.LoadScene (this.GetScene(sceneL));
 
-		yield return new WaitUntil(() => SceneManager.GetSceneByName(sceneL).isLoaded);
+		yield return new WaitUntil(() => SceneManager.GetSceneByName(this.GetScene(sceneL)).isLoaded);
 
-		masterScript.UnloadScene (sceneUL);
+		masterScript.UnloadScene (this.GetScene(sceneUL));
 	}
 
-	public IEnumerator EndGame(string scene) {
+	public IEnumerator EndGame(int scene) {
 		masterScript.SetInMatch(false);
 
-		masterScript.LoadScene (scene);
+		masterScript.LoadScene (this.GetScene(scene));
 
-		yield return new WaitUntil(() => SceneManager.GetSceneByName(scene).isLoaded);
+		yield return new WaitUntil(() => SceneManager.GetSceneByName(this.GetScene(scene)).isLoaded);
 
-		masterScript.UnloadScene (this.GetScene(6));
+		masterScript.UnloadScene (this.GetScene((int)MasterScript.Scene.gameScene));
 	}
 	
 	public void LoadMatchSelection()

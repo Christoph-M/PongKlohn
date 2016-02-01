@@ -22,14 +22,14 @@ public class WinScreenMenu : MonoBehaviour {
 	}
 	
 	public void Rematch() {
-		StartCoroutine (sceneHandlerScript.StartGame (sceneHandlerScript.GetScene(6), sceneHandlerScript.GetScene(5)));
+		StartCoroutine (sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.winScreen));
 	}
 
 	public void CharSelect() {
-		StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(4), sceneHandlerScript.GetScene(5)));
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.characterSelect, (int)MasterScript.Scene.winScreen));
 	}
 
 	public void Quit() {
-		StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(2), sceneHandlerScript.GetScene(5)));
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.winScreen));
 	}
 }

@@ -86,4 +86,14 @@ public class MasterScript : MonoBehaviour {
 	public bool GetInMatch() {
 		return inMatch;
 	}
+
+	public enum Scene {
+		master = 0,
+		startScreen = 1,
+		mainMenu = 2,
+		optionsMenu = 3,
+		characterSelect = 4,
+		winScreen = 5,
+		gameScene = 6
+	}
 }

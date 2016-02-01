@@ -26,18 +26,18 @@ public class MainMenu : MonoBehaviour {
 		masterScript.SetPlayerType (1, "KeyP1");
 		masterScript.SetPlayerType (2, "Ai");
 
-		StartCoroutine(sceneHandlerScript.StartGame (sceneHandlerScript.GetScene(6), sceneHandlerScript.GetScene(2)));
+		StartCoroutine(sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void Multiplayer() {
 		masterScript.SetPlayerType (1, "KeyP1");
 		masterScript.SetPlayerType (2, "KeyP2");
 
-		StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(4), sceneHandlerScript.GetScene(2)));
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.characterSelect, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void OptionsMenu() {
-		StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(3), sceneHandlerScript.GetScene(2)));
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.optionsMenu, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void Credits() {

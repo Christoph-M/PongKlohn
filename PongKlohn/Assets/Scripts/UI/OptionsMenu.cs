@@ -34,6 +34,6 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	public void Back() {
-		StartCoroutine(sceneHandlerScript.LoadMenu (sceneHandlerScript.GetScene(2), sceneHandlerScript.GetScene(3)));
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.optionsMenu));
 	}
 }

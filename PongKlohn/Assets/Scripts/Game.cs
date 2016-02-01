@@ -10,8 +10,7 @@ public class Game : MonoBehaviour {
 	public List<GameObject> charactersP1 = new List<GameObject>();
 	public List<GameObject> charactersP2 = new List<GameObject>();
 	[Space(10)]
-	public Transform playerEmpty;
-	public UserInterface uiScript;
+	public MatchUI uiScript;
 	public ScreenShake screenShakeScript;
 	
 	[Header("Game")]
@@ -61,12 +60,10 @@ public class Game : MonoBehaviour {
 	private int player1Score = 0;
 	private int player2Score = 0;
 
-	private int scene;
-
-	void Start() {
+	void Awake() {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 
-		StartCoroutine (SpawnPlayers ());
+		StartCoroutine (SpawnGameObjects ());
 		
 
 		minBallSpeed = ballSpeedUpCurve.Evaluate (0.0f);
@@ -220,14 +217,16 @@ public class Game : MonoBehaviour {
 	}
 
 
-	private IEnumerator SpawnPlayers() {
+	private IEnumerator SpawnGameObjects() {
 		int charP1 = masterScript.GetCharacter (1) - 1;
 		int charP2 = masterScript.GetCharacter (2) - 1;
 
-//		yield return new WaitForSeconds(0.1f);
+		// Wait until player scene is active
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.player])));
 
 		GameObject p1 = Instantiate (charactersP1 [charP1], player1Spawn, new Quaternion ()) as GameObject;
 		GameObject p2 = Instantiate (charactersP2 [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
+		Transform pEmpty = GameObject.FindGameObjectWithTag ("PlayerEmpty").transform;
 
 		player1 = p1.GetComponent<Player> ();
 		player2 = p2.GetComponent<Player> ();
@@ -236,32 +235,36 @@ public class Game : MonoBehaviour {
 		player2.tag = "Player2";
 		player1.name = "Player_01";
 		player2.name = "Player_02";
-		player1.transform.SetParent (playerEmpty);
-		player2.transform.SetParent (playerEmpty);
+		player1.transform.SetParent (pEmpty);
+		player2.transform.SetParent (pEmpty);
 		player2.InvertMotion = true;
 		Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
 		player1.SetPlayer(masterScript.GetPlayerType(1));
 		player2.SetPlayer(masterScript.GetPlayerType(2));
+
 		player1.health = playerHealth;
 		player2.health = playerHealth;
 		player1.power = playerEnergy;
 		player2.power = playerEnergy;
 
-//		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
-//			player1.setTurn(true);
-//			player2.setTurn(false);
-//		} else {
-//			player1.setTurn(false);
-//			player2.setTurn(true);
-//		}
+		// Wait until balls scene is active
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.balls])));
 
-		if (masterScript.GetPlayerType(1) == "Ai" || masterScript.GetPlayerType(2) == "Ai") {
-			scene = 3;
+		GameObject projectiles = Instantiate (masterScript.projectiles, Vector3.zero, Quaternion.identity) as GameObject;
+
+		projectiles.name = "Projectile";
+
+		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
+			// Balls farts to the left
 		} else {
-			scene = 2;
+			// Balls farts to the right
 		}
 
-		yield return 0;
+		// Wait until game scene is active
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.gameScene])));
+
+		this.enabled = true;
+		uiScript.enabled = true;
 	}
 
 	private IEnumerator EndRound(int p){

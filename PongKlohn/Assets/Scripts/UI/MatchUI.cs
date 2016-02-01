@@ -21,7 +21,7 @@ public class MatchUI : MonoBehaviour {
 	private float ep1;
 	private float ep2;
 
-	void Start () {
+	void Awake () {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 

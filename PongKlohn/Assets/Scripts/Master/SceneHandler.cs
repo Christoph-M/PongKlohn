@@ -21,23 +21,25 @@ public class SceneHandler : MonoBehaviour {
 	}
 
 	public IEnumerator StartGame(int sceneL, int sceneUL) {
-		masterScript.SetInMatch(true);
+		masterScript.LoadScene (this.GetScene(sceneL), false);
+		masterScript.LoadScene (this.GetScene((int)MasterScript.Scene.player), false);
+		masterScript.LoadScene (this.GetScene((int)MasterScript.Scene.balls), false);
 
-		masterScript.LoadScene (this.GetScene(sceneL));
-
-		yield return new WaitUntil(() => SceneManager.GetSceneByName(this.GetScene(sceneL)).isLoaded);
+		yield return new WaitUntil(() => SceneManager.GetSceneByName(this.GetScene(sceneL)).isLoaded && 
+										 SceneManager.GetSceneByName(this.GetScene((int)MasterScript.Scene.player)).isLoaded &&
+										 SceneManager.GetSceneByName(this.GetScene((int)MasterScript.Scene.balls)).isLoaded);
 
 		masterScript.UnloadScene (this.GetScene(sceneUL));
 	}
 
 	public IEnumerator EndGame(int scene) {
-		masterScript.SetInMatch(false);
-
 		masterScript.LoadScene (this.GetScene(scene));
 
 		yield return new WaitUntil(() => SceneManager.GetSceneByName(this.GetScene(scene)).isLoaded);
 
 		masterScript.UnloadScene (this.GetScene((int)MasterScript.Scene.gameScene));
+		masterScript.UnloadScene (this.GetScene((int)MasterScript.Scene.player));
+		masterScript.UnloadScene (this.GetScene((int)MasterScript.Scene.balls));
 	}
 	
 	public void LoadMatchSelection()

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class MasterScript : MonoBehaviour {
 	public List<GameObject> players;
-	public List<GameObject> projectiles;
+	public GameObject projectiles;
 	[Space(10)]
 	public List<string> scenes;
 	[Space(10)]
@@ -25,18 +25,15 @@ public class MasterScript : MonoBehaviour {
 
 	private GameObject projectile;
 
-	private int activeMenu = 1;
-	private bool inMatch = false;
-
 	void Start () {
 		eventSystem = EventSystem.current;
 
 		this.LoadScene (scenes[1]);
 	}
 
-	public void LoadScene(string scene) {
+	public void LoadScene(string scene, bool setActive = true) {
 		SceneManager.LoadScene (scene, LoadSceneMode.Additive);
-		StartCoroutine (SetActiveScene (scene));
+		if (setActive) StartCoroutine (SetActiveScene (scene));
 	}
 
 	private IEnumerator SetActiveScene(string scene) {
@@ -71,22 +68,6 @@ public class MasterScript : MonoBehaviour {
 		return playerType [player - 1];
 	}
 
-	public void SetActiveMenu(int menu) {
-		activeMenu = menu;
-	}
-
-	public int GetActiveMenu() {
-		return activeMenu;
-	}
-
-	public void SetInMatch(bool active) {
-		inMatch = active;
-	}
-
-	public bool GetInMatch() {
-		return inMatch;
-	}
-
 	public enum Scene {
 		master = 0,
 		startScreen = 1,
@@ -94,6 +75,8 @@ public class MasterScript : MonoBehaviour {
 		optionsMenu = 3,
 		characterSelect = 4,
 		winScreen = 5,
-		gameScene = 6
+		gameScene = 6,
+		player = 7,
+		balls = 8
 	}
 }

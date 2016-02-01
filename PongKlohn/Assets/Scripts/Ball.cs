@@ -145,9 +145,9 @@ public class Ball : MonoBehaviour {
 		Debug.Log ("Bounced. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
 
-		if (this.tag == "RedBall" && this.transform.position.x > 0.0f) {
+		if (this.tag == "BallP1" && this.transform.position.x > 0.0f) {
 			gameScript.Player1Scored (true);
-		} else if (this.tag == "BlueBall" && this.transform.position.x < 0.0f) {
+		} else if (this.tag == "BallP2" && this.transform.position.x < 0.0f) {
 			gameScript.Player2Scored (true);
 		}
 

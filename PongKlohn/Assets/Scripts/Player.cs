@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
 	private bool isStunned = false;
 	private float fangShildTimer = 0f;
 	private float blockLoad = 0F;
-	public float blockMoveMod = 1f;
+	private float blockMoveMod = 1f;
 	private float collisionRange = 1f;
 	private Vector3 dir = Vector3.zero;
 	private Vector3 oldDir = Vector3.zero;
@@ -223,16 +223,23 @@ public class Player : MonoBehaviour
 			actionIndex = 1;//Do stunAction
 			isInAction = true;
 			
-		} else if (controls.IsBlockKeyActive() && !isInAction)//Block input
+		}
+
+        if (controls.IsBlockKeyActive() && !isInAction)//Block input
 		{
 			//audioDing.SetSrei();
 			actionIndex = 2;//Do Block
 			isInAction = true;
-		} else if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished())//Buff input
+		}
+
+        if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished())//Buff input
 		{
+            Debug.Log("dash input works");
 			actionIndex = 4;//Do buff
 			isInAction = true;
-		} else if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero && power >= dashEnergyCost)//Dash input
+		}
+
+        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero && power >= dashEnergyCost)//Dash input
 		{
 			audioDing.SetSrei();
 			power -= dashEnergyCost;
@@ -435,17 +442,18 @@ public class Player : MonoBehaviour
                 }
             }else if (mode == "Load")
             {
-                if (ballSpeedup < 0.5)
+                if (ballSpeedup < 1)
                 {
                     ballSpeedup += (Time.deltaTime/5);
-                    Debug.Log("block loads");
+                    //Debug.Log("block loads");
                 }
                 else
                 {
-                    ballSpeedup = 0.5f;
+                    ballSpeedup = 1f;
                 }
             }else if (mode == "Special")
             {
+                //Debug.Log("spessel");
                 ballSpeedup = 2f;
             }
 
@@ -468,7 +476,7 @@ public class Player : MonoBehaviour
             }
         }
         blockEffectRotSpeed += (ballSpeedup * 800) * Time.deltaTime;
-        Debug.Log("blockEffectRotSpeed"+ blockEffectRotSpeed + "   :"+ballSpeedup);
+        //Debug.Log("blockEffectRotSpeed"+ blockEffectRotSpeed + "   :"+ballSpeedup);
         blockShild.transform.rotation = Quaternion.AngleAxis(blockEffectRotSpeed, new Vector3(1,0,0));
         return false;
     }
@@ -508,13 +516,20 @@ public class Player : MonoBehaviour
 				else if(blockProgression == 1)
 				{
                     action = 2;
-                    if (directionRaw_ == Vector2.zero || !OnBlock())
+                    if (controls.IsPowerShootActive(true))
                     {
-                        SetBlock("Load");
+                        SetBlock("Special");
                     }
                     else
                     {
-                        SetBlock("Block");
+                        if (directionRaw_ == Vector2.zero || OnBlock())
+                        {
+                            SetBlock("Load");
+                        }
+                        else
+                        {
+                            SetBlock("Block");
+                        }
                     }
 					if(!controls.IsBlockKeyActive() && !controls.IsPowerShootActive(true) )
                     {
@@ -552,6 +567,7 @@ public class Player : MonoBehaviour
 				}
 				else if(buffProgression == 0)
 				{
+                    Debug.Log("Buff");
                     PerformBuff();
                     buffCoolDown.SetTimer(30f);
                     buffTimer.SetTimer(2f);

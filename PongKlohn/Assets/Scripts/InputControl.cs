@@ -151,8 +151,9 @@ public class InputControl
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(buff) != 0f)
+			if(Input.GetAxis(buff) != 0)
 			{
+                Debug.Log("buff is active funst");
 				return true;
 			}
 			return false;

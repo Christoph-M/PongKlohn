@@ -7,61 +7,104 @@ public class Player : MonoBehaviour
 {	
 	public Transform ballSpohorn;
 	public List<GameObject> balls;
-	
 	public int health { get; set; }
 	public int power { get; set; }
-	public int dashEnergyCost { get; set; }
 	public float blockTime { get; set; }
-	
 	public float speed { get; set; }
 	public float dashSpeed { get; set; }
 	public bool InvertMotion = false;
-
 	protected const float fieldHeight = 22.0f;
 	protected const float fieldWidth = 70.0f;
 	protected float wallTop;
 	protected float wallBottom;
 	protected float wallLeft;
 	protected float wallRight;
-	
+    private Timer buffCoolDown;
+    private Timer buffTimer;
 	private Timer catchTimer;
 	private Timer blockTimer;
 	private Timer fireTimer;
 	private Timer stunTimer;
 	private Timer waitAfterSoot;
 	private Timer dashTimer;
-	
 	private Rigidbody2D myTransform;
 	private Animator animator;
-	
 	private Game gameScript;
-
 	private GameObject catchTrigger;
 	private GameObject blockTrigger;
 	private GameObject dashTrigger;
 	private GameObject missTrigger;
+	private InputControl controls;
+	private float motionInverter = 1;
+	private AudioLoop audioDing;
+	private Vector2 direction = Vector2.zero;//zuweisung der Inputachsen
+	private	Vector2 directionRaw = Vector2.zero;
+	private bool dashHasBeenTriggert = false;
+	private bool zuLangsamZumFangenDuMong = false;
+	private bool canMovement = true;
+	private int action = 5;
+	private int blockProgression = 0;
+	private int shootProgression = 0;
+	private int dashProgression = 0;
+	private int buffProgression = 0;
+	private int stunProgression = 0;
+	private bool isInAction = false;
+	private bool isDashing = false;
+	private bool isBuffing = false;
+	private bool isDashActive = false;
+	private bool isPowerShooting = false;
+	private bool inputAxisDown = false;
+	private bool isShooting = false;
+	private bool isBlocking = false;
+	private bool isStunned = false;
+	private float fangShildTimer = 0f;
+	private float blockLoad = 0F;
+	public float blockMoveMod = 1f;
+	private float collisionRange = 1f;
+	private Vector3 dir = Vector3.zero;
+	private Vector3 oldDir = Vector3.zero;
+	private float curvepoint = 0f;
+	private float deltatime2 = 0f;
+	private RaycastHit2D playerRayHit;
+	private float bandenDist = 0f;
+	private Vector3 lerpDir = Vector3.zero;
+	private float maxX = 0f;
+	private float maxY = 0f;
+	private Vector3 lerpCurve = Vector3.zero;
+	private Vector3 startVec = Vector3.zero;
+	private Vector3 endVec = Vector3.zero;
+	private float dashLength = 7f;//Dasch Distance
+	private float dashTime = 0.2f;//Dash dauer
+	private float hitLength = 0f;
+	private Vector3 oldValue = Vector3.zero;
+	private Vector3 newValue = Vector3.zero;
+	private Vector3 wallDistance = Vector3.zero;
+	private Vector3 lerpedDash = Vector3.zero;
+	private int oldState =0;
+	private bool dashBool = true;
 	public GameObject smoke;
 	public GameObject fangShild;
 	public GameObject blockShild;
-	public AnimationCurve fangCurve = AnimationCurve.EaseInOut(0f,0f,1f,0.666f);
-	
-	private InputControl controls;
-	
-	private bool turn;
+	private Curves curves;
+	public int dashEnergyCost { get; set; }
+	public int specialCost = 0;
+	public int buffCost = 0;
+    private bool blockWasHit = false;
+    private float kristall = 0;
 
-	private float motionInverter = 1;
-	private AudioLoop audioDing;
-	
-	void Start() 
+    void Start() 
 	{
+		curves = GameObject.FindObjectOfType (typeof(Curves)) as Curves;
 		audioDing = GameObject.FindObjectOfType (typeof(AudioLoop)) as AudioLoop;
 		fangShild.transform.localScale = Vector3.zero;
-		catchTimer = new Timer();
+        buffCoolDown = new Timer();
+        catchTimer = new Timer();
 		blockTimer  = new Timer();
 		fireTimer = new Timer();
 		stunTimer = new Timer();
 		waitAfterSoot = new Timer();
 		dashTimer = new Timer();
+		buffTimer = new Timer();
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 		animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
@@ -109,54 +152,8 @@ public class Player : MonoBehaviour
 		}
 	}
 	
-	private Vector2 direction = Vector2.zero;//zuweisung der Inputachsen
-	private	Vector2 directionRaw = Vector2.zero;
-	
-	private bool dashHasBeenTriggert = false;
-	private bool zuLangsamZumFangenDuMong = false;
-	private bool canMovement = true;
-	
-	private int action = 5;
-
-	private int blockProgression = 0;
-	private int shootProgression = 0;
-	private int dashProgression = 0;
-	private int buffProgression = 0;
-	private int stunProgression = 0;
-	private bool isInAction = false;
-	private bool isDashing = false;
-	private bool isBuffing = false;
-	private bool isDashActive = false;
-	private bool isPowerShooting = false;
-	private bool inputAxisDown = false;
-	private bool isShooting = false;
-	private bool isBlocking = false;
-	private bool isStunned = false;
-	private float fangShildTimer = 0f;
-	private float blockLoad = 0F;
-	public float blockMoveMod = 1f;
-	
 	void Update() 
 	{
-		//Debug.Log("turn"+turn);
-		if(ICanShoot())
-		{
-			if(fangShildTimer<1f)
-			{
-				fangShildTimer += Time.deltaTime * 1f;
-			}
-		}
-		else
-		{	
-			if(fangShildTimer>0f)
-			{
-				fangShildTimer -= Time.deltaTime * 2f;
-			}
-			
-			
-		}
-		fangShild.transform.localScale = Vector3.one * fangCurve.Evaluate(fangShildTimer);
-
 		direction = controls.UpdateMovement();//zuweisung der Inputachsen
 		directionRaw = controls.UpdateMovementRaw();
 		
@@ -192,518 +189,62 @@ public class Player : MonoBehaviour
 		
 		yield return 0;
 	}
-	
-	IEnumerator PerformAction(Vector2 direction_, Vector2 directionRaw_) {
+
+    Vector2 directionRaw_;
+	int actionIndex = 0;
+	IEnumerator PerformAction(Vector2 direction_, Vector2 dirRaw_) {
+		directionRaw_ = dirRaw_;
+		
 		SetTrigger(action);
 		stunTimer.UpdateTimer();
 		fireTimer.UpdateTimer();
 		blockTimer.UpdateTimer();
 		catchTimer.UpdateTimer();
 		waitAfterSoot.UpdateTimer();
+		buffTimer.UpdateTimer();
 		//dashTimer.UpdateTimer();
 		
 		if(zuLangsamZumFangenDuMong)///////////////Stun
 		{
+			actionIndex = 1;//Do stunAction
 			isInAction = true;
-			isStunned = true;
-		} else if (controls.IsFireKeyActive(ICanShoot()) && !isInAction)//fire input
-		{
-			audioDing.SetSrei();
-			isInAction = true;
-			isShooting = true;
-		} else if (controls.IsPowerShootActive(ICanShoot()) && !isInAction)//Powershoot input
-		{
-			//isInAction = true;
-//			isPowerShooting = true;
+			
 		} else if (controls.IsBlockKeyActive() && !isInAction)//Block input
 		{
-			audioDing.SetSrei();
+			//audioDing.SetSrei();
+			actionIndex = 2;//Do Block
 			isInAction = true;
-			isBlocking = true;
-		} else if (controls.IsBuffActive() && !isInAction)//Buff input
+		} else if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished())//Buff input
 		{
-			//isBlocking = true;
+			actionIndex = 4;//Do buff
+			isInAction = true;
 		} else if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero && power >= dashEnergyCost)//Dash input
 		{
 			audioDing.SetSrei();
 			power -= dashEnergyCost;
+			actionIndex = 3;//Do Dash
 			isInAction = true;
-			isDashing = true;
 		}
 		
-		if(isStunned)///////////////////////isStunned Action//////////////////////////
+		if (controls.IsPowerShootActive(true) && (!isInAction || isBlocking) && power >= specialCost)//Powershoot input
 		{
-			//Debug.Log(this.transform.name + " stun enter");
-			if(stunProgression == 1 && stunTimer.IsFinished())
-			{
-				//Debug.Log(this.transform.name + " stun end");
-				action = 0;
-				isInAction = false;
-				isStunned = false;
-				zuLangsamZumFangenDuMong = false;
-			}
-			else if(stunProgression == 0)
-			{
-				stunTimer.SetTimer(2f);
-				action = 6;
-				stunProgression =1;
-			}
-		} else if (isShooting)/////////Action Shoot//////////////////////
-		{	
-			
-			//Debug.Log(this.transform.name + " shoot enter");		
-			if(shootProgression == 2 && waitAfterSoot.IsFinished())
-			{
-				//Debug.Log(this.transform.name + " shoot endet");
-				shootProgression = 0;
-				action = 0;
-				isInAction = false;
-				isShooting = false;
-			}
-			else if(shootProgression == 1 && fireTimer.IsFinished())
-			{
-				waitAfterSoot.SetTimer(0.5f);
-				shootProgression = 2;
-				Shoot(direction_,false);
-			}
-			else if(shootProgression == 0)
-			{
-				action = 3;
-				fireTimer.SetTimer(1.5f);
-				shootProgression = 1;
-			}		
-		} else if (isPowerShooting)/////////Action PowerShoot//////////////////////
+			actionIndex = 2;//Do DoBlock
+			isInAction = true;
+			isPowerShooting = true;//DO special on bounce
+		}
+		else{isPowerShooting = false;}
+		
+		if(Actions(actionIndex))
 		{
-			//Debug.Log(this.transform.name + " powershoot enter");
-			if(shootProgression == 2 && waitAfterSoot.IsFinished())
-			{
-				//Debug.Log(this.transform.name + " powershoot end");
-				shootProgression = 0;
-				action = 0;
-				isInAction = false;
-				isPowerShooting = false;
-			}
-			else if(shootProgression == 1 && fireTimer.IsFinished())
-			{
-				waitAfterSoot.SetTimer(0.5f);
-				shootProgression = 2;
-				Shoot(direction_,true);
-			}
-			else if(shootProgression == 0)
-			{
-				action = 3;
-				fireTimer.SetTimer(1f);
-				shootProgression = 1;
-			}		
-		} else if(isBlocking)///////////////////////Block Action//////////////////////////
-		{	
-			blockShild.transform.localScale = new Vector3(0.6f,0.6f+(blockLoad*0.5f),0.6f);
-			//Debug.Log(this.transform.name + " block Enter");
-			if(blockProgression == 2 && blockTimer.IsFinished())
-			{
-				//Debug.Log(this.transform.name + " block endet");
-				action = 0;
-				blockMoveMod = 1f;
-				blockProgression = 0;
-				isInAction = false;
-				isBlocking = false;
-				blockLoad = 0f;
-			}
-			else if(blockProgression == 1)
-			{
-				
-				if(blockLoad<1){blockLoad+=(0.5f * Time.deltaTime);}
-				blockMoveMod = 0.5f;
-				blockTimer.SetTimer(blockTime);
-				action = 2;
-				if(!controls.IsBlockKeyActive()){blockProgression = 2;blockMoveMod = 1f;}
-			}
-			else if(blockProgression == 0)
-			{
-				action = 1;
-				blockProgression =1;
-			}
-		} else if(isDashing)//////////////Dash//////////////////////////////////////////
-		{
-			//Debug.Log(this.transform.name + " dash enter");
-			if(dashProgression == 1)
-			{
-				//Debug.Log(this.transform.name + " dash endet");
-				dashProgression = 0;
-				isDashing = false;
-				action = 0;
-				isInAction = false;
-				
-			}
-			else if(dashProgression == 0)
-			{
-				//Debug.Log(this.transform.name + " dash start");
-				action = 10;
-				if(MoveTo(directionRaw_))
-				{
-					dashProgression = 1;
-				}
-				//animator.SetFloat("xAxis", direction_.x * motionInverter);
-				//animator.SetFloat("yAxis", direction_.y * motionInverter);
-				//myTransform.AddForce (directionRaw_ * dashSpeed, ForceMode2D.Impulse);
-			}
-		} else if(isBuffing)///////////////////////Buff Action//////////////////////////
-		{	
-		//Debug.Log(this.transform.name + " Buff enter");
-			if(blockProgression == 1 && !controls.IsBuffActive())
-			{
-				//Debug.Log(this.transform.name + " Buff Has endet");
-				action = 0;
-				buffProgression = 0;
-				isBuffing = false;
-				
-			}
-			else if(buffProgression == 0)
-			{
-				action = 6;
-				buffProgression =1;
-			}
+			isInAction = false;
+            action = 0;
+            actionIndex = 0;
 		}
 		
 		yield return 0;
 	}
 	
-	int oldState =0;
-	public void SetTrigger(int newState)
-	{
-		if(oldState != newState)
-		{
-			switch(newState)
-			{
-				case 0://normal
-					catchTrigger.SetActive(true);///////////////
-					missTrigger.SetActive(false);
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-					this.transform.FindChild("Block").gameObject.SetActive(false);
-
-					canMovement = true;
-					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 1://block state 1
-					catchTrigger.SetActive(false);
-					missTrigger.SetActive(true);////////////
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-
-					canMovement = false;
-					animator.SetBool ("Block", true);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 2://block state 2
-					catchTrigger.SetActive(false);
-					missTrigger.SetActive(false);
-					blockTrigger.SetActive(true);///////////////
-					dashTrigger.SetActive(false);//////////////
-					this.transform.FindChild("Block").gameObject.SetActive(true);
-
-					canMovement = true;
-					animator.SetBool ("Block", true);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 3://shoot
-					catchTrigger.SetActive(false);
-					missTrigger.SetActive(false);
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-
-					canMovement = true;
-					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", true);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 4://stun
-					catchTrigger.SetActive(false);
-					missTrigger.SetActive(true);/////////
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-
-					canMovement = false;
-					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", true);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 5://start
-					catchTrigger.SetActive(true);
-					missTrigger.SetActive(false);/////////
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-
-					canMovement = true;
-					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 6://Buff
-					catchTrigger.SetActive(true);
-					missTrigger.SetActive(false);/////////
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-
-					canMovement = true;
-					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", true);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 7://Powershoot
-					catchTrigger.SetActive(false);
-					missTrigger.SetActive(false);/////////
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-
-					canMovement = true;
-					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", true);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 8://win
-					catchTrigger.SetActive(false);
-					missTrigger.SetActive(false);/////////
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-
-					canMovement = true;
-					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", true);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", false);
-					animator.SetBool ("Dash", false);
-					
-					oldState = newState;
-					break;
-				
-				case 9://loose
-					catchTrigger.SetActive(false);
-					missTrigger.SetActive(false);/////////
-					blockTrigger.SetActive(false);
-					dashTrigger.SetActive(false);
-
-					canMovement = true;
-					animator.SetBool ("Block", false);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", true);
-					animator.SetBool ("Dash", false);
-	
-					oldState = newState;
-					break;
-				
-				case 10://dash
-					catchTrigger.SetActive(false);
-					missTrigger.SetActive(false);/////////
-					blockTrigger.SetActive(true);
-					dashTrigger.SetActive(false);
-
-					canMovement = false;
-					animator.SetBool ("Block", true);
-					animator.SetBool ("Fire", false);
-					animator.SetBool ("PowerShoot", false);
-					animator.SetBool ("Buff", false);
-					animator.SetBool ("Stun", false);
-					animator.SetBool ("Win", false);
-					animator.SetBool ("Loose", false);
-					animator.SetBool ("Dash", true);
-				
-					oldState = newState;
-					break;
-			}
-		}
-	}
-	
-	public void SetPlayer(string player) 
-	{
-		controls = new InputControl(player,this.transform);
-	}
-	
-	public void SetZuLangsamZumFangenDuMong(bool zLZFDM)
-	{
-		zuLangsamZumFangenDuMong = zLZFDM;
-	}
-	
-	public void SetDashTrigger(bool dt)
-	{
-		dashHasBeenTriggert = dt;
-	}
-	
-	public bool setTurn(bool turnt)
-	{
-		return turn = turnt;
-	}
-
-	public GameObject Instance(GameObject ball, Vector3 position, Quaternion rotation)
-	{
-		//Debug.Log("Insnciere ball");
-		return Instantiate(ball, position, rotation) as GameObject;
-	}
-	
-	public Vector3 GetProjectilePositin() 
-	{
-		return myTransform.gameObject.transform.position;
-	}
-	
-	public Quaternion Rotation() 
-	{
-		return myTransform.gameObject.transform.rotation;
-	}
-	
-	public Vector3 GetRotation()
-	{
-		return new Vector3(myTransform.gameObject.transform.rotation.x, myTransform.gameObject.transform.rotation.y, myTransform.gameObject.transform.rotation.z);
-	}
-	
-	private bool ICanShoot()
-	{
-		//Debug.Log(this.transform.name + ": " + turn);
-		
-		if(!gameScript.GetProjectileTransform() && turn)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	private bool Shoot(Vector2 direction,bool type)
-	{
-		if(type)
-		{//speschel schuss
-			if(transform.position.y>3)//Spezial oban
-			{
-				Instance(balls[5], ballSpohorn.position, this.transform.rotation);
-				if(!gameScript.GetProjectileTransform()){return true;}	
-			}
-			else if(transform.position.y<-3)//Special unten
-			{
-				Instance(balls[4], ballSpohorn.position, this.transform.rotation);
-				if(!gameScript.GetProjectileTransform()){return true;}
-			}
-			else//speschel mitte
-			{
-				Instance(balls[3], ballSpohorn.position, this.transform.rotation);
-				if(!gameScript.GetProjectileTransform()){return true;}
-			}	
-		}
-		else
-		{
-			//normal schuss
-			if (direction.y > 0f) //oben schiessen
-			{
-				Instance(balls [1], ballSpohorn.position, this.transform.rotation);
-				if(!gameScript.GetProjectileTransform()){return true;}
-			} 
-			else if (direction.y < 0f) //unten schiessen
-			{
-				Instance (balls [2], ballSpohorn.position, this.transform.rotation);
-				if(!gameScript.GetProjectileTransform()){return true;}
-			} 
-			else if (direction.y == 0f) //normaler schuss
-			{
-				Instance(balls [0], ballSpohorn.position, this.transform.rotation);
-				if(!gameScript.GetProjectileTransform()){return true;}
-			}
-		}
-		
-		return false;
-	}
-	
-	private float collisionRange = 1f;
-	Vector3 dir = Vector3.zero;
-	Vector3 oldDir = Vector3.zero;
-    private AnimationCurve curve = AnimationCurve.EaseInOut(0f,0f,0.3f,1f);
-	private AnimationCurve curveBande = AnimationCurve.EaseInOut(3f,1f,1f,0f);
-	private float curvepoint = 0f;
-	float easeTime = 0.3f;
-	float startValue = 0;
-	float deltatime2 = 0f;
-	RaycastHit2D playerRayHit;
-	private float bandenDist = 0f;
-	private Vector3 lerpDir = Vector3.zero;
-	private float maxX = 0f;
-	private float maxY = 0f;
-	private Vector3 lerpCurve = Vector3.zero;
-	
+	private float startValue = 0F;
 	private bool move(Vector3 direction,float moveSpeed)///////////////////////MOVE
 	{
 		if(direction != dir)
@@ -717,42 +258,28 @@ public class Player : MonoBehaviour
 			dir = direction;
 		}
 
-		lerpDir = Vector3.Lerp (oldDir, direction,curve.Evaluate(Time.time - startValue));
+		lerpDir = Vector3.Lerp (oldDir, direction,curves.GetCurve((Time.time - startValue)*3,1));
 		lerpDir = Vector3.ClampMagnitude (lerpDir, 1.0f);
 
 		if (lerpDir.x > 0.0f) {
-			lerpCurve.x = curveBande.Evaluate(this.AbstandRight());
+			lerpCurve.x = curves.GetCurve(this.AbstandRight()/3,2);
 		}
 		if (lerpDir.x < 0.0f) {
-			lerpCurve.x = curveBande.Evaluate(this.AbstandLeft());
+			lerpCurve.x = curves.GetCurve(this.AbstandLeft()/3,2);
 		}
 		if (lerpDir.y > 0.0f) {
-			lerpCurve.y = curveBande.Evaluate(this.AbstandTop());
+			lerpCurve.y = curves.GetCurve(this.AbstandTop()/3,2);
 		}
 		if (lerpDir.y < 0.0f) {
-			lerpCurve.y = curveBande.Evaluate(this.AbstandBottom());
+			lerpCurve.y = curves.GetCurve(this.AbstandBottom()/3,2);
 		}
-
-		transform.position += new Vector3 ((Time.deltaTime * speed * lerpDir.x * lerpCurve.x), (Time.deltaTime * speed * lerpDir.y * lerpCurve.y), 0.0f);
+		//Debug.Log(this.AbstandTop()+"   "+lerpCurve.y);
+		transform.position += new Vector3 ((Time.deltaTime * moveSpeed * lerpDir.x * lerpCurve.x), (Time.deltaTime * moveSpeed * lerpDir.y * lerpCurve.y), 0.0f);
 		animator.SetFloat("xAxis", lerpDir.x * motionInverter * lerpCurve.x);
 		animator.SetFloat("yAxis", lerpDir.y * motionInverter * lerpCurve.y);
 		return false;
 	}
 		
-
-	public Vector3 startVec = Vector3.zero;
-	public Vector3 endVec = Vector3.zero;
-	private float dashLength = 7f;//Dasch Distance
-	private float dashTime = 0.2f;//Dash dauer
-	public AnimationCurve dashCurve;
-	private float hitLength = 0f;
-	bool dashBool = true;
-	Vector3 oldValue = Vector3.zero;
-	Vector3 newValue = Vector3.zero;
-	Vector3 wallDistance = Vector3.zero;
-	Vector3 lerpedDash = Vector3.zero;
-	
-	
 	private bool MoveTo(Vector3 direction)/////////////////////////MoveTo (Dash)
 	{
 		if(dashBool)
@@ -782,26 +309,15 @@ public class Player : MonoBehaviour
 				wallDistance.y = this.AbstandBottom();
 				if(wallDistance.y < lerpedDash.y * dashLength){endVec.y = startVec.y - wallDistance.y;}
 			}
-			
-			//if(endVec.x)
-			//transform.position += new Vector3 ((Time.deltaTime * speed * lerpDir.x * lerpCurve.x), (Time.deltaTime * speed * lerpDir.y * lerpCurve.y), 0.0f);
-
-
-			dashCurve = AnimationCurve.EaseInOut(0f,0f,dashTime,1f);
 		}
 
 		animator.SetFloat("xAxis", direction.x);
 		animator.SetFloat("yAxis", direction.y);
 		
-		newValue = Vector3.Lerp (startVec, endVec, dashCurve.Evaluate (Time.time - startValue));
+		newValue = Vector3.Lerp (startVec, endVec, curves.GetCurve((Time.time - startValue)*4f,2));
 		transform.position += (newValue - oldValue);
 		oldValue = newValue;
 		float deltatime = Time.time - startValue;
-		//animator.SetFloat("xAxis", dir.x * deltatime/dashTime * motionInverter);
-		//animator.SetFloat("yAxis", dir.y * deltatime/dashTime * motionInverter);
-//		transform.position = startVec + (endVec * dashCurve.Evaluate(deltatime));
-//		Debug.Log ("start: " + startVec + ", 2: " + endVec);
-//		//Debug.Log("deltatime:"+deltatime);
 		if(deltatime >= dashTime)
 		{
 			//Debug.Log("Dash Ende: "+ deltatime);
@@ -829,5 +345,357 @@ public class Player : MonoBehaviour
 		} else {
 			return transform.position.x - wallLeft;
 		}
+	}
+	
+	public void SetPlayer(string player) 
+	{
+		controls = new InputControl(player,this.transform);
+	}
+	
+	public void SetZuLangsamZumFangenDuMong(bool zLZFDM)
+	{
+		zuLangsamZumFangenDuMong = zLZFDM;
+	}
+	
+	public void SetDashTrigger(bool dt)
+	{
+		dashHasBeenTriggert = dt;
+	}
+	
+	public GameObject Instance(GameObject ball, Vector3 position, Quaternion rotation)
+	{
+		//Debug.Log("Insnciere ball");
+		return Instantiate(ball, position, rotation) as GameObject;
+	}
+	
+	public Vector3 GetProjectilePositin() 
+	{
+		return myTransform.gameObject.transform.position;
+	}
+	
+	public Quaternion Rotation() 
+	{
+		return myTransform.gameObject.transform.rotation;
+	}
+	
+	public Vector3 GetRotation()
+	{
+		return new Vector3(myTransform.gameObject.transform.rotation.x, myTransform.gameObject.transform.rotation.y, myTransform.gameObject.transform.rotation.z);
+	}
+
+    private float blockEfectScale = 0f;
+    private float blockEffectRotSpeed = 0f;
+    private float ballSpeedup = 0f;
+
+    public Vector2 GetBlockMode()
+    {
+        return new Vector2(ballSpeedup,kristall);
+    }
+
+    public bool SetBlock(string mode)
+    {
+        if (mode == "Block" || mode == "Load" || mode == "Special")
+        {
+            blockTimer.SetTimer(blockTime);
+            blockMoveMod = 0.25f;
+            if (blockEfectScale <= 1)
+            {
+                blockEfectScale += Time.deltaTime;
+                blockShild.transform.localScale = Vector3.one * blockEfectScale;
+            }
+
+            if(mode == "Block")
+            {
+                if(ballSpeedup >0)
+                {
+                    ballSpeedup -= Time.deltaTime*2;
+                }
+                else
+                {
+                    ballSpeedup = 0;
+                }
+            }else if (mode == "Load")
+            {
+                if (ballSpeedup < 0.5)
+                {
+                    ballSpeedup += (Time.deltaTime/5);
+                    Debug.Log("block loads");
+                }
+                else
+                {
+                    ballSpeedup = 0.5f;
+                }
+            }else if (mode == "Special")
+            {
+                ballSpeedup = 2f;
+            }
+
+        }
+        else if (mode == "Non")
+        {
+            if (blockTimer.IsFinished())
+            {
+                blockMoveMod = 1f;
+                if (blockEfectScale >= 0)
+                {
+                    blockEfectScale -= Time.deltaTime;
+                    blockShild.transform.localScale = Vector3.one * blockEfectScale;
+                }
+                else
+                {
+                    blockShild.transform.localScale = Vector3.zero;
+                    return true;
+                }
+            }
+        }
+        blockEffectRotSpeed += (ballSpeedup * 800) * Time.deltaTime;
+        Debug.Log("blockEffectRotSpeed"+ blockEffectRotSpeed + "   :"+ballSpeedup);
+        blockShild.transform.rotation = Quaternion.AngleAxis(blockEffectRotSpeed, new Vector3(1,0,0));
+        return false;
+    }
+
+    public bool Actions(int i)
+	{
+		switch(i)
+		{
+			case 0://normal
+				action = 0;
+				return true;
+			case 1:////isStunned Action////
+				if(stunProgression == 1 && stunTimer.IsFinished())
+				{
+					zuLangsamZumFangenDuMong = false;
+                    return true;
+				}
+				else if(stunProgression == 0)
+				{
+					stunTimer.SetTimer(2f);
+					action = 4;
+					stunProgression =1;
+				}
+				return false;
+
+            case 2://///Block Action//////////////////////////	
+
+				if(blockProgression == 2 && blockTimer.IsFinished())
+				{
+                    if(SetBlock("Non"))
+                    {
+		                blockProgression = 0;
+                        return true;
+                    }
+                    return false;
+				}
+				else if(blockProgression == 1)
+				{
+                    action = 2;
+                    if (directionRaw_ == Vector2.zero || !OnBlock())
+                    {
+                        SetBlock("Load");
+                    }
+                    else
+                    {
+                        SetBlock("Block");
+                    }
+					if(!controls.IsBlockKeyActive()){blockProgression = 2;}
+				}
+				else if(blockProgression == 0)
+				{
+					action = 2;
+					blockProgression =1;
+				}
+				return false;
+
+            case 3://///Dash//////////////////////////////////////////
+				if(dashProgression == 1)
+				{
+					dashProgression = 0;
+                    return true;
+				}
+				else if(dashProgression == 0)
+				{
+					action = 10;
+					if(MoveTo(directionRaw_))
+					{
+						dashProgression = 1;
+					}
+				}
+				return false;
+
+            case 4://///////Buff Action//////////////////////////	;
+				if(blockProgression == 1)
+				{
+					buffProgression = 0;
+                    return true;
+				}
+				else if(buffProgression == 0)
+				{
+                    PerformBuff();
+                    buffCoolDown.SetTimer(30f);
+                    buffTimer.SetTimer(2f);
+					action = 6;
+					buffProgression =1;
+				}
+				return false;
+			default: 
+			   return false;
+		}
+	}
+
+    private void PerformBuff()
+    {
+        if(kristall == 0f)
+        {
+            ///Mod1
+        }
+        if (kristall == 1f)
+        {
+            ///Mod2
+        }
+        if (kristall == 2f)
+        {
+            ///Mod2
+        }
+    }
+
+	private bool OnBlock()
+    {
+        if(blockWasHit)
+        {
+            blockWasHit = false;
+            return true;
+        }
+        return false;
+    }
+
+    public void SetOnBlock()
+    {
+        blockWasHit = true;
+    }
+
+	public void SetTrigger(int newState)
+	{
+		if(oldState != newState)
+		{
+			switch(newState)
+			{
+				case 0://normaler
+					//Debug.Log("xxxxx");
+					RestTrigger();
+					missTrigger.SetActive(true);
+					//this.transform.FindChild("Block").gameObject.SetActive(false);
+					canMovement = true;
+					ResetAnimator();
+					oldState = newState;
+					break;
+				
+				case 1://block state 1
+					RestTrigger();
+					missTrigger.SetActive(true);////////////
+					canMovement = false;
+					ResetAnimator();
+					animator.SetBool ("Block", true);				
+					oldState = newState;
+					break;
+				
+				case 2://block state 2
+					RestTrigger();
+					blockTrigger.SetActive(true);///////////////
+					//this.transform.FindChild("Block").gameObject.SetActive(true);
+					canMovement = true;
+					ResetAnimator();
+					animator.SetBool ("Block", true);
+					oldState = newState;
+					break;
+				
+				case 3://shoot
+					RestTrigger();
+					canMovement = true;
+					ResetAnimator();
+					animator.SetBool ("Fire", true);
+					oldState = newState;
+					break;
+				
+				case 4://stun
+					RestTrigger();
+					missTrigger.SetActive(true);/////////
+					canMovement = false;
+					ResetAnimator();
+					animator.SetBool ("Stun", true);					
+					oldState = newState;
+					break;
+				
+				case 5://start
+					Debug.Log("start");
+					RestTrigger();
+					catchTrigger.SetActive(true);
+					canMovement = true;
+					ResetAnimator();
+					oldState = newState;
+					break;
+				
+				case 6://Buff
+					RestTrigger();
+					canMovement = false;
+					ResetAnimator();
+					animator.SetBool ("Buff", true);					
+					oldState = newState;
+					break;
+				
+				case 7://Powershoot
+					RestTrigger();
+					canMovement = true;
+					ResetAnimator();
+					animator.SetBool ("PowerShoot", true);					
+					oldState = newState;
+					break;
+				
+				case 8://win
+					RestTrigger();
+					canMovement = false;
+					ResetAnimator();
+					animator.SetBool ("Win", true);
+					oldState = newState;
+					break;
+				
+				case 9://loose
+					RestTrigger();
+					canMovement = false;
+					ResetAnimator();
+					animator.SetBool ("Loose", true);
+					oldState = newState;
+					break;
+				
+				case 10://dash
+					RestTrigger();
+					blockTrigger.SetActive(true);
+					canMovement = false;
+					ResetAnimator();
+					animator.SetBool ("Block", true);
+					animator.SetBool ("Dash", true);
+					oldState = newState;
+					break;
+			}
+		}
+	}
+	
+	public void ResetAnimator()
+	{
+		animator.SetBool ("Block", false);
+		animator.SetBool ("Fire", false);
+		animator.SetBool ("PowerShoot", false);
+		animator.SetBool ("Buff", false);
+		animator.SetBool ("Stun", false);
+		animator.SetBool ("Win", false);
+		animator.SetBool ("Loose", false);
+		animator.SetBool ("Dash", false);
+	}
+	
+	public void RestTrigger()
+	{
+		catchTrigger.SetActive(false);
+		missTrigger.SetActive(false);/////////
+		blockTrigger.SetActive(false);
+		dashTrigger.SetActive(false);
 	}
 }

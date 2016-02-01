@@ -53,6 +53,9 @@ public class Ball : MonoBehaviour {
 		RaycastHit2D hit;
 		Vector2 startPoint = this.transform.position;
 		Vector2 startDirection = this.transform.right;
+
+		path.Add (this.transform.position);
+
 		do {
 			hit = Physics2D.Raycast (startPoint, startDirection, Mathf.Infinity, -1, 0.09f, 0.11f);
 

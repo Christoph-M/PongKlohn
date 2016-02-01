@@ -33,6 +33,8 @@ public class Game : MonoBehaviour {
 	public int playerEnergy = 0;
 	public int maxPlayerEnergy = 100;
 	public int energyGain = 10;
+	[Header("AI")]
+	public int aiStrength = 50;
 
 	[Header("Ball")]
 	public float minBallSpeed;
@@ -90,16 +92,16 @@ public class Game : MonoBehaviour {
 	}
 	
 	public void SetTurn(bool turn) {
-		if (turn){
-			player1.setTurn(false);
-			player2.setTurn(true);
-		} else {
-			player1.setTurn(true);
-			player2.setTurn(false);
-		}
+//		if (turn){
+//			player1.setTurn(false);
+//			player2.setTurn(true);
+//		} else {
+//			player1.setTurn(true);
+//			player2.setTurn(false);
+//		}
 	}
 
-	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.newTargetVectorCountLeft = true;}
+	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (); }
 	public Transform GetProjectileTransform() { return projectile; }
 
 	public void BallSpeedUp(){
@@ -245,13 +247,13 @@ public class Game : MonoBehaviour {
 		player1.power = playerEnergy;
 		player2.power = playerEnergy;
 
-		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
-			player1.setTurn(true);
-			player2.setTurn(false);
-		} else {
-			player1.setTurn(false);
-			player2.setTurn(true);
-		}
+//		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
+//			player1.setTurn(true);
+//			player2.setTurn(false);
+//		} else {
+//			player1.setTurn(false);
+//			player2.setTurn(true);
+//		}
 
 		if (masterScript.GetPlayerType(1) == "Ai" || masterScript.GetPlayerType(2) == "Ai") {
 			scene = 3;

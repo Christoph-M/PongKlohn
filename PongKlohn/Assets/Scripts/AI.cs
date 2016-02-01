@@ -16,10 +16,10 @@ public class AI
     public float maximumPlayerDistance;
     public float playerDistanceJump = 5.0f;
     private float playerBallDistance;
-    public float blockBallDistance = 8f;
+    public float blockBallDistance = 12f;
     private Vector3 nullPosition = Vector3.zero;
     //will be used to stop the characters from trembling by giving worldspace for tolerance
-    private float stopTrembling = 0.5f;
+    private float stopTrembling = 2;
     private float ballSpeed =0f;
 
 	private Player character;
@@ -28,7 +28,7 @@ public class AI
 
 	public enum State {defensiv, agressiv, neutral};
 	public static State state;
-	private  List<Vector2> bounceArray;
+	//private  List<Vector2> bounceArray;
 	private Vector2 targetVector = new Vector2(0, 0);
 	private Vector2 originVector = new Vector2(0,0);
     private int percentage;
@@ -46,12 +46,11 @@ public class AI
 		resetPosition = playerTransform.position;
         SetLeftRightPlayer();
         state = State.neutral;
-        aiStrength =1; //gameScript.aiStrength;
+        aiStrength = gameScript.aiStrength;
         percentage = GetPercentageOnX(aiStrength);
-
 	}
-	
-    
+	    
+   
     private void SetballSpeed()
     {
         if (ballTransform != null)
@@ -61,8 +60,6 @@ public class AI
         else
         {
             ballSpeed = gameScript.minBallSpeed;
-           
-
         }
     }
 
@@ -80,10 +77,14 @@ public class AI
 
     private int GetPercentageOnX(int strength)
     {
-        
+       // Debug.Log("strength" + strength);
+        int percent;
+        if (strength > 100)
+            strength = 100;
 
-        percentage = (StatePercentage() / 100) * strength;
-        return percentage;
+        percent = StatePercentage()* (strength/100);
+        //Debug.Log("percent: " + percent);
+        return percent;
     }
 
     private int StatePercentage()
@@ -91,12 +92,20 @@ public class AI
         if (state == State.agressiv)
             return 80;
         else if (state == State.defensiv)
-            return 30;
+            return 45;
         else if (state == State.neutral)
-            return 55;
-        else
+            return 65;
+        else {
+            Debug.Log("Cannot read State");
             return 0;
+        }
 
+    }
+
+    public static void SetNewTargetVectorCount()
+    {
+        newTargetVectorCountRight = true;
+        newTargetVectorCountLeft = true;
     }
 
     private void SetAiState()
@@ -125,168 +134,278 @@ public class AI
     private void CalculateTargetVector ()
 	{
         percentage = GetPercentageOnX(aiStrength);
-        bounceArray = new List<Vector2>();
-        targetVector = new Vector2(0, 0);
-        originVector = new Vector2(0, 0);
+
+        List<Vector2> bounceList;
+        
         Vector2 origin2 = new Vector2(0,0);
-        Vector2 target2 = new Vector2(0,0);
+        Vector2 target2 = new Vector2(0, 0);
+		bounceList = ballTransform.gameObject.GetComponent<Ball>().GetPath();
+       
+        Debug.Log("bouncearray.length: " + bounceList.Count);
         float lengthX = 0f;
-        if(ballTransform!= null)
-        bounceArray = ballTransform.gameObject.GetComponent<Ball>().GetPath();
-        for (int i = 0; i <= (bounceArray.Count - 1); i++)
-        {
-            if (bounceArray[i] != null)
-            { 
-               // targetVector = AimTarget(bounceArray[i], originVector, percentage);
-                lengthX += AimTarget(bounceArray[i], originVector, percentage, false).x;
-                
-                
-                
-            }
-            else if (i < (bounceArray.Count - 1))
+
+            foreach (Vector2 target in bounceList)
             {
-                if ((playerTransform.position.x <= bounceArray[i].x && playerTransform.position.x >= bounceArray[(i + 1)].x) || (playerTransform.position.x >= bounceArray[i].x && playerTransform.position.x <= bounceArray[(i + 1)].x))
+                target2 = target;
+            Debug.Log("target2: " + target);
+            }
+        //Debug.Log("State Percentage" + StatePercentage());
+        //Debug.Log("Percentage" + percentage);
+            lengthX = (target2.x / 100) * percentage;
+        
+        Debug.Log("lengthX: " + lengthX);
+
+            for (int i = 0; i < (bounceList.Count - 1); i++)
+            {
+                if (playerTransform == leftPlayer.transform)
                 {
-                    originVector = bounceArray[i]; //- bounceArray [i];
-                    if (playerTransform == rightPlayer.transform &&  originVector.x < 0f)
-                        originVector = AimTarget(bounceArray[i+1], bounceArray[i], percentage, true);
-                    else if(playerTransform == leftPlayer.transform && originVector.x > 0f)
-                        originVector = AimTarget(bounceArray[i+1], bounceArray[i], percentage, true);
+                    if (bounceList[i + 1] != null)
+                    {
+                        if (bounceList[i + 1].x <= lengthX && bounceList[i].x >= lengthX)
+                        {
+                            target2 = bounceList[(i + 1)];
+                            origin2 = bounceList[i];
+                        }
+                    }
+                }
+                else
+                {
+                Debug.Log("er geht rein");
+                    if (bounceList[i + 1] != null)
+                    {
+                        if (bounceList[i+1].x >= lengthX && bounceList[i].x <= lengthX)
+                        {
+                                target2 = bounceList[(i + 1)];
+                                origin2 = bounceList[i];
+                        Debug.Log("target2: " + target2 + " origin2: " + origin2);
+                        
+                        }
+                    }
                 }
             }
+        
+        #region alter Code
+
+        /*
+
+                        for (int i = 0; i < bounceArray.Count; i++) {
+
+                        Debug.Log (bounceArray [i]);
+                            // targetVector = AimTarget(bounceArray[i], originVector, percentage);
+
+                            if (i < (bounceArray.Count - 1)) {
+                                target2 = bounceArray [i + 1];
+                                    originVector = bounceArray [i]; //- bounceArray [i];
+                                    if (playerTransform == rightPlayer.transform && originVector.x < 0f && target2.x > 0f)
+                                        originVector = AimTarget (bounceArray [i + 1], bounceArray [i], percentage, true);
+                                    else if (playerTransform == leftPlayer.transform && originVector.x > 0f && target2.x < 0f)
+                                        originVector = AimTarget (bounceArray [i + 1], bounceArray [i], percentage, true);
+
+
+                            }
+                            if ((playerTransform == leftPlayer.transform && originVector.x <= 0f) || (playerTransform == rightPlayer.transform && originVector.x >= 0f))
+                                lengthX += AimTarget (target2, originVector, percentage, false).x;
+
+
+                        }
+
+                        for (int i = 0; i <= (bounceArray.Count - 1); i++) {
+                            if (i < bounceArray.Count - 1) {
+                                if ((bounceArray [i].x <= lengthX && bounceArray [(i + 1)].x >= lengthX) || (bounceArray [i].x >= lengthX && bounceArray [(i + 1)].x <= lengthX)) {
+                                    target2 = bounceArray [i + 1];
+                                    originVector = bounceArray [i]; //- bounceArray [i];
+
+                                    if (playerTransform == rightPlayer.transform && originVector.x < 0f)
+                                        originVector = AimTarget (bounceArray [i + 1], bounceArray [i], percentage, true);
+                                    else if (playerTransform == leftPlayer.transform && originVector.x > 0f)
+                                        originVector = AimTarget (bounceArray [i + 1], bounceArray [i], percentage, true);
+
+                                }
+                            }
+
+                        }
+                }
+
+            */
+        #endregion
+
+       
+            targetVector =  AimTarget(target2, origin2, bounceList, lengthX);
             
+            Debug.Log(playerTransform.gameObject + " " + targetVector + " vor Resett");
+            ResetUntilTurn();
+            Debug.Log(playerTransform.gameObject + " " + targetVector + " nach Resett");
+
+
+
         }
-
-        for (int i = 0; i <= (bounceArray.Count - 1); i++)
-        {
-            if (bounceArray.Count == 1)
-            {
-                target2 = bounceArray[i];
-                originVector = AimTarget(target2,ballTransform.position, percentage, true);
-            }
-            else {
-                if (playerTransform == rightPlayer.transform)
-                {
-                    if (i < bounceArray.Count - 1)
-                    {
-                        if (bounceArray[i].x <= lengthX && bounceArray[(i + 1)].x >= lengthX)
-                        {
-                            Debug.Log("geht rein");
-                            target2 = bounceArray[(i + 1)];
-
-                        }
-                    }
-
-                }
-                else if (playerTransform == leftPlayer.transform)
-                {
-                    if (i < bounceArray.Count - 1)
-                    {
-                        if (bounceArray[i].x >= lengthX && bounceArray[(i + 1)].x <= lengthX)
-                        {
-                            Debug.Log("geht rein");
-                            target2 = bounceArray[(i + 1)];
-
-                        }
-                    }
-
-                }
-            }
-        }
-
-        targetVector = AimTarget(target2, originVector, percentage,false);
-        ResetUntilTurn();
-        Debug.Log(playerTransform.gameObject +" "+ targetVector);
-
-
-
-    }
 
     private void ResetUntilTurn()
     {
-         if (playerTransform == leftPlayer.transform)
-                {
-            if (targetVector.x > Vector2.zero.x)
+		if (playerTransform == leftPlayer.transform)
+    	{
+            if (targetVector.x >= Vector2.zero.x)
+            {
+				targetVector =  resetPosition;
+            }
+        }
+		else if (playerTransform == rightPlayer.transform)
+        {
+            if (targetVector.x <= Vector2.zero.x)
             {
                 targetVector = resetPosition;
+               
             }
-                }
-                else if (playerTransform == rightPlayer.transform)
-                {
-                    if (targetVector.x < Vector2.zero.x)
-                    {
-                        targetVector = resetPosition;
-                        Debug.Log("reset right player");
-                    }
-                }
+        }
     }
-	private Vector2 AimTarget(Vector2 targetVector, Vector2 originVector, float percentage, bool zeroOnX)
-	{
-        Vector2 banana = new Vector2();
-        
-        banana = targetVector - originVector;
-      
-        float m = banana.y / banana.x;
-        
-        banana.x = (banana.x / 100) * percentage + originVector.x;
 
-        if (zeroOnX)
-            banana.x = 0f + originVector.x;
+    private Vector2 AimTarget(Vector2 targetVector, Vector2 originVector, List<Vector2> bounce, float fixX)
+    {
+        Debug.Log("Targetvector" + targetVector + " OriginVector " + originVector);
+        Vector2 difference;
+        //Vector2 sD;
+        Vector2 final;
+        if ((int)originVector.y == (int)targetVector.y)
+        {
+            final.y = targetVector.y;
+            final.x = fixX;
+        }
         
-        banana.y = m * banana.x;
+        else
+        {
+            difference = targetVector - originVector;
 
-        return banana;
-            
-        
-		//mSteigung = targetVector.y / targetVector.x;
-		//targetVector.x = 0f;
-		//targetVector.y = m * targetVector.x;
-	
+            float m = difference.y / difference.x;
+            float b = originVector.y - m * originVector.x;
 
+            final.x = fixX;
+            final.y = m * final.x + b;
+
+            #region alter code
+            //sD.x = fixX - originVector.x;
+            //sD.y = sD.x * m;
+            //final = sD + originVector;
+            /* if(bounce.Length <= 2)
+             {
+                 difference.x = fixX;
+                 difference.y = difference.x * m;
+
+
+             }
+             */
+
+            //difference.y = (((difference.x - targetVector.x) / 100) * percentage) * m;
+          
+           // difference.x = fixX;
+            //difference.y = difference.x * m + b;
+
+            /*
+             if (playerTransform == rightPlayer.transform)
+             {
+                 if (originVector.x >= 0)
+                     final = difference + originVector;
+                 else
+                     final = difference;
+
+             }
+             else
+             {
+                 if (originVector.x <= 0)
+                     final = difference + originVector;
+                 else
+                     final = difference;
+             }
+             */
+       
+           /* final = difference + originVector;
+            if (bounce.Count <= 2)
+            {
+                final.x *= -1;
+            }
+            */
+            #endregion
+            #region alter code
+            /*if (zeroOnX) {
+
+                if (originVector.y > targetVector.y )
+                    difference.y = m * targetVector.x * -1;
+                else
+                    difference.y = m * targetVector.x;
+                difference.x = 0 ;
+
+            } else {
+                difference.x = (difference.x / 100) * percentage;
+
+                if (originVector.y > targetVector.y )
+                    difference.y = m * difference.x * -1;
+                else 
+                    difference.y = m * difference.x;
+            }
+
+                Debug.Log ("banana: " + difference);
+                if (originVector.y == targetVector.y)
+                    difference.y = targetVector.y;
+                difference.x = (targetVector.x / 100) * percentage;
+                */
+            #endregion
+        }
+        Debug.Log("final: " + final);
+        return final;
     }
+
     private void MoveToTargetVector()
 	{
         if (ballTransform == null)
         {
             targetVector = resetPosition;
         }
-       
-        if (Vector2.Distance(playerTransform.position, targetVector) > stopTrembling)
-        {
-            if (playerTransform.position.y < targetVector.y)
+        else {
+            if (Vector2.Distance(playerTransform.position, targetVector) > stopTrembling)
             {
+                if (playerTransform.position.y < targetVector.y)
+                {
 
-                moveAxis.y = 1;
+                    moveAxis.y = 1;
+                }
+                else if (playerTransform.transform.position.y > targetVector.y)
+                {
+                    moveAxis.y = -1;
+                }
+                else
+                {
+                    moveAxis.y = 0;
+                }
+                if (playerTransform == rightPlayer.transform)
+                {
+                    if (targetVector.x > rightPlayer.transform.position.x)
+                    {
+                        moveAxis.x = 1;
+                    }
+                    else if (targetVector.x < rightPlayer.transform.position.x)
+                    {
+                        moveAxis.x = -1;
+                    }
+                    else {
+                        moveAxis.x = 0;
+                    }
+                }
+                else if (playerTransform == leftPlayer.transform)
+                {
+                    if (targetVector.x < leftPlayer.transform.position.x)
+                    {
+                        moveAxis.x = -1;
+                    }
+                    else if (targetVector.x > rightPlayer.transform.position.x)
+                    {
+                        moveAxis.x = 1;
+                    }
+                    else {
+                        moveAxis.x = 0;
+                    }
+                }
             }
-            else if (playerTransform.transform.position.y > targetVector.y)
-            {
-                moveAxis.y = -1;
-            }
-            else
-            {
-                moveAxis.y = 0;
-            }
-            if (playerTransform == rightPlayer.transform)
-            {
-                if (targetVector.x > rightPlayer.transform.position.x) { moveAxis.x = 1; }
-                else if (targetVector.x < rightPlayer.transform.position.x) { moveAxis.x = -1; }
-                else { moveAxis.x = 0; }
-            }
-            else if (playerTransform == leftPlayer.transform)
-            {
-                if (targetVector.x < leftPlayer.transform.position.x) { moveAxis.x = -1; }
-                else if (targetVector.x > rightPlayer.transform.position.x) { moveAxis.x = 1; }
-                else { moveAxis.x = 0; }
-            }
+            else moveAxis = Vector2.zero;
         }
-        else moveAxis = Vector2.zero;
-            
-        
-
-       
-        
-
-
     }
 
 
@@ -300,20 +419,24 @@ public class AI
             SetAiState();
 
 
-        if (playerTransform == rightPlayer.transform && newTargetVectorCountRight == true)
+		if (playerTransform == rightPlayer.transform && newTargetVectorCountRight == true && ballTransform != null)
         {
 			CalculateTargetVector ();
             newTargetVectorCountRight = false;
 		}
-       else if (playerTransform == leftPlayer.transform && newTargetVectorCountLeft == true)
+		else if (playerTransform == leftPlayer.transform && newTargetVectorCountLeft == true && ballTransform != null)
         {
             CalculateTargetVector();
+            
             newTargetVectorCountLeft = false;
         }
-
-        
-
         MoveToTargetVector();
+        /*
+        if (playerBallDistance > 15)
+            MoveToTargetVector();
+        else
+            ReActiveAi();
+            */
     	return moveAxis;
 	}
 
@@ -405,7 +528,7 @@ public class AI
                 }
             }
 
-            //                if(balltransform.transform.position.x < 0.0f){moveaxis.x = -1;}
+            // if(balltransform.transform.position.x < 0.0f){moveaxis.x = -1;}
             if (playerTransform == rightPlayer.transform)
             {
                 if (ballTransform.transform.position.x > rightPlayer.transform.position.x) { moveAxis.x = 1; }

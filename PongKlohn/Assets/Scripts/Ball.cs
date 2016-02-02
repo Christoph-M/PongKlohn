@@ -47,6 +47,8 @@ public class Ball : MonoBehaviour {
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
+
+		this.ResetPath ();
 	}
 
 	void OnEnable(){
@@ -55,19 +57,17 @@ public class Ball : MonoBehaviour {
 		if (this.tag == "BallP1") {
 			this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
 
-			this.SetRotation (-1.0f);
+			this.SetRotation (1.0f);
 		} else {
 			this.transform.FindChild ("Elektro B R").gameObject.SetActive(true);
 
-			this.SetRotation (1.0f);
+			this.SetRotation (-1.0f);
 		}
 
 		StartCoroutine (CalcPath (2.0f));
 	}
 
 	private IEnumerator CalcPath(float t) {
-		path = new List<Vector2>();
-
 		RaycastHit2D hit;
 		Vector2 startPoint = this.transform.position;
 		Vector2 startDirection = this.transform.right;
@@ -227,6 +227,7 @@ public class Ball : MonoBehaviour {
 			}
 
 			this.SetTurn (playerTag);
+			this.ResetPath ();
 
 			if (this.tag == "BallP1") {
 				this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
@@ -280,10 +281,16 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void SetRotation(float i) {
-		Vector2 direction = new Vector2 (i, UnityEngine.Random.Range (-1.0f, 1.0f));
+		Vector2 direction = new Vector2 (Random.Range (-1.0f, 1.0f), i);
 		direction.Normalize ();
+//		float fact = 1.0f / Mathf.Sqrt(Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2));
+//		direction = direction * fact;
 
-		this.transform.rotation.SetLookRotation(direction, Vector3.forward);
+		this.transform.rotation = Quaternion.LookRotation(direction, Vector3.forward);
+	}
+
+	private void ResetPath() {
+		path = new List<Vector2>();
 	}
 
 	private  void DestroyBall() {
@@ -301,6 +308,7 @@ public class Ball : MonoBehaviour {
 
 		this.SetTurn (name);
 
+		this.ResetPath ();
 		gameScript.SetProjectileTransform (null);
 	}
 }

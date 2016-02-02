@@ -16,7 +16,7 @@ public class AI
     public float maximumPlayerDistance;
     public float playerDistanceJump = 5.0f;
     private float playerBallDistance;
-    public float blockBallDistance = 12f;
+    public float blockBallDistance = 6f;
     private Vector3 nullPosition = Vector3.zero;
     //will be used to stop the characters from trembling by giving worldspace for tolerance
     private float stopTrembling = 1.75f;
@@ -25,8 +25,9 @@ public class AI
 	private Player character;
     private GameObject leftPlayer;
     private GameObject rightPlayer;
+    private Player enemyPlayer;
 
-	public enum State {defensiv, agressiv, neutral};
+	public enum State {defensiv, agressiv, neutral, lastSave};
 	public State state;
 
     public enum AIType {Mastermind, MixUp, ReActive}
@@ -37,6 +38,10 @@ public class AI
     private float percentage;
     private float aiStrength;
 
+    private bool buffAsk = true;
+    //public bool boolAsk;
+
+    
     public static bool newTargetVectorCountLeft = false;
     public static bool newTargetVectorCountRight = false;
     // Use this for initialization
@@ -48,6 +53,7 @@ public class AI
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 		resetPosition = playerTransform.position;
         SetLeftRightPlayer();
+        SetEnemyPlayer();
         state = State.neutral;
 		aiStrength = (float)gameScript.aiStrength;
 		percentage = GetPercentageOnX(aiStrength);
@@ -98,7 +104,10 @@ public class AI
             return 50;
         else if (state == State.neutral)
             return 80f;
-        else {
+        else if (state == State.lastSave)
+            return 100f;
+        else
+        {
             Debug.Log("Cannot read State");
             return 0f;
         }
@@ -153,12 +162,12 @@ public class AI
             //Debug.Log("target: " + target);
             }
         //Debug.Log("State Percentage" + StatePercentage());
-        Debug.Log("Percentage: " + percentage);
-		Debug.Log("target2: " + target2);
+        //Debug.Log("Percentage: " + percentage);
+		//Debug.Log("target2: " + target2);
 		lengthX = target2.x * (percentage/100f);
 
         
-        Debug.Log("lengthX: " + lengthX);
+        //Debug.Log("lengthX: " + lengthX);
 
             for (int i = 0; i < (bounceList.Count - 1); i++)
             {
@@ -235,7 +244,7 @@ public class AI
        
             targetVector =  AimTarget(target2, origin2, bounceList, lengthX);
             
-            Debug.Log(playerTransform.gameObject + " " + targetVector + " vor Resett");
+            //Debug.Log(playerTransform.gameObject + " " + targetVector + " vor Resett");
             ResetUntilTurn();
             //Debug.Log(playerTransform.gameObject + " " + targetVector + " nach Resett");
 
@@ -358,7 +367,7 @@ public class AI
                 */
             #endregion
         }
-        Debug.Log("final: " + final);
+      //  Debug.Log("final: " + final);
         return final;
     }
 
@@ -417,16 +426,8 @@ public class AI
         }
     }
 
-
-	//returns the vector2D-position, the AI is moving to
-	public Vector2 GetMovementInput()
-	{
-            GetBallTransform();
-            SetPlayerBallDistance();
-            SetPlayerDistance();
-            SetPlayerMinMaxDistance();
-            SetAiState();
-
+    private void MasterMindAi()
+    {
 
 		if (playerTransform == rightPlayer.transform && newTargetVectorCountRight == true && ballTransform != null)
         {
@@ -439,7 +440,42 @@ public class AI
             
             newTargetVectorCountLeft = false;
         }
-        MoveToTargetVector();
+    }
+
+    private void MMGetBallBehind()
+    {
+        if (state == State.agressiv && (ballTransform.position.x > character.transform.position.x || ballTransform.position.x < character.transform.position.x))
+        {
+            state = State.neutral;
+            CalculateTargetVector();
+        }
+        else if (state == State.neutral && (ballTransform.position.x > character.transform.position.x || ballTransform.position.x < character.transform.position.x))
+        {
+            state = State.defensiv;
+            CalculateTargetVector();
+        }
+        else if (state == State.defensiv && (ballTransform.position.x > character.transform.position.x || ballTransform.position.x < character.transform.position.x))
+        {
+            state = State.lastSave;
+            CalculateTargetVector();
+        }
+        
+
+        
+    }
+	//returns the vector2D-position, the AI is moving to
+	public Vector2 GetMovementInput()
+	{
+        
+            GetBallTransform();
+            SetPlayerBallDistance();
+            SetPlayerDistance();
+            SetPlayerMinMaxDistance();
+            SetAiState();
+            
+            MasterMindAi();
+            //MMGetBallBehind();
+            MoveToTargetVector();
         
        /* if (playerBallDistance > 15)
             MoveToTargetVector();
@@ -653,8 +689,8 @@ public class AI
     {
         if(ballTransform != null)
         {
-            if (Vector2.Distance(playerTransform.position, targetVector) < 7f)
-                Debug.Log("Dash !!!");
+            if (Vector2.Distance(playerTransform.position, targetVector) < 6f)
+               // Debug.Log("Dash !!!");
                 return true;
         }
        
@@ -691,11 +727,42 @@ public class AI
 
     public bool GetBuff()
     {
+        /*if (enemyPlayer)
+        {
+            
+            return true;
+        }*/
 
-        return true;
+        return false;
     }
 
+    
+    public bool GetPowerShoot()
+    {
+        GetBallTransform();
+        if (ballTransform != null)
+        {
+            if (Vector3.Distance(ballTransform.position, playerTransform.transform.position) < blockBallDistance)
+            {
+                return true;
+            }
+        }
 
-       
+        return false;
+    }
+
+    private void SetEnemyPlayer()
+    {
+        if (playerTransform == rightPlayer.transform)
+        {
+            enemyPlayer = leftPlayer.GetComponent<Player>();
+            character = rightPlayer.GetComponent<Player>();
+        }
+        else
+        {
+            enemyPlayer = rightPlayer.GetComponent<Player>();
+            character = leftPlayer.GetComponent<Player>();
+        }
+    }
     
 }

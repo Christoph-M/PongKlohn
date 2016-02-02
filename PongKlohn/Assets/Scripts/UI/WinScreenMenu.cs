@@ -5,6 +5,7 @@ using System.Collections;
 
 public class WinScreenMenu : MonoBehaviour {
 	public GameObject winScreenMenu;
+	public GameObject firstSelectElement;
 
 
 	private MasterScript masterScript;
@@ -18,7 +19,7 @@ public class WinScreenMenu : MonoBehaviour {
 
 		eventSystem = EventSystem.current;
 
-		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
+		eventSystem.SetSelectedGameObject(firstSelectElement);
 	}
 	
 	public void Rematch() {

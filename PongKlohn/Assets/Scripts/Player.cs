@@ -210,16 +210,24 @@ public class Player : MonoBehaviour
 		
 		SetTrigger(action);
 
+        buffCoolDown.UpdateTimer();
         stunTimer.UpdateTimer();
 		fireTimer.UpdateTimer();
 		blockTimer.UpdateTimer();
 		catchTimer.UpdateTimer();
 		waitAfterSoot.UpdateTimer();
 		buffTimer.UpdateTimer();
-		//dashTimer.UpdateTimer();
-		
-		if(zuLangsamZumFangenDuMong)///////////////Stun
+        //dashTimer.UpdateTimer();
+
+        if (buffCoolDown.IsFinished())
+        {
+            buffMoveMod = 1;
+        }
+
+
+        if (zuLangsamZumFangenDuMong)///////////////Stun
 		{
+            Debug.Log("stun call");
 			actionIndex = 1;//Do stunAction
 			isInAction = true;
 			
@@ -234,7 +242,7 @@ public class Player : MonoBehaviour
 
         if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished())//Buff input
 		{
-            Debug.Log("dash input works");
+            //Debug.Log("buff input works");
 			actionIndex = 4;//Do buff
 			isInAction = true;
 		}
@@ -255,10 +263,7 @@ public class Player : MonoBehaviour
 		}
 		else{isPowerShooting = false;}
 		
-        if(buffCoolDown.IsFinished())
-        {
-            buffMoveMod = 1;
-        }
+        
 
 		if(Actions(actionIndex))
 		{
@@ -491,11 +496,13 @@ public class Player : MonoBehaviour
 			case 1:////isStunned Action////
 				if(stunProgression == 1 && stunTimer.IsFinished())
 				{
-					zuLangsamZumFangenDuMong = false;
+                    Debug.Log("stun endet");
+                    zuLangsamZumFangenDuMong = false;
                     return true;
 				}
 				else if(stunProgression == 0)
 				{
+                    Debug.Log("stun ist gesetzt");
 					stunTimer.SetTimer(2f);
 					action = 4;
 					stunProgression =1;
@@ -560,16 +567,18 @@ public class Player : MonoBehaviour
 				return false;
 
             case 4://///////Buff Action//////////////////////////	;
-				if(blockProgression == 1)
+				if(buffProgression == 1 && buffTimer.IsFinished())
 				{
+                    //Debug.Log("buff ende");
 					buffProgression = 0;
                     return true;
 				}
 				else if(buffProgression == 0)
 				{
-                    Debug.Log("Buff");
+                    //Debug.Log("Buff");
+                    crystal = 0;
                     PerformBuff();
-                    buffCoolDown.SetTimer(30f);
+                    buffCoolDown.SetTimer(10f);
                     buffTimer.SetTimer(2f);
 					action = 6;
 					buffProgression =1;
@@ -584,7 +593,7 @@ public class Player : MonoBehaviour
     {
         if(crystal == 0f)
         {
-            buffMoveMod = 1.5f;
+            buffMoveMod = 5f;
         }
         if (crystal == 1f)
         {
@@ -664,7 +673,7 @@ public class Player : MonoBehaviour
 					break;
 				
 				case 5://start
-					Debug.Log("start");
+					//Debug.Log("start");
 					RestTrigger();
 					catchTrigger.SetActive(true);
 					canMovement = true;

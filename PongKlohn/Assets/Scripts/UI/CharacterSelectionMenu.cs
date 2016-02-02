@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class CharacterSelectionMenu : MonoBehaviour {
 	public GameObject characterSelectionMenu;
+	public GameObject firstSelectElement;
 
 	public int maxCharacters = 2;
 
@@ -33,7 +34,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 
 		eventSystem = EventSystem.current;
 
-		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
+		eventSystem.SetSelectedGameObject(firstSelectElement);
 
 		player1 = characterSelectionMenu.transform.FindChild ("Player1");
 		player2 = characterSelectionMenu.transform.FindChild ("Player2");

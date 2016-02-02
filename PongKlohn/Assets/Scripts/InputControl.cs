@@ -115,7 +115,7 @@ public class InputControl
 		
 		else
 		{
-			if(Input.GetAxis(block)!=0)
+			if(Input.GetAxisRaw(block)!=0)
 			{
 				return true;
 			}
@@ -133,7 +133,7 @@ public class InputControl
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(shoot) != 0 && att)
+			if(Input.GetAxisRaw(shoot) != 0 && att)
 			{
 				return true;
 			}
@@ -151,9 +151,9 @@ public class InputControl
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(buff) != 0)
+			if(Input.GetAxisRaw(buff) != 0)
 			{
-                Debug.Log("buff is active funst");
+                //Debug.Log("buff is active funst: "+ Input.GetAxisRaw(buff));
 				return true;
 			}
 			return false;
@@ -170,7 +170,7 @@ public class InputControl
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(dash) != 0)
+			if(Input.GetAxisRaw(dash) != 0)
 			{
 				return true;
 			}
@@ -182,13 +182,13 @@ public class InputControl
 	{
 		if(isAiPlayer)
 		{
-			return ai.GetAttack(att);////////////////
+			return ai.GetPowerShoot();////////////////
 		}
 		
 		else
 		{
 			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxis(powerShoot) != 0f && att)
+			if(Input.GetAxisRaw(powerShoot) != 0f && att)
 			{
 				return true;
 			}

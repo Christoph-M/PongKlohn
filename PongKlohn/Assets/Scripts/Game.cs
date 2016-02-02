@@ -255,20 +255,12 @@ public class Game : MonoBehaviour {
 		// Wait until balls scene is active
 		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.balls])));
 
-		GameObject projectiles = Instantiate (masterScript.projectiles, Vector3.zero, Quaternion.identity) as GameObject;
-
-		projectiles.name = "Projectile";
+		GameObject projectiles = Instantiate (masterScript.projectiles, new Vector3(0.0f, 0.0f, -6.0f), Quaternion.identity) as GameObject;
 
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
 			projectiles.tag = "BallP1";
-
-			float angle = UnityEngine.Random.Range (0.0f, 45.0f);
-			projectiles.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0,0,1));
 		} else {
 			projectiles.tag = "BallP2";
-
-			float angle = UnityEngine.Random.Range (180.0f, 225.0f);
-			projectiles.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0,0,1));
 		}
 
 		// Wait until game scene is active

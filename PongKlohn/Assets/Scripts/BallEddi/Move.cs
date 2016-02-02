@@ -25,7 +25,7 @@ public class Move : MonoBehaviour
 		if (moveOnYourOwn) {
 			speed = ownSpeed;
 		} else {
-			speed = game.GetBallSpeed ();
+			this.UpdateBallSpeed ();
 		}
 
 		this.GetComponent<CircleCollider2D> ().radius = 0.5f / (speed * 2.5f);
@@ -45,5 +45,9 @@ public class Move : MonoBehaviour
 
 	public float GetBallSpeed() {
 		return speed;
+	}
+
+	public void UpdateBallSpeed() {
+		speed = game.GetBallSpeed ();
 	}
 }

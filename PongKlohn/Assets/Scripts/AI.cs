@@ -16,7 +16,7 @@ public class AI
     public float maximumPlayerDistance;
     public float playerDistanceJump = 5.0f;
     private float playerBallDistance;
-    public float blockBallDistance = 6f;
+    public float blockBallDistance = 8f;
     private Vector3 nullPosition = Vector3.zero;
     //will be used to stop the characters from trembling by giving worldspace for tolerance
     private float stopTrembling = 1.75f;
@@ -739,14 +739,14 @@ public class AI
     
     public bool GetPowerShoot()
     {
-        GetBallTransform();
-        if (ballTransform != null)
-        {
-            if (Vector3.Distance(ballTransform.position, playerTransform.transform.position) < blockBallDistance)
-            {
-                return true;
-            }
-        }
+//        GetBallTransform();
+//        if (ballTransform != null)
+//        {
+//            if (Vector3.Distance(ballTransform.position, playerTransform.transform.position) < blockBallDistance)
+//            {
+//                return true;
+//            }
+//        }
 
         return false;
     }

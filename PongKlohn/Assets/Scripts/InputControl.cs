@@ -182,7 +182,7 @@ public class InputControl
 	{
 		if(isAiPlayer)
 		{
-			return ai.GetAttack(att);////////////////
+			return ai.GetPowerShoot();////////////////
 		}
 		
 		else

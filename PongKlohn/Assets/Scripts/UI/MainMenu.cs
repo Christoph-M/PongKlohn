@@ -1,35 +1,43 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class MainMenu : UserInterface {
+public class MainMenu : MonoBehaviour {
 	public GameObject mainMenu;
 
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
+
+	private EventSystem eventSystem;
 
 	void Start() {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
+		eventSystem = EventSystem.current;
+
+		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
 	}
 
 	public void Singleplayer() {
-		userInterfaceScript.SetPlayerType (1, "KeyP1");
-		userInterfaceScript.SetPlayerType (2, "Ai");
+		masterScript.SetPlayerType (1, "KeyP1");
+		masterScript.SetPlayerType (2, "Ai");
 
-		StartCoroutine(userInterfaceScript.StartGame (2, 1));
+		StartCoroutine(sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void Multiplayer() {
-		userInterfaceScript.SetPlayerType (1, "ConP1");
-		userInterfaceScript.SetPlayerType (2, "KeyP2");
+		masterScript.SetPlayerType (1, "KeyP1");
+		masterScript.SetPlayerType (2, "KeyP2");
 
-		userInterfaceScript.MainMenuSetActive (false);
-		userInterfaceScript.CharacterSelectionMenuSetActive (true);
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.characterSelect, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void OptionsMenu() {
-		userInterfaceScript.MainMenuSetActive(false);
-		userInterfaceScript.OptionsMenuSetActive(true);
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.optionsMenu, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void Credits() {

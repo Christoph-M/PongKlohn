@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class VideoOptionsMenu : UserInterface {
+public class VideoOptionsMenu : MonoBehaviour {
 	public GameObject videoOptionsMenu;
 
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
 
 	void Start () {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 	}
 
 	public void Back() {
-		userInterfaceScript.VideoOptionsMenuSetActive (false);
-		userInterfaceScript.OptionsMenuSetActive (true);
+		
 	}
 }

@@ -2,9 +2,27 @@ sceneSetups:
 - path: Assets/Scenes/Master.unity
   isLoaded: 1
   isActive: 1
-- path: Assets/Scenes/UI/menu.unity
+- path: Assets/Scenes/UI/StartScreen.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/UI/MainMenu.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/UI/OptionsMenu.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/UI/CharacterSelect.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/UI/WinScreen.unity
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/Level/sceneAlb.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/AssetScenes/Player.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/AssetScenes/Balls.unity
   isLoaded: 0
   isActive: 0

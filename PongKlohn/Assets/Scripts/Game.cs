@@ -10,8 +10,7 @@ public class Game : MonoBehaviour {
 	public List<GameObject> charactersP1 = new List<GameObject>();
 	public List<GameObject> charactersP2 = new List<GameObject>();
 	[Space(10)]
-	public Transform playerEmpty;
-	public UserInterface uiScript;
+	public MatchUI uiScript;
 	public ScreenShake screenShakeScript;
 	
 	[Header("Game")]
@@ -33,6 +32,8 @@ public class Game : MonoBehaviour {
 	public int playerEnergy = 0;
 	public int maxPlayerEnergy = 100;
 	public int energyGain = 10;
+	[Header("AI")]
+	public int aiStrength = 50;
 
 	[Header("Ball")]
 	public float minBallSpeed;
@@ -46,6 +47,7 @@ public class Game : MonoBehaviour {
 
 
 	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
 	private Transform projectile;
 
 	private Player player1;
@@ -59,12 +61,11 @@ public class Game : MonoBehaviour {
 	private int player1Score = 0;
 	private int player2Score = 0;
 
-	private int scene;
-
-	void Start() {
+	void Awake() {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 
-		StartCoroutine (SpawnPlayers ());
+		StartCoroutine (SpawnGameObjects ());
 		
 
 		minBallSpeed = ballSpeedUpCurve.Evaluate (0.0f);
@@ -76,30 +77,30 @@ public class Game : MonoBehaviour {
 		StartCoroutine(UpdatePlayer(playerSpeed, dashSpeed, blockTime, dashEnergyCost));
 	}
 	
-	IEnumerator UpdatePlayer(float playerSpee, float dashSpee, float blockTim, int dashEnergyCos){
-		player1.speed = playerSpee;
-		player2.speed = playerSpee;
-		player1.dashSpeed = dashSpee;
-		player2.dashSpeed = dashSpee;
-		player1.blockTime = blockTim;
-		player2.blockTime = blockTim;
-		player1.dashEnergyCost = dashEnergyCos;
-		player2.dashEnergyCost = dashEnergyCos;
+	IEnumerator UpdatePlayer(float playerSpeed, float dashSpeed, float blockTime, int dashEnergyCost){
+		player1.speed = playerSpeed;
+		player2.speed = playerSpeed;
+		player1.dashSpeed = dashSpeed;
+		player2.dashSpeed = dashSpeed;
+		player1.blockTime = blockTime;
+		player2.blockTime = blockTime;
+		player1.dashEnergyCost = dashEnergyCost;
+		player2.dashEnergyCost = dashEnergyCost;
 		
 		yield return 0;
 	}
 	
 	public void SetTurn(bool turn) {
-		if (turn){
-			player1.setTurn(false);
-			player2.setTurn(true);
-		} else {
-			player1.setTurn(true);
-			player2.setTurn(false);
-		}
+//		if (turn){
+//			player1.setTurn(false);
+//			player2.setTurn(true);
+//		} else {
+//			player1.setTurn(true);
+//			player2.setTurn(false);
+//		}
 	}
 
-	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.newTargetVectorCountLeft = true;}
+	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (); }
 	public Transform GetProjectileTransform() { return projectile; }
 
 	public void BallSpeedUp(){
@@ -113,7 +114,17 @@ public class Game : MonoBehaviour {
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }
-	public void DecreaseBallSpeed() { ballSpeed -= catchSpeedDec; }
+
+	public void DecreaseBallSpeed() {
+		ballSpeedAtTime -= catchSpeedDec / (maxBallSpeed - minBallSpeed);
+		ballSpeed -= catchSpeedDec;
+
+		if (ballSpeed < minBallSpeed) {
+			ballSpeed = minBallSpeed;
+			ballSpeedAtTime = 0.0f;
+		}
+	}
+
 	public void ResetBallSpeed() { ballSpeed = minBallSpeed; ballSpeedAtTime = 0.0f; }
 
 	public Player GetPlayer(int player) {
@@ -126,6 +137,9 @@ public class Game : MonoBehaviour {
 
 	public void EnablePlayers(bool b) { player1.enabled = b; 
 								  		player2.enabled = b; }
+
+	private bool enableProjectile = false;
+	public void EnableProjectile() { enableProjectile = true; }
 
 	public void Player1Scored(bool isWall) {
 		if (player2.health > 0) {
@@ -208,14 +222,16 @@ public class Game : MonoBehaviour {
 	}
 
 
-	private IEnumerator SpawnPlayers() {
+	private IEnumerator SpawnGameObjects() {
 		int charP1 = masterScript.GetCharacter (1) - 1;
 		int charP2 = masterScript.GetCharacter (2) - 1;
 
-//		yield return new WaitForSeconds(0.1f);
+		// Wait until player scene is active
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.player])));
 
 		GameObject p1 = Instantiate (charactersP1 [charP1], player1Spawn, new Quaternion ()) as GameObject;
 		GameObject p2 = Instantiate (charactersP2 [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
+		Transform pEmpty = GameObject.FindGameObjectWithTag ("PlayerEmpty").transform;
 
 		player1 = p1.GetComponent<Player> ();
 		player2 = p2.GetComponent<Player> ();
@@ -224,32 +240,47 @@ public class Game : MonoBehaviour {
 		player2.tag = "Player2";
 		player1.name = "Player_01";
 		player2.name = "Player_02";
-		player1.transform.SetParent (playerEmpty);
-		player2.transform.SetParent (playerEmpty);
+		player1.transform.SetParent (pEmpty);
+		player2.transform.SetParent (pEmpty);
 		player2.InvertMotion = true;
 		Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
 		player1.SetPlayer(masterScript.GetPlayerType(1));
 		player2.SetPlayer(masterScript.GetPlayerType(2));
+
 		player1.health = playerHealth;
 		player2.health = playerHealth;
 		player1.power = playerEnergy;
 		player2.power = playerEnergy;
 
+		// Wait until balls scene is active
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.balls])));
+
+		GameObject projectiles = Instantiate (masterScript.projectiles, Vector3.zero, Quaternion.identity) as GameObject;
+
+		projectiles.name = "Projectile";
+
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
-			player1.setTurn(true);
-			player2.setTurn(false);
+			projectiles.tag = "BallP1";
+
+			float angle = UnityEngine.Random.Range (0.0f, 45.0f);
+			projectiles.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0,0,1));
 		} else {
-			player1.setTurn(false);
-			player2.setTurn(true);
+			projectiles.tag = "BallP2";
+
+			float angle = UnityEngine.Random.Range (180.0f, 225.0f);
+			projectiles.transform.rotation = Quaternion.AngleAxis(angle, new Vector3(0,0,1));
 		}
 
-		if (masterScript.GetPlayerType(1) == "Ai" || masterScript.GetPlayerType(2) == "Ai") {
-			scene = 3;
-		} else {
-			scene = 2;
-		}
+		// Wait until game scene is active
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.gameScene])));
 
-		yield return 0;
+		this.enabled = true;
+		uiScript.enabled = true;
+
+		yield return new WaitUntil (() => enableProjectile);
+
+		projectiles.GetComponent<Move> ().enabled = true;
+		projectiles.GetComponent<Ball> ().enabled = true;
 	}
 
 	private IEnumerator EndRound(int p){
@@ -259,10 +290,9 @@ public class Game : MonoBehaviour {
 
 			this.EnablePlayers (false);
 
-			uiScript.MatchUISetActive (false);
-			uiScript.WinScreenMenuSetActive (true);
+			StartCoroutine(sceneHandlerScript.EndGame ((int)MasterScript.Scene.winScreen));
 
-			yield return new WaitForSeconds (5);
+			yield return 0;
 
 //			if (winner == 1) {
 //				masterScript.LoadScene (1);

@@ -2,8 +2,14 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class MatchUI : UserInterface {
+public class MatchUI : MonoBehaviour {
 	public GameObject matchUI;
+
+
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
+
+	private Game gameScript;
 
 	private Image healthBarP1;
 	private Image healthBarP2;
@@ -15,7 +21,10 @@ public class MatchUI : UserInterface {
 	private float ep1;
 	private float ep2;
 
-	void Start () {
+	void Awake () {
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 
 		healthBarP1 = matchUI.transform.FindChild ("Health_P1").FindChild ("healthbar").GetComponent<Image> ();
@@ -99,7 +108,8 @@ public class MatchUI : UserInterface {
 			matchUI.transform.FindChild ("Energy_P1").gameObject.SetActive (true);
 			matchUI.transform.FindChild ("Energy_P2").gameObject.SetActive (true);
 
-			gameScript.EnablePlayers(true);
+			gameScript.EnablePlayers (true);
+			gameScript.EnableProjectile ();
 
 			break;
 		}

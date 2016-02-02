@@ -2,13 +2,14 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class StartScreen : UserInterface {
+public class StartScreen : MonoBehaviour {
 	public GameObject startScreen;
 
 	public float textPulseDuration = 1.0f;
 	
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
 
 	private Image pressStart;
 	private Image backplane;
@@ -17,7 +18,8 @@ public class StartScreen : UserInterface {
 	private bool one = false;
 	
 	void Start() {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 
 		pressStart = startScreen.transform.FindChild("Press_Start").GetComponent<Image>();
 		backplane = startScreen.transform.FindChild("Backplane").GetComponent<Image>();
@@ -25,22 +27,22 @@ public class StartScreen : UserInterface {
 	
 	void Update () {
 		if (Input.anyKeyDown && startScreen.transform.FindChild ("Text").gameObject.activeSelf) {
-			userInterfaceScript.StartScreenSetActive (false);
-			userInterfaceScript.MainMenuSetActive(true);
+			StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.startScreen));
 		}
+
 	}
 
 	void LateUpdate() {
 		if (t < textPulseDuration && !one) {
-			pressStart.CrossFadeAlpha (0, textPulseDuration - 0.8f, false);
-			backplane.CrossFadeAlpha (0, textPulseDuration - 0.8f, false);
+			pressStart.CrossFadeAlpha (0, textPulseDuration - 1.0f, false);
+			backplane.CrossFadeAlpha (0, textPulseDuration - 1.0f, false);
 
 			t += Time.deltaTime / textPulseDuration;
 			if (t >= 1)
 				one = true;
 		} else if (one) {
-			pressStart.CrossFadeAlpha (255, (textPulseDuration - 0.8f) * 1000, false);
-			backplane.CrossFadeAlpha (255, (textPulseDuration - 0.8f) * 1000, false);
+			pressStart.CrossFadeAlpha (255, (textPulseDuration - 1.0f) * 1000, false);
+			backplane.CrossFadeAlpha (255, (textPulseDuration - 1.0f) * 1000, false);
 
 			t -= Time.deltaTime / textPulseDuration;
 			if (t <= 0)

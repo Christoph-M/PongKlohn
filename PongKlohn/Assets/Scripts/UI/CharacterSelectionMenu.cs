@@ -4,13 +4,16 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharacterSelectionMenu : UserInterface {
+public class CharacterSelectionMenu : MonoBehaviour {
 	public GameObject characterSelectionMenu;
 
 	public int maxCharacters = 2;
 
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
+
+	private EventSystem eventSystem;
 
 	private Transform player1;
 	private Transform player2;
@@ -25,7 +28,12 @@ public class CharacterSelectionMenu : UserInterface {
 	private bool p2Ready = false;
 
 	void Start() {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
+		eventSystem = EventSystem.current;
+
+		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
 
 		player1 = characterSelectionMenu.transform.FindChild ("Player1");
 		player2 = characterSelectionMenu.transform.FindChild ("Player2");
@@ -142,8 +150,7 @@ public class CharacterSelectionMenu : UserInterface {
 	}
 
 	public void Back() {
-		userInterfaceScript.CharacterSelectionMenuSetActive (false);
-		userInterfaceScript.MainMenuSetActive (true);
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.characterSelect));
 	}
 
 
@@ -193,12 +200,14 @@ public class CharacterSelectionMenu : UserInterface {
 
 		this.DisableMenu ();
 
-		userInterfaceScript.SetPlayer (characters[p1 - 1], crystals[p1 - 1]);
-		userInterfaceScript.SetPlayer (characters[p2 - 1], crystals[p2 - 1]);
+		masterScript.SetCharacter (p1, characters [p1 - 1]);
+		masterScript.SetCrystal (p1, crystals[p1 - 1]);
+		masterScript.SetCharacter (p2, characters [p2 - 1]);
+		masterScript.SetCrystal (p2, crystals[p2 - 1]);
 
 		yield return new WaitForSeconds (3);
 
-		StartCoroutine(userInterfaceScript.StartGame (2, 1));
+		StartCoroutine(sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.characterSelect));
 
 		yield return 0;
 	}

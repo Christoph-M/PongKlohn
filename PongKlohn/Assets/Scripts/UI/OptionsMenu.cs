@@ -1,34 +1,39 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
-public class OptionsMenu : UserInterface {
+public class OptionsMenu : MonoBehaviour {
 	public GameObject optionsMenu;
 
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
+
+	private EventSystem eventSystem;
 
 	void Start() {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
+		eventSystem = EventSystem.current;
+
+		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
 	}
 
 	public void Video() {
-		userInterfaceScript.OptionsMenuSetActive (false);
-		userInterfaceScript.VideoOptionsMenuSetActive (true);
+		
 	}
 
 	public void Audio() {
-		userInterfaceScript.OptionsMenuSetActive (false);
-		userInterfaceScript.AudioOptionsMenuSetActive (true);
+		
 	}
 
 	public void Gameplay() {
-		userInterfaceScript.OptionsMenuSetActive (false);
-		userInterfaceScript.GameplayOptionsMenuSetActive (true);
+		
 	}
 
 	public void Back() {
-		userInterfaceScript.OptionsMenuSetActive (false);
-		userInterfaceScript.MainMenuSetActive (true);
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.optionsMenu));
 	}
 }

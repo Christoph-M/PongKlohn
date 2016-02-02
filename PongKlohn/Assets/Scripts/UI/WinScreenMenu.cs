@@ -1,28 +1,35 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
-public class WinScreenMenu : UserInterface {
+public class WinScreenMenu : MonoBehaviour {
 	public GameObject winScreenMenu;
 
 
-	private UserInterface userInterfaceScript;
+	private MasterScript masterScript;
+	private SceneHandler sceneHandlerScript;
+
+	private EventSystem eventSystem;
 
 	void Start () {
-		userInterfaceScript = GetComponent<UserInterface> ();
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
+		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
+		eventSystem = EventSystem.current;
+
+		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
 	}
 	
 	public void Rematch() {
-		StartCoroutine (userInterfaceScript.StartGame (2, 2));
+		StartCoroutine (sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.winScreen));
 	}
 
 	public void CharSelect() {
-		userInterfaceScript.SetActiveMenu (charSelect);
-
-		StartCoroutine (userInterfaceScript.EndGame (2));
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.characterSelect, (int)MasterScript.Scene.winScreen));
 	}
 
 	public void Quit() {
-		StartCoroutine (userInterfaceScript.EndGame (2));
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.winScreen));
 	}
 }

@@ -148,9 +148,7 @@ public class Ball : MonoBehaviour {
 
 //__________________________Private_____________________________
 	private void Trigger(GameObject other){
-		if (other.tag.Contains("Wall")) {
-			this.Bounce (other.gameObject);
-		} else if (other.tag == "BlockTrigger") {
+		if (other.tag == "BlockTrigger") {
 			this.Block (other.gameObject);
 		} else if (other.tag == "MissTrigger") {
 			other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
@@ -158,6 +156,8 @@ public class Ball : MonoBehaviour {
 			this.Catch (other.gameObject);
 		} else if (other.tag == "DashTrigger") {
 			other.GetComponentInParent<Player>().SetDashTrigger(true);
+		} else if (other.tag.Contains("Wall")) {
+			this.Bounce (other.gameObject);
 		} else if (other.tag == "Goal") {
 			this.Goal (other.gameObject);
 		}
@@ -165,7 +165,7 @@ public class Ball : MonoBehaviour {
 
 	private void Bounce(GameObject other) {
 		//Debug.Log ("Bounced. Time: " + timeElapsed);
-		timeElapsed = 0.0f;
+//		timeElapsed = 0.0f;
 
 		if (this.tag == "BallP1" && this.transform.position.x > 0.0f) {
 			gameScript.Player1Scored (true);
@@ -243,8 +243,8 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void Catch(GameObject other) {
-		Debug.Log ("Stunned. Time: " + timeElapsed);
-		timeElapsed = 0.0f;
+//		Debug.Log ("Stunned. Time: " + timeElapsed);
+//		timeElapsed = 0.0f;
 
 		gameScript.DecreaseBallSpeed();
 		moveScript.UpdateBallSpeed ();
@@ -252,7 +252,7 @@ public class Ball : MonoBehaviour {
 
 	private void Goal(GameObject other) {
 		//Debug.Log ("Goal. Time: " + timeElapsed);
-		timeElapsed = 0.0f;
+//		timeElapsed = 0.0f;
 
 		if (other.name == "Goal_Red") {
 			gameScript.Player2Scored (false);

@@ -14,21 +14,23 @@ public class Ball : MonoBehaviour {
 	[Space(10)]
 	public int maxPredictionCount = 15;
 
-//__________________________Protected_____________________________
-	protected Game gameScript;
-	protected Move moveScript;
-	protected SinCosMovement sinCosMovementScript;
-	protected LinearRotation linearRotationScript;
-	protected SinCosRotation sinCosRotationScript;
+//__________________________Private_____________________________
+	private Game gameScript;
+	private Move moveScript;
+	private SinCosMovement sinCosMovementScript;
+	private LinearRotation linearRotationScript;
+	private SinCosRotation sinCosRotationScript;
 
-	protected const float fieldHeight = 22.0f;
-	protected const float fieldWidth = 70.0f;
-	protected float wallTop;
-	protected float wallBottom;
-	protected float wallLeft;
-	protected float wallRight;
+	private const float fieldHeight = 22.0f;
+	private const float fieldWidth = 70.0f;
+	private float wallTop;
+	private float wallBottom;
+	private float wallLeft;
+	private float wallRight;
 
-	protected List<Vector2> path;
+	private List<Vector2> path;
+
+	private bool stopMovement = false;
 
 //__________________________MonoMethods_____________________________
 	void Awake() {
@@ -48,21 +50,29 @@ public class Ball : MonoBehaviour {
 	}
 
 	void OnEnable(){
-		StartCoroutine (CalcPath ());
+		stopMovement = true;
 
 		if (this.tag == "BallP1") {
 			this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
+
+			this.SetRotation (-1.0f);
 		} else {
 			this.transform.FindChild ("Elektro B R").gameObject.SetActive(true);
+
+			this.SetRotation (1.0f);
 		}
+
+		StartCoroutine (CalcPath (2.0f));
 	}
 
-	protected IEnumerator CalcPath() {
+	private IEnumerator CalcPath(float t) {
 		path = new List<Vector2>();
 
 		RaycastHit2D hit;
 		Vector2 startPoint = this.transform.position;
 		Vector2 startDirection = this.transform.right;
+
+		yield return new WaitForSeconds (t);
 
 		path.Add (startPoint);
 
@@ -96,36 +106,38 @@ public class Ball : MonoBehaviour {
 			path.Add (hitPoint);
 		} while (hit.collider.gameObject.tag.Contains ("Wall") && path.Count <= maxPredictionCount);
 
+		stopMovement = false;
+
 		gameScript.SetProjectileTransform (this.transform);
-
-		yield return 0;
 	}
 
-	protected void FixedUpdate() {
-		if (move) moveScript.Update_ ();
-		if (sinCosMove) sinCosMovementScript.Update_ ();
-		if (linearRotation) linearRotationScript.Update_ ();
-		if (sinCosRotation) sinCosRotationScript.Update_ ();
+	void FixedUpdate() {
+		if (!stopMovement) {
+			if (move) moveScript.Update_ ();
+			if (sinCosMove) sinCosMovementScript.Update_ ();
+			if (linearRotation) linearRotationScript.Update_ ();
+			if (sinCosRotation) sinCosRotationScript.Update_ ();
 
-		if (this.transform.position.x > wallRight) {
-			this.transform.position = new Vector3(wallRight, this.transform.position.y, this.transform.position.z);
-		} else if (this.transform.position.x < wallLeft) {
-			this.transform.position = new Vector3(wallLeft, this.transform.position.y, this.transform.position.z);
-		}
+			if (this.transform.position.x > wallRight) {
+				this.transform.position = new Vector3(wallRight, this.transform.position.y, this.transform.position.z);
+			} else if (this.transform.position.x < wallLeft) {
+				this.transform.position = new Vector3(wallLeft, this.transform.position.y, this.transform.position.z);
+			}
 
-		if (this.transform.position.y > wallTop) {
-			this.transform.position = new Vector3(this.transform.position.x, wallTop, this.transform.position.z);
-		} else if (this.transform.position.y < wallBottom) {
-			this.transform.position = new Vector3(this.transform.position.x, wallBottom, this.transform.position.z);
+			if (this.transform.position.y > wallTop) {
+				this.transform.position = new Vector3(this.transform.position.x, wallTop, this.transform.position.z);
+			} else if (this.transform.position.y < wallBottom) {
+				this.transform.position = new Vector3(this.transform.position.x, wallBottom, this.transform.position.z);
+			}
 		}
 	}
 
-	protected float timeElapsed = 0.0f;
-	protected void LateUpdate() {
+	private float timeElapsed = 0.0f;
+	void LateUpdate() {
 		timeElapsed += Time.deltaTime;
 	}
 
-	protected void OnTriggerEnter2D(Collider2D other){
+	void OnTriggerEnter2D(Collider2D other){
 		this.Trigger (other.gameObject);
 	}
 
@@ -203,39 +215,38 @@ public class Ball : MonoBehaviour {
 		
 			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
-			this.enabled = false;
-
-			Player playerScript = other.GetComponentInParent<Player> ();
+//			Player playerScript = other.GetComponentInParent<Player> ();
 			//playerScript.Instance (playerScript.balls [0], this.transform.position, Quaternion.AngleAxis (angle, Vector3.forward));
 
 			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+
+			StartCoroutine (CalcPath (0.0f));
 
 			foreach (Transform child in this.transform) {
 				child.gameObject.SetActive (false);
 			}
 
-			this.SetTurn (other.transform.parent.tag);
+			this.SetTurn (playerTag);
+
+			if (this.tag == "BallP1") {
+				this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
+			} else {
+				this.transform.FindChild ("Elektro B R").gameObject.SetActive(true);
+			}
 
 			gameScript.BallSpeedUp ();
+			moveScript.UpdateBallSpeed ();
 
 			gameScript.ShakeScreen (0, (playerTag == "Player1") ? 1 : 2);
-
-			this.enabled = true;
 		}
 	}
 
 	private void Catch(GameObject other) {
-		Debug.Log ("Catched. Time: " + timeElapsed);
+		Debug.Log ("Stunned. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
 
-		this.enabled = false;
-
-		this.SetTurn (other.transform.parent.tag);
-
-		this.ResetBall ();
 		gameScript.DecreaseBallSpeed();
-
-		this.enabled = true;
+		moveScript.UpdateBallSpeed ();
 	}
 
 	private void Goal(GameObject other) {
@@ -250,10 +261,9 @@ public class Ball : MonoBehaviour {
 
 		this.enabled = false;
 
-		this.SetTurn (other.name);
-
-		this.ResetBall ();
+		this.ResetBall (other.name);
 		gameScript.ResetBallSpeed();
+		moveScript.UpdateBallSpeed ();
 
 		gameScript.ShakeScreen (1);
 
@@ -269,18 +279,27 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	protected  void DestroyBall() {
+	private void SetRotation(float i) {
+		Vector2 direction = new Vector2 (i, UnityEngine.Random.Range (-1.0f, 1.0f));
+		direction.Normalize ();
+
+		this.transform.rotation.SetLookRotation(direction, Vector3.forward);
+	}
+
+	private  void DestroyBall() {
 		Object.Destroy (this.gameObject);
 
 		gameScript.SetProjectileTransform (null);
 	}
 
-	private void ResetBall() {
+	private void ResetBall(string name) {
 		foreach (Transform child in this.transform) {
 			child.gameObject.SetActive (false);
 		}
 
-		this.transform.position = Vector3.zero;
+		this.transform.position = new Vector3(0.0f, 0.0f, -6.0f);
+
+		this.SetTurn (name);
 
 		gameScript.SetProjectileTransform (null);
 	}

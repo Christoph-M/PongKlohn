@@ -73,8 +73,8 @@ public class Game : MonoBehaviour {
 		ballSpeed = minBallSpeed;
 	}
 
-	IEnumerator UpdatePlayer(float playerSpeed, float dashSpeed, float blockTime, int dashEnergyCost){
-		while (true) {
+	void OnValidate()  {
+		if (player1 && player2) {
 			player1.speed = playerSpeed;
 			player2.speed = playerSpeed;
 			player1.dashSpeed = dashSpeed;
@@ -83,8 +83,6 @@ public class Game : MonoBehaviour {
 			player2.blockTime = blockTime;
 			player1.dashEnergyCost = dashEnergyCost;
 			player2.dashEnergyCost = dashEnergyCost;
-
-			yield return new WaitForSeconds (1.0f);
 		}
 	}
 
@@ -260,8 +258,14 @@ public class Game : MonoBehaviour {
 		player2.health = playerHealth;
 		player1.power = playerEnergy;
 		player2.power = playerEnergy;
-
-		StartCoroutine(UpdatePlayer(playerSpeed, dashSpeed, blockTime, dashEnergyCost));
+		player1.speed = playerSpeed;
+		player2.speed = playerSpeed;
+		player1.dashSpeed = dashSpeed;
+		player2.dashSpeed = dashSpeed;
+		player1.blockTime = blockTime;
+		player2.blockTime = blockTime;
+		player1.dashEnergyCost = dashEnergyCost;
+		player2.dashEnergyCost = dashEnergyCost;
 	}
 
 	private GameObject SpawnProjectile() {

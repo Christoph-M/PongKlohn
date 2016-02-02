@@ -5,6 +5,7 @@ using System.Collections;
 
 public class OptionsMenu : MonoBehaviour {
 	public GameObject optionsMenu;
+	public GameObject firstSelectElement;
 
 
 	private MasterScript masterScript;
@@ -18,7 +19,7 @@ public class OptionsMenu : MonoBehaviour {
 
 		eventSystem = EventSystem.current;
 
-		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
+		eventSystem.SetSelectedGameObject(firstSelectElement);
 	}
 
 	public void Video() {

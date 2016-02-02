@@ -35,10 +35,14 @@ public class ScreenShake : MonoBehaviour {
 	private Transform projectile;
 	private Vector3 velocity = Vector3.zero;
 
+	private Vector3 startPos;
+
 	private int mode = -1;
 
 	void Start() {
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
+
+		startPos = this.transform.localPosition;
 	}
 
 	void Update() {
@@ -57,12 +61,6 @@ public class ScreenShake : MonoBehaviour {
 				this.ResetCamera (); break;
 			default:
 				break;
-		}
-	}
-
-	void LateUpdate() {
-		if (gameScript.GetProjectileTransform ()) {
-			this.transform.position = new Vector3 (gameScript.GetProjectileTransform ().position.x / 10, this.transform.position.y, this.transform.position.z);
 		}
 	}
 
@@ -95,48 +93,48 @@ public class ScreenShake : MonoBehaviour {
 
 		mode = 5;
 
-		yield return new WaitUntil(() => this.transform.position == Vector3.zero);
+		yield return new WaitUntil(() => this.transform.localPosition == startPos);
 
-		this.transform.position = Vector3.zero;
+		this.transform.localPosition = startPos;
 		mode = -1;
 	}
 
 	private void BlockShake() {
 		float heightx = this.PerlinNoise (magnitudeBlock, intensityBlock);
 
-		this.transform.position = new Vector3(heightx, this.transform.position.y, this.transform.position.z);
+		this.transform.localPosition = new Vector3(heightx, this.transform.localPosition.y, this.transform.localPosition.z);
 	}
 
 	private void GoalShake() {
 		float heightx = this.PerlinNoise (magnitudeGoal, intensityGoal, 0.0f);
 		float heighty = this.PerlinNoise (magnitudeGoal, intensityGoal, 1.0f);
 
-		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
+		this.transform.localPosition = new Vector3(heightx, heighty, this.transform.localPosition.z);
 	}
 
 	private void BounceShake() {
 		float heightx = this.PerlinNoise (magnitudeBounce, intensityBounce, 0.0f);
 		float heighty = this.PerlinNoise (magnitudeBounce, intensityBounce, 1.0f);
 
-		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
+		this.transform.localPosition = new Vector3(heightx, heighty, this.transform.localPosition.z);
 	}
 
 	private void SpecialShake() {
 		float heightx = this.PerlinNoise (magnitudeSpecial, intensitySpecial, 0.0f);
 		float heighty = this.PerlinNoise (magnitudeSpecial, intensitySpecial, 1.0f);
 
-		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
+		this.transform.localPosition = new Vector3(heightx, heighty, this.transform.localPosition.z);
 	}
 
 	private void BuffShake() {
 		float heightx = this.PerlinNoise (magnitudeBuff, intensityBuff, 0.0f);
 		float heighty = this.PerlinNoise (magnitudeBuff, intensityBuff, 1.0f);
 
-		this.transform.position = new Vector3(heightx, heighty, this.transform.position.z);
+		this.transform.localPosition = new Vector3(heightx, heighty, this.transform.localPosition.z);
 	}
 
 	private void ResetCamera() {
-		this.transform.position = Vector3.SmoothDamp (this.transform.position, Vector3.zero, ref velocity, camResetTime);
+		this.transform.localPosition = Vector3.SmoothDamp (this.transform.localPosition, startPos, ref velocity, camResetTime);
 	}
 
 	private float PerlinNoise(float mag, float intens, float y = 0.0f) {

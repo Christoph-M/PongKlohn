@@ -13,6 +13,7 @@ public class Ball : MonoBehaviour {
 
 	[Space(10)]
 	public int maxPredictionCount = 15;
+	public float blockFreezeTime = 0.1f;
 
 //__________________________Private_____________________________
 	private Game gameScript;
@@ -191,7 +192,7 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void Block(GameObject other) {
-		if (timeElapsed >= 0.1f) {
+		if (timeElapsed >= blockFreezeTime + 0.1f) {
 			//Debug.Log ("Blocked. Time: " + timeElapsed);
 
 			timeElapsed = 0.0f;
@@ -215,12 +216,10 @@ public class Ball : MonoBehaviour {
 		
 			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
-//			Player playerScript = other.GetComponentInParent<Player> ();
-			//playerScript.Instance (playerScript.balls [0], this.transform.position, Quaternion.AngleAxis (angle, Vector3.forward));
-
 			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
 
-			StartCoroutine (CalcPath (0.0f));
+			stopMovement = true;
+			StartCoroutine (CalcPath (blockFreezeTime));
 
 			foreach (Transform child in this.transform) {
 				child.gameObject.SetActive (false);

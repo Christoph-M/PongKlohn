@@ -153,7 +153,7 @@ public class AI
         //Debug.Log("Percentage" + percentage);
             lengthX = (target2.x / 100) * percentage;
         
-        Debug.Log("lengthX: " + lengthX);
+        //Debug.Log("lengthX: " + lengthX);
 
             for (int i = 0; i < (bounceList.Count - 1); i++)
             {
@@ -170,14 +170,14 @@ public class AI
                 }
                 else
                 {
-                Debug.Log("er geht rein");
+                //Debug.Log("er geht rein");
                     if (bounceList[i + 1] != null)
                     {
                         if (bounceList[i+1].x >= lengthX && bounceList[i].x <= lengthX)
                         {
                                 target2 = bounceList[(i + 1)];
                                 origin2 = bounceList[i];
-                        Debug.Log("target2: " + target2 + " origin2: " + origin2);
+                       // Debug.Log("target2: " + target2 + " origin2: " + origin2);
                         
                         }
                     }
@@ -232,9 +232,9 @@ public class AI
        
             targetVector =  AimTarget(target2, origin2, bounceList, lengthX);
             
-            Debug.Log(playerTransform.gameObject + " " + targetVector + " vor Resett");
+            //Debug.Log(playerTransform.gameObject + " " + targetVector + " vor Resett");
             ResetUntilTurn();
-            Debug.Log(playerTransform.gameObject + " " + targetVector + " nach Resett");
+            //Debug.Log(playerTransform.gameObject + " " + targetVector + " nach Resett");
 
 
 

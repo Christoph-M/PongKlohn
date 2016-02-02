@@ -243,7 +243,7 @@ public class Game : MonoBehaviour {
 		player1.transform.SetParent (pEmpty);
 		player2.transform.SetParent (pEmpty);
 		player2.InvertMotion = true;
-		Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
+		//Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
 		player1.SetPlayer(masterScript.GetPlayerType(1));
 		player2.SetPlayer(masterScript.GetPlayerType(2));
 

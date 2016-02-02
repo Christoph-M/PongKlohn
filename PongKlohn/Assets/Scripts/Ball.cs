@@ -152,7 +152,7 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void Bounce(GameObject other) {
-		Debug.Log ("Bounced. Time: " + timeElapsed);
+		//Debug.Log ("Bounced. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
 
 		if (this.tag == "BallP1" && this.transform.position.x > 0.0f) {
@@ -180,7 +180,7 @@ public class Ball : MonoBehaviour {
 
 	private void Block(GameObject other) {
 		if (timeElapsed >= 0.1f) {
-			Debug.Log ("Blocked. Time: " + timeElapsed);
+			//Debug.Log ("Blocked. Time: " + timeElapsed);
 
 			timeElapsed = 0.0f;
 
@@ -239,7 +239,7 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void Goal(GameObject other) {
-		Debug.Log ("Goal. Time: " + timeElapsed);
+		//Debug.Log ("Goal. Time: " + timeElapsed);
 		timeElapsed = 0.0f;
 
 		if (other.name == "Goal_Red") {

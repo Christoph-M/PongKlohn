@@ -7,6 +7,7 @@ public class AI
 	private Game gameScript;
 	private Transform ballTransform;
 	private Vector2 moveAxis = Vector2.zero;
+    private Vector2 ballVec2;
 	private Transform playerTransform;
 	private Vector3 resetPosition ;
     private float playerDistance;
@@ -16,7 +17,7 @@ public class AI
     public float maximumPlayerDistance;
     public float playerDistanceJump = 5.0f;
     private float playerBallDistance;
-    public float blockBallDistance = 8f;
+    public float blockBallDistance = 8.5f;
     private Vector3 nullPosition = Vector3.zero;
     //will be used to stop the characters from trembling by giving worldspace for tolerance
     private float stopTrembling = 1.75f;
@@ -80,8 +81,9 @@ public class AI
 	//returns the position of the ball
 	private void GetBallTransform()
 	{
-
 		ballTransform = gameScript.GetProjectileTransform ();
+        if(ballTransform != null)
+        ballVec2 = new Vector2(ballTransform.position.x, ballTransform.position.y);
 	}
 
     private float GetPercentageOnX(float strength)
@@ -99,9 +101,9 @@ public class AI
     private float StatePercentage()
     {
         if (state == State.agressiv)
-            return 25f;
+            return 35f;
         else if (state == State.defensiv)
-            return 50;
+            return 60;
         else if (state == State.neutral)
             return 80f;
         else if (state == State.lastSave)
@@ -144,31 +146,27 @@ public class AI
             state = State.neutral;
     }
     private void CalculateTargetVector ()
-	{
-        percentage = GetPercentageOnX(aiStrength);
-
+	{ 
         List<Vector2> bounceList;
+        bounceList = ballTransform.gameObject.GetComponent<Ball>().GetPath();
+        
+        if (bounceList.Count > 5)
+            state = State.agressiv;
+
+        percentage = GetPercentageOnX(aiStrength);
         
         Vector2 origin2 = new Vector2(0,0);
         Vector2 target2 = new Vector2(0,0);
-		bounceList = ballTransform.gameObject.GetComponent<Ball>().GetPath();
-       
-        Debug.Log("bouncearray.length: " + bounceList.Count);
+
         float lengthX = 0f;
 
             foreach (Vector2 target in bounceList)
             {
                 target2 = target;
-            //Debug.Log("target: " + target);
             }
-        //Debug.Log("State Percentage" + StatePercentage());
-        //Debug.Log("Percentage: " + percentage);
-		//Debug.Log("target2: " + target2);
+       
 		lengthX = target2.x * (percentage/100f);
-
-        
-        //Debug.Log("lengthX: " + lengthX);
-
+       
             for (int i = 0; i < (bounceList.Count - 1); i++)
             {
 				if (lengthX < 0f) {
@@ -240,16 +238,10 @@ public class AI
 
             */
         #endregion
-
        
             targetVector =  AimTarget(target2, origin2, bounceList, lengthX);
-            
-            //Debug.Log(playerTransform.gameObject + " " + targetVector + " vor Resett");
+
             ResetUntilTurn();
-            //Debug.Log(playerTransform.gameObject + " " + targetVector + " nach Resett");
-
-
-
         }
 
     private void ResetUntilTurn()
@@ -273,10 +265,9 @@ public class AI
 
     private Vector2 AimTarget(Vector2 targetVector, Vector2 originVector, List<Vector2> bounce, float fixX)
     {
-        Debug.Log("Targetvector" + targetVector + " OriginVector " + originVector);
         Vector2 difference;
-        //Vector2 sD;
         Vector2 final;
+
         if ((int)originVector.y == (int)targetVector.y)
         {
             final.y = targetVector.y;
@@ -373,7 +364,7 @@ public class AI
 
     private void MoveToTargetVector()
 	{
-        if (ballTransform == null)
+        if (ballVec2 == Vector2.zero)
         {
             targetVector = resetPosition;
         }
@@ -689,7 +680,7 @@ public class AI
     {
         if(ballTransform != null)
         {
-            if (Vector2.Distance(playerTransform.position, targetVector) < 6f)
+            if (Vector2.Distance(playerTransform.position, targetVector) < 10f && Vector2.Distance(playerTransform.position, targetVector) > 5f)
                // Debug.Log("Dash !!!");
                 return true;
         }

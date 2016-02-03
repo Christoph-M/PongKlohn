@@ -13,6 +13,7 @@ public class Ball : MonoBehaviour {
 
 	[Space(10)]
 	public int maxPredictionCount = 15;
+	public float blockFreezeTime = 0.1f;
 
 //__________________________Private_____________________________
 	private Game gameScript;
@@ -47,6 +48,8 @@ public class Ball : MonoBehaviour {
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
+
+		this.ResetPath ();
 	}
 
 	void OnEnable(){
@@ -55,19 +58,17 @@ public class Ball : MonoBehaviour {
 		if (this.tag == "BallP1") {
 			this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
 
-			this.SetRotation (-1.0f);
+			this.SetRotation (1.0f);
 		} else {
 			this.transform.FindChild ("Elektro B R").gameObject.SetActive(true);
 
-			this.SetRotation (1.0f);
+			this.SetRotation (-1.0f);
 		}
 
 		StartCoroutine (CalcPath (2.0f));
 	}
 
 	private IEnumerator CalcPath(float t) {
-		path = new List<Vector2>();
-
 		RaycastHit2D hit;
 		Vector2 startPoint = this.transform.position;
 		Vector2 startDirection = this.transform.right;
@@ -148,9 +149,7 @@ public class Ball : MonoBehaviour {
 
 //__________________________Private_____________________________
 	private void Trigger(GameObject other){
-		if (other.tag.Contains("Wall")) {
-			this.Bounce (other.gameObject);
-		} else if (other.tag == "BlockTrigger") {
+		if (other.tag == "BlockTrigger") {
 			this.Block (other.gameObject);
 		} else if (other.tag == "MissTrigger") {
 			other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
@@ -158,6 +157,8 @@ public class Ball : MonoBehaviour {
 			this.Catch (other.gameObject);
 		} else if (other.tag == "DashTrigger") {
 			other.GetComponentInParent<Player>().SetDashTrigger(true);
+		} else if (other.tag.Contains("Wall")) {
+			this.Bounce (other.gameObject);
 		} else if (other.tag == "Goal") {
 			this.Goal (other.gameObject);
 		}
@@ -165,7 +166,7 @@ public class Ball : MonoBehaviour {
 
 	private void Bounce(GameObject other) {
 		//Debug.Log ("Bounced. Time: " + timeElapsed);
-		timeElapsed = 0.0f;
+//		timeElapsed = 0.0f;
 
 		if (this.tag == "BallP1" && this.transform.position.x > 0.0f) {
 			gameScript.Player1Scored (true);
@@ -191,7 +192,7 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void Block(GameObject other) {
-		if (timeElapsed >= 0.1f) {
+		if (timeElapsed >= blockFreezeTime + 0.1f) {
 			//Debug.Log ("Blocked. Time: " + timeElapsed);
 
 			timeElapsed = 0.0f;
@@ -215,18 +216,17 @@ public class Ball : MonoBehaviour {
 		
 			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
-//			Player playerScript = other.GetComponentInParent<Player> ();
-			//playerScript.Instance (playerScript.balls [0], this.transform.position, Quaternion.AngleAxis (angle, Vector3.forward));
-
 			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
 
-			StartCoroutine (CalcPath (0.0f));
+			stopMovement = true;
+			StartCoroutine (CalcPath (blockFreezeTime));
 
 			foreach (Transform child in this.transform) {
 				child.gameObject.SetActive (false);
 			}
 
 			this.SetTurn (playerTag);
+			this.ResetPath ();
 
 			if (this.tag == "BallP1") {
 				this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
@@ -242,8 +242,8 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void Catch(GameObject other) {
-		Debug.Log ("Stunned. Time: " + timeElapsed);
-		timeElapsed = 0.0f;
+//		Debug.Log ("Stunned. Time: " + timeElapsed);
+//		timeElapsed = 0.0f;
 
 		gameScript.DecreaseBallSpeed();
 		moveScript.UpdateBallSpeed ();
@@ -251,7 +251,7 @@ public class Ball : MonoBehaviour {
 
 	private void Goal(GameObject other) {
 		//Debug.Log ("Goal. Time: " + timeElapsed);
-		timeElapsed = 0.0f;
+//		timeElapsed = 0.0f;
 
 		if (other.name == "Goal_Red") {
 			gameScript.Player2Scored (false);
@@ -280,10 +280,16 @@ public class Ball : MonoBehaviour {
 	}
 
 	private void SetRotation(float i) {
-		Vector2 direction = new Vector2 (i, UnityEngine.Random.Range (-1.0f, 1.0f));
+		Vector2 direction = new Vector2 (Random.Range (-1.0f, 1.0f), i);
 		direction.Normalize ();
+//		float fact = 1.0f / Mathf.Sqrt(Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2));
+//		direction = direction * fact;
 
-		this.transform.rotation.SetLookRotation(direction, Vector3.forward);
+		this.transform.rotation = Quaternion.LookRotation(direction, Vector3.forward);
+	}
+
+	private void ResetPath() {
+		path = new List<Vector2>();
 	}
 
 	private  void DestroyBall() {
@@ -301,6 +307,7 @@ public class Ball : MonoBehaviour {
 
 		this.SetTurn (name);
 
+		this.ResetPath ();
 		gameScript.SetProjectileTransform (null);
 	}
 }

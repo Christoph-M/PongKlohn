@@ -73,31 +73,17 @@ public class Game : MonoBehaviour {
 		ballSpeed = minBallSpeed;
 	}
 
-	void LateUpdate() {		
-		StartCoroutine(UpdatePlayer(playerSpeed, dashSpeed, blockTime, dashEnergyCost));
-	}
-	
-	IEnumerator UpdatePlayer(float playerSpeed, float dashSpeed, float blockTime, int dashEnergyCost){
-		player1.speed = playerSpeed;
-		player2.speed = playerSpeed;
-		player1.dashSpeed = dashSpeed;
-		player2.dashSpeed = dashSpeed;
-		player1.blockTime = blockTime;
-		player2.blockTime = blockTime;
-		player1.dashEnergyCost = dashEnergyCost;
-		player2.dashEnergyCost = dashEnergyCost;
-		
-		yield return 0;
-	}
-	
-	public void SetTurn(bool turn) {
-//		if (turn){
-//			player1.setTurn(false);
-//			player2.setTurn(true);
-//		} else {
-//			player1.setTurn(true);
-//			player2.setTurn(false);
-//		}
+	void OnValidate()  {
+		if (player1 && player2) {
+			player1.speed = playerSpeed;
+			player2.speed = playerSpeed;
+			player1.dashSpeed = dashSpeed;
+			player2.dashSpeed = dashSpeed;
+			player1.blockTime = blockTime;
+			player2.blockTime = blockTime;
+			player1.dashEnergyCost = dashEnergyCost;
+			player2.dashEnergyCost = dashEnergyCost;
+		}
 	}
 
 	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (); }
@@ -223,11 +209,32 @@ public class Game : MonoBehaviour {
 
 
 	private IEnumerator SpawnGameObjects() {
-		int charP1 = masterScript.GetCharacter (1) - 1;
-		int charP2 = masterScript.GetCharacter (2) - 1;
-
 		// Wait until player scene is active
 		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.player])));
+
+		this.SpawnPlayers ();
+
+		// Wait until balls scene is active
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.balls])));
+
+		GameObject projectiles = this.SpawnProjectile ();
+
+		// Wait until game scene is active
+		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.gameScene])));
+
+		this.enabled = true;
+		uiScript.enabled = true;
+
+		// Wait until match start UI is finished
+		yield return new WaitUntil (() => enableProjectile);
+
+		projectiles.GetComponent<Move> ().enabled = true;
+		projectiles.GetComponent<Ball> ().enabled = true;
+	}
+
+	private void SpawnPlayers() {
+		int charP1 = masterScript.GetCharacter (1) - 1;
+		int charP2 = masterScript.GetCharacter (2) - 1;
 
 		GameObject p1 = Instantiate (charactersP1 [charP1], player1Spawn, new Quaternion ()) as GameObject;
 		GameObject p2 = Instantiate (charactersP2 [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
@@ -243,7 +250,7 @@ public class Game : MonoBehaviour {
 		player1.transform.SetParent (pEmpty);
 		player2.transform.SetParent (pEmpty);
 		player2.InvertMotion = true;
-		//Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
+		Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
 		player1.SetPlayer(masterScript.GetPlayerType(1));
 		player2.SetPlayer(masterScript.GetPlayerType(2));
 
@@ -251,10 +258,17 @@ public class Game : MonoBehaviour {
 		player2.health = playerHealth;
 		player1.power = playerEnergy;
 		player2.power = playerEnergy;
+		player1.speed = playerSpeed;
+		player2.speed = playerSpeed;
+		player1.dashSpeed = dashSpeed;
+		player2.dashSpeed = dashSpeed;
+		player1.blockTime = blockTime;
+		player2.blockTime = blockTime;
+		player1.dashEnergyCost = dashEnergyCost;
+		player2.dashEnergyCost = dashEnergyCost;
+	}
 
-		// Wait until balls scene is active
-		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.balls])));
-
+	private GameObject SpawnProjectile() {
 		GameObject projectiles = Instantiate (masterScript.projectiles, new Vector3(0.0f, 0.0f, -6.0f), Quaternion.identity) as GameObject;
 
 		if (UnityEngine.Random.Range(0.0f, 1.0f) > 0.5f) {
@@ -263,16 +277,7 @@ public class Game : MonoBehaviour {
 			projectiles.tag = "BallP2";
 		}
 
-		// Wait until game scene is active
-		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.gameScene])));
-
-		this.enabled = true;
-		uiScript.enabled = true;
-
-		yield return new WaitUntil (() => enableProjectile);
-
-		projectiles.GetComponent<Move> ().enabled = true;
-		projectiles.GetComponent<Ball> ().enabled = true;
+		return projectiles;
 	}
 
 	private IEnumerator EndRound(int p){
@@ -305,11 +310,11 @@ public class Game : MonoBehaviour {
 			player1.health = playerHealth;
 			player2.health = playerHealth;
 			
-			if (p == 1) {
-				this.SetTurn (true);
-			} else {
-				this.SetTurn (false);
-			}
+//			if (p == 1) {
+//				projectile.tag = "BallP1";
+//			} else {
+//				projectile.tag = "BallP2";
+//			}
 
 			this.EnablePlayers (false);
 			

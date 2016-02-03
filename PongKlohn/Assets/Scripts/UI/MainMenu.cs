@@ -6,6 +6,7 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour {
 	public GameObject mainMenu;
+	public GameObject firstSelectElement;
 
 
 	private MasterScript masterScript;
@@ -19,7 +20,7 @@ public class MainMenu : MonoBehaviour {
 
 		eventSystem = EventSystem.current;
 
-		eventSystem.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("FirstSelectedUI"));
+		eventSystem.SetSelectedGameObject(firstSelectElement);
 	}
 
 	public void Singleplayer() {

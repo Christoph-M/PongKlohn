@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
     public GameObject DashCollider;
     private Curves curves;
 	public int dashEnergyCost { get; set; }
+    private int dashCost;
 	public int specialCost = 0;
 	public int buffCost = 0;
     private bool blockWasHit = false;
@@ -159,7 +160,9 @@ public class Player : MonoBehaviour
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
-		
+
+        dashCost = dashEnergyCost;
+
 		if (InvertMotion) //Spieler Steht Links oder Recht   Steuerung anpassen
 		{
 			motionInverter = -1;
@@ -226,6 +229,7 @@ public class Player : MonoBehaviour
         {
             buffMoveMod = 1;
             SetBlockColliderCale(1f);
+            dashEnergyCost = dashCost;
         }
 
 
@@ -244,14 +248,15 @@ public class Player : MonoBehaviour
 			isInAction = true;
 		}
 
-        if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished())//Buff input
+        if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished() && power >= buffCost)//Buff input
 		{
             //Debug.Log("buff input works");
+            power -= buffCost;
 			actionIndex = 4;//Do buff
 			isInAction = true;
 		}
 
-        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero)// &&)// power >= dashEnergyCost)//Dash input
+        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero&& power >= dashEnergyCost)//Dash input
 		{
 			audioDing.SetSrei();
 			power -= dashEnergyCost;
@@ -447,7 +452,7 @@ public class Player : MonoBehaviour
                 blockShild.transform.localScale = Vector3.one * blockEfectScale;
             }
 
-            if(mode == "Block")
+            if(mode == "Block")//block while move
             {
                 blockTrigger.gameObject.tag = "BlockTrigger";
                 if (ballSpeedup >0)
@@ -470,11 +475,20 @@ public class Player : MonoBehaviour
                 {
                     ballSpeedup = 1f;
                 }
+                if(OnBlock())
+                {
+                    ballSpeedup = 0;
+                }
             }else if (mode == "Special")
             {
                 blockTrigger.gameObject.tag = "SpecialTrigger";
+
                 //Debug.Log("spessel");
                 ballSpeedup = 2f;
+                if(OnBlock())
+                {
+                    power -= specialCost;
+                }
             }
 
         }
@@ -595,7 +609,6 @@ public class Player : MonoBehaviour
 				else if(buffProgression == 0)
 				{
                     //Debug.Log("Buff");
-                    crystal = 0;
                     PerformBuff();
                     buffCoolDown.SetTimer(10f);
                     buffTimer.SetTimer(2f);
@@ -620,7 +633,7 @@ public class Player : MonoBehaviour
         }
         if (crystal == 2f)
         {
-            ///Mod2
+            dashEnergyCost = 0;
         }
     }
 

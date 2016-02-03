@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour {
 	private LinearRotation linearRotationScript;
 	private SinCosRotation sinCosRotationScript;
 
-	private Vector3 homePosition = new Vector3 (0.0f, 0.0f, 0.6f);
+	private Vector3 homePosition = new Vector3 (0.0f, 0.0f, -6.0f);
 
 	private const float fieldHeight = 22.0f;
 	private const float fieldWidth = 70.0f;

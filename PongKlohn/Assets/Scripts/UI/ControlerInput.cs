@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class ControlerInput : MonoBehaviour {
+public class ControlerInput : UIBehaviour {
 	private EventSystem eventSystem;
 
 	// Use this for initialization
@@ -16,7 +17,6 @@ public class ControlerInput : MonoBehaviour {
 		float hori = Input.GetAxisRaw ("ControllerHorizontal");
 
 		if (vert != 0.0f) {
-			
 
 		}
 	}

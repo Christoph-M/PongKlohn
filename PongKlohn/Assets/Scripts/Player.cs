@@ -85,7 +85,9 @@ public class Player : MonoBehaviour
 	public GameObject smoke;
 	public GameObject fangShild;
 	public GameObject blockShild;
-	private Curves curves;
+    public GameObject BlockCollider;
+    public GameObject DashCollider;
+    private Curves curves;
 	public int dashEnergyCost { get; set; }
 	public int specialCost = 0;
 	public int buffCost = 0;
@@ -93,6 +95,7 @@ public class Player : MonoBehaviour
     private int crystal = 0;
     private MasterScript masterScript;
     private float buffMoveMod = 1;
+
 
     void Start() 
 	{
@@ -247,7 +250,7 @@ public class Player : MonoBehaviour
 			isInAction = true;
 		}
 
-        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero && power >= dashEnergyCost)//Dash input
+        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero)// &&)// power >= dashEnergyCost)//Dash input
 		{
 			audioDing.SetSrei();
 			power -= dashEnergyCost;
@@ -346,9 +349,12 @@ public class Player : MonoBehaviour
 				wallDistance.y = this.AbstandBottom();
 				if(wallDistance.y < lerpedDash.y * dashLength){endVec.y = startVec.y - wallDistance.y;}
 			}
-		}
+            Vector3 diff = (startVec - endVec);
+            GameObject g = Instance(DashCollider, transform.position -(diff/2), ToolBox.GetRorationFromVector(new Vector3(directionRaw_.x,directionRaw_.y,0)));
+            g.tag = this.tag;
+        }
 
-		animator.SetFloat("xAxis", direction.x);
+        animator.SetFloat("xAxis", direction.x);
 		animator.SetFloat("yAxis", direction.y);
 		
 		newValue = Vector3.Lerp (startVec, endVec, curves.GetCurve((Time.time - startValue)*4f,2));
@@ -364,7 +370,7 @@ public class Player : MonoBehaviour
 		return false;
 	}
 
-	private float AbstandTop() { return wallTop - transform.position.y; }
+    private float AbstandTop() { return wallTop - transform.position.y; }
 
 	private float AbstandBottom() { return transform.position.y - wallBottom; }
 
@@ -551,20 +557,24 @@ public class Player : MonoBehaviour
 				return false;
 
             case 3://///Dash//////////////////////////////////////////
-				if(dashProgression == 1)
+				if(dashProgression == 2)
 				{
 					dashProgression = 0;
                     return true;
 				}
-				else if(dashProgression == 0)
+				else if(dashProgression == 1)
 				{
-					action = 10;
-					if(MoveTo(directionRaw_))
+                    if (MoveTo(directionRaw_))
 					{
-						dashProgression = 1;
+						dashProgression = 2;
 					}
 				}
-				return false;
+                else if (dashProgression == 0)
+                {
+                    action = 10;
+                    dashProgression = 1;
+                }
+                return false;
 
             case 4://///////Buff Action//////////////////////////	;
 				if(buffProgression == 1 && buffTimer.IsFinished())
@@ -716,6 +726,7 @@ public class Player : MonoBehaviour
 				case 10://dash
 					RestTrigger();
 					blockTrigger.SetActive(true);
+                    dashTrigger.SetActive(true);
 					canMovement = false;
 					ResetAnimator();
 					animator.SetBool ("Block", true);

@@ -24,6 +24,8 @@ public class Ball : MonoBehaviour {
 	private LinearRotation linearRotationScript;
 	private SinCosRotation sinCosRotationScript;
 
+	private Vector3 homePosition = new Vector3 (0.0f, 0.0f, 0.6f);
+
 	private const float fieldHeight = 22.0f;
 	private const float fieldWidth = 70.0f;
 	private const float goalHeight = 11.0f;
@@ -165,23 +167,23 @@ public class Ball : MonoBehaviour {
 //__________________________Private_____________________________
 	private void Trigger(GameObject other){
 		if (other.tag == "BlockTrigger") {
-			this.Block (other.gameObject);
+			this.Block (other);
 		} else if (other.tag == "SpecialTrigger") {
-			this.Special (other.gameObject);
+			this.Special (other);
 		} else if (other.tag == "MissTrigger") {
 			other.GetComponentInParent<Player>().SetZuLangsamZumFangenDuMong(true);
 		} else if (other.tag == "CatchTrigger") {
-			this.Catch (other.gameObject);
+			this.Catch (other);
 		} else if (other.tag == "DashTrigger") {
 			other.GetComponentInParent<Player>().SetDashTrigger(true);
 		} else if (other.tag.Contains("Wall")) {
 			if (specialBall) {
-				this.BounceSpecial (other.gameObject);
+				this.BounceSpecial (other);
 			} else {
-				this.Bounce (other.gameObject);
+				this.Bounce (other);
 			}
 		} else if (other.tag == "Goal") {
-			this.Goal (other.gameObject);
+			this.Goal (other);
 		}
 	}
 
@@ -209,8 +211,23 @@ public class Ball : MonoBehaviour {
 		
 		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
+//		Vector3 diff = (Vector2)this.transform.position - hit.point;
+//		this.transform.position = (Mathf.Sqrt(diff.sqrMagnitude) * exitDirection) + hit.point;
+
 		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
+//		if (other.tag == "WallTop") {
+//			this.transform.position = new Vector3 (this.transform.position.x, wallTop - 0.5f, this.transform.position.z);
+//		} else if (other.tag == "WallBottom") {
+//			this.transform.position = new Vector3 (this.transform.position.x, wallBottom + 0.5f, this.transform.position.z);
+//		} else if (other.tag == "WallRight") {
+//			this.transform.position = new Vector3 (wallRight - 0.5f, this.transform.position.y, this.transform.position.z);
+//		} else if (other.tag == "WallLeft") {
+//			this.transform.position = new Vector3 (wallLeft + 0.5f, this.transform.position.y, this.transform.position.z);
+//		}
+
+
+//		StartCoroutine (CalcPath (0.5f));
 
 		gameScript.ShakeScreen (2);
 	}
@@ -226,7 +243,8 @@ public class Ball : MonoBehaviour {
 
 		switch (crystal) {
 		case 1:
-			sinCosRotation = true;
+			linearRotation = true;
+			linearRotationScript.enabled = true;
 
 			float distance = this.transform.right.magnitude;
 			Vector2 forward = this.transform.right / distance;
@@ -234,37 +252,59 @@ public class Ball : MonoBehaviour {
 			RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
 			Vector2 exitDirection = Vector2.Reflect (forward, hit.normal);
 
-			//			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
-			//			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
-			//			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
+//				Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
+//				Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
+//				Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
 
-			float angle1 = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
+			float angle1 = Mathf.Atan2 (hit.normal.y, hit.normal.x) * Mathf.Rad2Deg;
 
 			this.transform.rotation = Quaternion.AngleAxis (angle1, Vector3.forward);
+
+			gameScript.BallSpeedUp (4.0f);
+			moveScript.UpdateBallSpeed ();
+
+
+			gameScript.ShakeScreen (3);
 			break;
 		case 2:
 			Vector3 dir;
 
-			if (other.transform.position.y >= 0) {
-				dir = new Vector3 (0.0f, goalTop, -6.0f) - this.transform.position;
+			float x;
+
+			if (this.tag == "BallP1") {
+				x = wallRight;
 			} else {
-				dir = new Vector3 (0.0f, goalBottom, -6.0f) - this.transform.position;
+				x = wallLeft;
+			}
+
+			if (other.transform.position.y >= 0) {
+				dir = new Vector3 (x, goalTop, -6.0f) - this.transform.position;
+			} else {
+				dir = new Vector3 (x, goalBottom, -6.0f) - this.transform.position;
 			}
 
 			float angle2 = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
 
 			this.transform.rotation = Quaternion.AngleAxis (angle2, Vector3.forward);
 
+			gameScript.BallSpeedUp (4.0f);
+			moveScript.UpdateBallSpeed ();
 
-			gameScript.ShakeScreen (2);
+
+			gameScript.ShakeScreen (3);
 			break;
 		case 3:
 			this.transform.position = new Vector3 (this.transform.position.x, -this.transform.position.y, this.transform.position.z);
 			crystal = -1;
+
+			gameScript.BallSpeedUp (4.0f);
+			moveScript.UpdateBallSpeed ();
+
+
+			gameScript.ShakeScreen (3);
 			break;
 		default:
-			specialBall = false;
-			sinCosRotation = false;
+			this.DisableAllSpecials ();
 			this.Bounce (other);
 			break;
 		}
@@ -276,7 +316,7 @@ public class Ball : MonoBehaviour {
 			timeElapsed = 0.0f;
 
 
-			specialBall = false;
+			this.DisableAllSpecials ();
 
 			string playerTag = other.transform.parent.tag;
 
@@ -288,14 +328,14 @@ public class Ball : MonoBehaviour {
 
 
 			Vector2 playerDirection = other.transform.parent.position - this.transform.position;
-		
+			
 			RaycastHit2D hit = Physics2D.Raycast (this.transform.position, playerDirection);
 			Vector2 exitDirection = Vector2.Reflect (playerDirection, hit.normal);
-		
+			
 //				Debug.DrawRay (this.transform.position, playerDirection, Color.blue, 1000);
 //				Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
 //				Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
-		
+			
 			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
 			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
@@ -311,8 +351,10 @@ public class Ball : MonoBehaviour {
 				this.transform.FindChild ("Elektro B R").gameObject.SetActive(true);
 			}
 
-			gameScript.BallSpeedUp (other.GetComponentInParent<Player> ().SetOnBlock ());
-			moveScript.UpdateBallSpeed ();
+			if (other.transform.parent.name.Contains("Player")) {
+				gameScript.BallSpeedUp (other.GetComponentInParent<Player>().SetOnBlock());
+				moveScript.UpdateBallSpeed ();
+			}
 
 
 			gameScript.ShakeScreen (0, (playerTag == "Player1") ? 1 : 2);
@@ -344,6 +386,17 @@ public class Ball : MonoBehaviour {
 			string playerTag = other.transform.parent.tag;
 			crystal = masterScript.GetCrystal ((playerTag == "Player1") ? 1 : 2);
 
+			if (crystal == 1) {
+				string tag = other.transform.parent.tag;
+				float pos = this.transform.position.y;
+
+				if ((tag == "Player1" && pos < 0.0f) || (tag == "Player2" && pos > 0.0f)) {
+					linearRotationScript.SetDirection(-1);
+				} else if ((tag == "Player1" && pos > 0.0f) || (tag == "Player2" && pos < 0.0f)) {
+					linearRotationScript.SetDirection(1);
+				}
+			}
+
 
 			StartCoroutine (CalcPath (specialFreezeTime));
 			this.DeactivateProjectiles ();
@@ -351,7 +404,7 @@ public class Ball : MonoBehaviour {
 			this.SetTurn (playerTag);
 			this.transform.FindChild ("Special_" + crystal).gameObject.SetActive (true);
 
-			gameScript.BallSpeedUp (other.GetComponentInParent<Player> ().SetOnBlock ());
+			gameScript.BallSpeedUp (2.0f);
 			moveScript.UpdateBallSpeed ();
 
 
@@ -430,14 +483,19 @@ public class Ball : MonoBehaviour {
 	private void ResetBall(string name) {
 		this.DeactivateProjectiles ();
 
-		specialBall = false;
-		sinCosRotation = false;
+		this.DisableAllSpecials ();
 
-		this.transform.position = new Vector3(0.0f, 0.0f, -6.0f);
+		this.transform.position = homePosition;
 
 		this.SetTurn (name);
 
 		this.ResetPath ();
 		gameScript.SetProjectileTransform (null);
+	}
+
+	private void DisableAllSpecials() {
+		specialBall = false;
+		linearRotation = false;
+		linearRotationScript.enabled = false;
 	}
 }

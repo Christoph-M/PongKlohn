@@ -91,7 +91,7 @@ public class Game : MonoBehaviour {
 
 	public void BallSpeedUp(float blockFac){
 		ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
-		ballSpeed = ballSpeedUpCurve.Evaluate(ballSpeedAtTime);
+		ballSpeed = ballSpeedUpCurve.Evaluate(ballSpeedAtTime) * (1 + blockFac);
 
 		if (ballSpeed > maxBallSpeed) {
 			ballSpeed = maxBallSpeed;

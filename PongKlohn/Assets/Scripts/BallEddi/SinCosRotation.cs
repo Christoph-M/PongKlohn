@@ -19,7 +19,7 @@ public class SinCosRotation : MonoBehaviour {
 	private float deltatime;
 	private float counter = 0;
 	
-	void Start()
+	void OnEnable()
 	{
 		deltatime = Time.time;
 	}

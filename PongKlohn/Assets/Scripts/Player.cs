@@ -449,7 +449,8 @@ public class Player : MonoBehaviour
 
             if(mode == "Block")
             {
-                if(ballSpeedup >0)
+                blockTrigger.gameObject.tag = "BlockTrigger";
+                if (ballSpeedup >0)
                 {
                     ballSpeedup -= Time.deltaTime*2;
                 }
@@ -459,6 +460,7 @@ public class Player : MonoBehaviour
                 }
             }else if (mode == "Load")
             {
+                blockTrigger.gameObject.tag = "BlockTrigger";
                 if (ballSpeedup < 1)
                 {
                     ballSpeedup += (Time.deltaTime/5);
@@ -470,6 +472,7 @@ public class Player : MonoBehaviour
                 }
             }else if (mode == "Special")
             {
+                blockTrigger.gameObject.tag = "SpecialTrigger";
                 //Debug.Log("spessel");
                 ballSpeedup = 2f;
             }
@@ -632,9 +635,9 @@ public class Player : MonoBehaviour
     }
 
     public float SetOnBlock()
-    {
-        blockLoad;
+    {    
         blockWasHit = true;
+        return blockLoad;
     }
 
 	public void SetTrigger(int newState)

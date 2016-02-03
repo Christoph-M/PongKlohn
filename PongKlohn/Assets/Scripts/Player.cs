@@ -225,6 +225,7 @@ public class Player : MonoBehaviour
         if (buffCoolDown.IsFinished())
         {
             buffMoveMod = 1;
+            SetBlockColliderCale(1f);
         }
 
 
@@ -370,6 +371,11 @@ public class Player : MonoBehaviour
 		return false;
 	}
 
+    private void SetBlockColliderCale(float sice)
+    {
+        blockTrigger.transform.localScale = new Vector3(1, sice, 1);
+    }
+
     private float AbstandTop() { return wallTop - transform.position.y; }
 
 	private float AbstandBottom() { return transform.position.y - wallBottom; }
@@ -443,7 +449,8 @@ public class Player : MonoBehaviour
 
             if(mode == "Block")
             {
-                if(ballSpeedup >0)
+                blockTrigger.gameObject.tag = "BlockTrigger";
+                if (ballSpeedup >0)
                 {
                     ballSpeedup -= Time.deltaTime*2;
                 }
@@ -453,6 +460,7 @@ public class Player : MonoBehaviour
                 }
             }else if (mode == "Load")
             {
+                blockTrigger.gameObject.tag = "BlockTrigger";
                 if (ballSpeedup < 1)
                 {
                     ballSpeedup += (Time.deltaTime/5);
@@ -464,6 +472,7 @@ public class Player : MonoBehaviour
                 }
             }else if (mode == "Special")
             {
+                blockTrigger.gameObject.tag = "SpecialTrigger";
                 //Debug.Log("spessel");
                 ballSpeedup = 2f;
             }
@@ -598,16 +607,16 @@ public class Player : MonoBehaviour
 			   return false;
 		}
 	}
-
+    private float buffColliderScale = 1;
     private void PerformBuff()
     {
         if(crystal == 0f)
         {
-            buffMoveMod = 5f;
+            buffMoveMod = 3f;
         }
         if (crystal == 1f)
         {
-            ///Mod2 
+            SetBlockColliderCale(2f);
         }
         if (crystal == 2f)
         {
@@ -625,9 +634,10 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    public void SetOnBlock()
-    {
+    public float SetOnBlock()
+    {    
         blockWasHit = true;
+        return blockLoad;
     }
 
 	public void SetTrigger(int newState)

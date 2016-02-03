@@ -89,7 +89,7 @@ public class Game : MonoBehaviour {
 	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (); }
 	public Transform GetProjectileTransform() { return projectile; }
 
-	public void BallSpeedUp(){
+	public void BallSpeedUp(float blockFac){
 		ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
 		ballSpeed = ballSpeedUpCurve.Evaluate(ballSpeedAtTime);
 

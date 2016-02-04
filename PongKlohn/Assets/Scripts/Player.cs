@@ -85,14 +85,18 @@ public class Player : MonoBehaviour
 	public GameObject smoke;
 	public GameObject fangShild;
 	public GameObject blockShild;
-	private Curves curves;
+    public GameObject BlockCollider;
+    public GameObject DashCollider;
+    private Curves curves;
 	public int dashEnergyCost { get; set; }
+    private int dashCost;
 	public int specialCost = 0;
 	public int buffCost = 0;
     private bool blockWasHit = false;
     private int crystal = 0;
     private MasterScript masterScript;
     private float buffMoveMod = 1;
+
 
     void Start() 
 	{
@@ -156,7 +160,9 @@ public class Player : MonoBehaviour
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
-		
+
+        dashCost = dashEnergyCost;
+
 		if (InvertMotion) //Spieler Steht Links oder Recht   Steuerung anpassen
 		{
 			motionInverter = -1;
@@ -222,6 +228,8 @@ public class Player : MonoBehaviour
         if (buffCoolDown.IsFinished())
         {
             buffMoveMod = 1;
+            SetBlockColliderCale(1f);
+            dashEnergyCost = dashCost;
         }
 
 
@@ -240,14 +248,15 @@ public class Player : MonoBehaviour
 			isInAction = true;
 		}
 
-        if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished())//Buff input
+        if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished() && power >= buffCost)//Buff input
 		{
             //Debug.Log("buff input works");
+            power -= buffCost;
 			actionIndex = 4;//Do buff
 			isInAction = true;
 		}
 
-        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero && power >= dashEnergyCost)//Dash input
+        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero&& power >= dashEnergyCost)//Dash input
 		{
 			audioDing.SetSrei();
 			power -= dashEnergyCost;
@@ -346,9 +355,12 @@ public class Player : MonoBehaviour
 				wallDistance.y = this.AbstandBottom();
 				if(wallDistance.y < lerpedDash.y * dashLength){endVec.y = startVec.y - wallDistance.y;}
 			}
-		}
+            Vector3 diff = (startVec - endVec);
+            GameObject g = Instance(DashCollider, transform.position -(diff/2), ToolBox.GetRorationFromVector(new Vector3(directionRaw_.x,directionRaw_.y,0)));
+            g.tag = this.tag;
+        }
 
-		animator.SetFloat("xAxis", direction.x);
+        animator.SetFloat("xAxis", direction.x);
 		animator.SetFloat("yAxis", direction.y);
 		
 		newValue = Vector3.Lerp (startVec, endVec, curves.GetCurve((Time.time - startValue)*4f,2));
@@ -364,7 +376,12 @@ public class Player : MonoBehaviour
 		return false;
 	}
 
-	private float AbstandTop() { return wallTop - transform.position.y; }
+    private void SetBlockColliderCale(float sice)
+    {
+        blockTrigger.transform.localScale = new Vector3(1, sice, 1);
+    }
+
+    private float AbstandTop() { return wallTop - transform.position.y; }
 
 	private float AbstandBottom() { return transform.position.y - wallBottom; }
 
@@ -435,9 +452,10 @@ public class Player : MonoBehaviour
                 blockShild.transform.localScale = Vector3.one * blockEfectScale;
             }
 
-            if(mode == "Block")
+            if(mode == "Block")//block while move
             {
-                if(ballSpeedup >0)
+                blockTrigger.gameObject.tag = "BlockTrigger";
+                if (ballSpeedup >0)
                 {
                     ballSpeedup -= Time.deltaTime*2;
                 }
@@ -447,6 +465,7 @@ public class Player : MonoBehaviour
                 }
             }else if (mode == "Load")
             {
+                blockTrigger.gameObject.tag = "BlockTrigger";
                 if (ballSpeedup < 1)
                 {
                     ballSpeedup += (Time.deltaTime/5);
@@ -456,10 +475,20 @@ public class Player : MonoBehaviour
                 {
                     ballSpeedup = 1f;
                 }
+                if(OnBlock())
+                {
+                    ballSpeedup = 0;
+                }
             }else if (mode == "Special")
             {
+                blockTrigger.gameObject.tag = "SpecialTrigger";
+
                 //Debug.Log("spessel");
                 ballSpeedup = 2f;
+                if(OnBlock())
+                {
+                    power -= specialCost;
+                }
             }
 
         }
@@ -551,20 +580,24 @@ public class Player : MonoBehaviour
 				return false;
 
             case 3://///Dash//////////////////////////////////////////
-				if(dashProgression == 1)
+				if(dashProgression == 2)
 				{
 					dashProgression = 0;
                     return true;
 				}
-				else if(dashProgression == 0)
+				else if(dashProgression == 1)
 				{
-					action = 10;
-					if(MoveTo(directionRaw_))
+                    if (MoveTo(directionRaw_))
 					{
-						dashProgression = 1;
+						dashProgression = 2;
 					}
 				}
-				return false;
+                else if (dashProgression == 0)
+                {
+                    action = 10;
+                    dashProgression = 1;
+                }
+                return false;
 
             case 4://///////Buff Action//////////////////////////	;
 				if(buffProgression == 1 && buffTimer.IsFinished())
@@ -576,7 +609,6 @@ public class Player : MonoBehaviour
 				else if(buffProgression == 0)
 				{
                     //Debug.Log("Buff");
-                    crystal = 0;
                     PerformBuff();
                     buffCoolDown.SetTimer(10f);
                     buffTimer.SetTimer(2f);
@@ -588,20 +620,20 @@ public class Player : MonoBehaviour
 			   return false;
 		}
 	}
-
+    private float buffColliderScale = 1;
     private void PerformBuff()
     {
         if(crystal == 0f)
         {
-            buffMoveMod = 5f;
+            buffMoveMod = 3f;
         }
         if (crystal == 1f)
         {
-            ///Mod2 
+            SetBlockColliderCale(2f);
         }
         if (crystal == 2f)
         {
-            ///Mod2
+            dashEnergyCost = 0;
         }
     }
 
@@ -615,9 +647,10 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    public void SetOnBlock()
-    {
+    public float SetOnBlock()
+    {    
         blockWasHit = true;
+        return blockLoad;
     }
 
 	public void SetTrigger(int newState)
@@ -716,6 +749,7 @@ public class Player : MonoBehaviour
 				case 10://dash
 					RestTrigger();
 					blockTrigger.SetActive(true);
+                    dashTrigger.SetActive(true);
 					canMovement = false;
 					ResetAnimator();
 					animator.SetBool ("Block", true);

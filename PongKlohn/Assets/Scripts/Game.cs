@@ -89,14 +89,23 @@ public class Game : MonoBehaviour {
 	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (); }
 	public Transform GetProjectileTransform() { return projectile; }
 
-	public void BallSpeedUp(float blockFac){
-		ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
-		ballSpeed = ballSpeedUpCurve.Evaluate(ballSpeedAtTime) * (1 + blockFac);
+	public void BallSpeedUp(float blockFac, bool special = false){
+		if (blockFac > 0.0f) {
+			ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
+			ballSpeed = ballSpeedUpCurve.Evaluate (ballSpeedAtTime) * (1 + blockFac);
+			Debug.Log ("Speed up | speed: " + ballSpeed + ", blockFac: " + blockFac + ", special: " + special);
+		} else {
+			ballSpeed = ballSpeedUpCurve.Evaluate (ballSpeedAtTime);
+			Debug.Log ("Speed Reset | speed: " + ballSpeed + ", blockFac: " + blockFac + ", special: " + special);
+		}
 
-		if (ballSpeed > maxBallSpeed) {
+		if (ballSpeed > maxBallSpeed && !special) {
 			ballSpeed = maxBallSpeed;
 			ballSpeedAtTime = 1.0f;
+			Debug.Log ("Max Speed | speed: " + ballSpeed + ", blockFac: " + blockFac + ", special: " + special);
 		}
+
+		Debug.Log ("Ball Speed Done | speed: " + ballSpeed + ", blockFac: " + blockFac + ", special: " + special);
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }

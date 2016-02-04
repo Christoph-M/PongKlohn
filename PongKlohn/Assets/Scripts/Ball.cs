@@ -11,11 +11,16 @@ public class Ball : MonoBehaviour {
 	public bool linearRotation = false;
 	public bool sinCosRotation = false;
 
-	[Space(10)]
-	public List<GameObject> projectiles;
+	[Header("Particle Objects")]
+	public List<GameObject> particleObjs;
+
+	[Header("Path Prediction")]
 	public int maxPredictionCount = 15;
+
+	[Header("Freeze Times")]
 	public float blockFreezeTime = 0.1f;
 	public float specialFreezeTime = 0.2f;
+
 
 //__________________________Private_____________________________
 	private MasterScript masterScript;
@@ -45,7 +50,10 @@ public class Ball : MonoBehaviour {
 	private bool stopMovement = false;
 	private bool specialBall = false;
 
-//___________________________________________\\\\\\___MonoMethods___//////______________________________________________
+//____________________________________________________________\\\\\\___MonoMethods___//////_______________________________________________________________
+
+
+//_________________\\\\\\___Awake___//////_________________
 	void Awake() {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
@@ -66,18 +74,20 @@ public class Ball : MonoBehaviour {
 		goalBottom = -goalHeight  / 2;
 
 		p1char = masterScript.GetCharacter (1) - 1;
-		p2char = masterScript.GetCharacter (2);
+		p2char = masterScript.GetCharacter (2) - 1;
 
 		this.ResetPath ();
 	}
 
+
+//_________________\\\\\\___OnEnable___//////_________________
 	void OnEnable(){
 		if (this.tag == "BallP1") {
-			projectiles[p1char].SetActive(true);
+			particleObjs[p1char].SetActive(true);
 
 			this.SetRotation (1.0f);
 		} else {
-			projectiles[p2char].SetActive(true);
+			particleObjs[p2char].SetActive(true);
 
 			this.SetRotation (-1.0f);
 		}
@@ -85,6 +95,8 @@ public class Ball : MonoBehaviour {
 		StartCoroutine (CalcPath (2.0f));
 	}
 
+
+//_________________\\\\\\___CalcPath___//////_________________
 	private IEnumerator CalcPath(float t) {
 		stopMovement = true;
 
@@ -133,6 +145,8 @@ public class Ball : MonoBehaviour {
 		stopMovement = false;
 	}
 
+
+//_________________\\\\\\___FixedUpdate___//////_________________
 	void FixedUpdate() {
 		if (!stopMovement) {
 			if (move) moveScript.Update_ ();
@@ -155,23 +169,38 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
+
+//_________________\\\\\\___LateUpdate___//////_________________
 	private float timeElapsed = 0.0f;
 	void LateUpdate() {
 		timeElapsed += Time.deltaTime;
 	}
 
+
+//_________________\\\\\\___OnTriggerEnter2D___//////_________________
 	void OnTriggerEnter2D(Collider2D other){
 		this.Trigger (other.gameObject);
 	}
 
 
-//___________________________________________\\\\\\___Public___//////______________________________________________
+//____________________________________________________________\\\\\\___Public___//////_______________________________________________________________
+	
+
+//_________________\\\\\\___GetPath___//////_________________
+// Returns pre-calculated path of the projectile
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	public List<Vector2> GetPath() {
 		return path;
 	}
 
 
-//___________________________________________\\\\\\___Private___//////______________________________________________
+//____________________________________________________________\\\\\\___Private___//////_______________________________________________________________
+
+
+//_________________\\\\\\___Trigger___//////_________________
+// Determines which trigger was hit and invokes the
+// respective action
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Trigger(GameObject other){
 		if (other.tag == "BlockTrigger") {
 			this.Block (other);
@@ -196,9 +225,13 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___Block___//////_________________
+// Adds energy to respective player, bounces projectile
+// off the shield, calculates new path, sets new 
+// ball particle and speeds up projectile
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Block(GameObject other) {
 		if (timeElapsed >= blockFreezeTime + 0.1f) {
-			//			Debug.Log ("Blocked. Time: " + timeElapsed);
+//			Debug.Log ("Blocked. Time: " + timeElapsed);
 			timeElapsed = 0.0f;
 
 
@@ -206,10 +239,12 @@ public class Ball : MonoBehaviour {
 
 			string playerTag = other.transform.parent.tag;
 
-			if (playerTag == "Player1") {
-				gameScript.Player1AddEnergy ();
-			} else {
-				gameScript.Player2AddEnergy ();
+			if (other.name != "DashCollider") {
+				if (playerTag == "Player1") {
+					gameScript.Player1AddEnergy ();
+				} else {
+					gameScript.Player2AddEnergy ();
+				}
 			}
 
 
@@ -219,19 +254,19 @@ public class Ball : MonoBehaviour {
 			Vector2 exitDirection = Vector2.Reflect (playerDirection, hit.normal);
 
 			this.transform.rotation = ToolBox.GetRotationFromVector (exitDirection);
-			//			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
-			//
-			//			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+//			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
+
+//			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
 
 
 			StartCoroutine (CalcPath (blockFreezeTime));
-			this.DeactivateProjectiles ();
+			this.DeactivateParticleObjs ();
 
 			this.SetTurn (playerTag);
 			if (this.tag == "BallP1") {
-				projectiles[p1char].SetActive(true);
+				particleObjs[p1char].SetActive(true);
 			} else {
-				projectiles[p2char].SetActive(true);
+				particleObjs[p2char].SetActive(true);
 			}
 
 			string name = other.transform.parent.name;
@@ -247,6 +282,10 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___Bounce___//////_________________
+// Takes enemy health if projectile is within the enemy side
+// of the field, bounces it off the wall and resets the
+// projectile speed to the last speed after a special
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Bounce(GameObject other, bool resetSpeed = false) {
 //		Debug.Log ("Bounced. Time: " + timeElapsed);
 //		timeElapsed = 0.0f;
@@ -264,13 +303,17 @@ public class Ball : MonoBehaviour {
 
 
 //		StartCoroutine (CalcPath (0.5f));
-		if (!resetSpeed) this.SpeedUpProjectile(0.0f);
+		if (resetSpeed) this.SpeedUpProjectile(0.0f);
 
 		gameScript.ShakeScreen (2);
 	}
 
 
 //_____________________________\\\\\\___Special___//////_____________________________
+// Activates special-mode, sets crystal, sets linear rotation direction
+// if crystal is 1, sets target point to middleTop, middleBottm respectively,
+// calculates new path, sets new ball particle, sets projectile speed to special
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Special(GameObject other) {
 		if (timeElapsed >= specialFreezeTime + 0.1f) {
 //			Debug.Log ("Special. Time: " + timeElapsed);
@@ -298,10 +341,10 @@ public class Ball : MonoBehaviour {
 
 
 			StartCoroutine (CalcPath (specialFreezeTime));
-			this.DeactivateProjectiles ();
+			this.DeactivateParticleObjs ();
 
 			this.SetTurn (playerTag);
-			projectiles[crystal + 5].SetActive (true);
+			particleObjs[(this.tag == "BallP1") ? p1char : p2char + 5].SetActive (true);
 
 			this.SpeedUpProjectile (2.0f, true);
 
@@ -310,7 +353,13 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
+
 //_________________\\\\\\___BounceSpecial___//////_________________
+// Sets crystal to -1 if projectile hit the right or left wall,
+// takes enemy health if projectile is within enemy side of field,
+// performs the respective special, disable special-mode if
+// crystal is -1 and invokes a regular bounce if in special-mode
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void BounceSpecial(GameObject other) {
 		if (other.tag == "WallRight" || other.tag == "WallLeft") {
 			crystal = -1;
@@ -332,26 +381,24 @@ public class Ball : MonoBehaviour {
 
 				RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
 
-				this.transform.rotation = ToolBox.GetRotationFromVector (hit.normal);
-				break;
+				this.transform.rotation = ToolBox.GetRotationFromVector (hit.normal); break;
 			case 2:
 				float posY = other.transform.position.y;
 
-				this.SetFieldMiddleRotation ((this.tag == "BallP1") ? wallRight : wallLeft, (posY >= 0) ? goalTop : goalBottom);
-				break;
+				this.SetFieldMiddleRotation ((this.tag == "BallP1") ? wallRight : wallLeft, (posY >= 0) ? goalTop : goalBottom); break;
 			case 3:
 				this.transform.position = new Vector3 (this.transform.position.x, -this.transform.position.y, this.transform.position.z);
-				crystal = -1;
-				break;
+				crystal = -1; break;
 			default:
 				this.DisableAllSpecials ();
-				this.Bounce (other, true);
-				break;
+				this.Bounce (other, true); break;
 		}
 	}
 
 
 //_________________\\\\\\___Catch___//////_________________
+// Decreases projectile speed
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Catch(GameObject other) {
 //		Debug.Log ("Stunned. Time: " + timeElapsed);
 //		timeElapsed = 0.0f;
@@ -362,6 +409,9 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___Goal___//////_________________
+// Takes health from respective player, disables
+// projectile, resets it and enables it again
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Goal(GameObject other) {
 //		Debug.Log ("Goal. Time: " + timeElapsed);
 //		timeElapsed = 0.0f;
@@ -383,7 +433,10 @@ public class Ball : MonoBehaviour {
 	}
 
 
-//___________________________________________\\\\\\___HelperMethods___//////______________________________________________
+//____________________________________________________________\\\\\\___HelperMethods___//////_______________________________________________________________
+
+
+//_________________\\\\\\___SetTurn___//////_________________
 	private void SetTurn(string name) {
 		if (name == "Goal_Red" || name == "Player1") {
 			this.tag = "BallP1";
@@ -392,6 +445,8 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
+
+//_________________\\\\\\___SetRotation___//////_________________
 	private void SetRotation(float i) {
 		Vector2 direction = new Vector2 (Random.Range (-1.0f, 1.0f), i);
 		direction.Normalize ();
@@ -401,17 +456,23 @@ public class Ball : MonoBehaviour {
 		this.transform.rotation = Quaternion.LookRotation(direction, Vector3.forward);
 	}
 
+
+//_________________\\\\\\___SetFieldMiddleRotation___//////_________________
 	private void SetFieldMiddleRotation(float x, float y) {
 		Vector3 dir = new Vector3 (x, y, -6.0f) - this.transform.position;
 
 		this.transform.rotation = ToolBox.GetRotationFromVector (dir);
 	}
 
+
+//_________________\\\\\\___SpeedUpProjectile___//////_________________
 	private void SpeedUpProjectile(float fac, bool special = false) {
 		gameScript.BallSpeedUp (fac, special);
 		moveScript.UpdateBallSpeed ();
 	}
 
+
+//_________________\\\\\\___CheckScored___//////_________________
 	private void CheckScored() {
 		if (this.tag == "BallP1" && this.transform.position.x > 0.0f) {
 			gameScript.Player1Scored (true);
@@ -420,18 +481,24 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	private void DeactivateProjectiles() {
-		foreach (GameObject ball in projectiles) {
+
+//_________________\\\\\\___DeactivateParticleObjs___//////_________________
+	private void DeactivateParticleObjs() {
+		foreach (GameObject ball in particleObjs) {
 			ball.SetActive (false);
 		}
 	}
 
+
+//_________________\\\\\\___ResetPath___//////_________________
 	private void ResetPath() {
 		path = new List<Vector2>();
 	}
 
+
+//_________________\\\\\\___ResetBall___//////_________________
 	private void ResetBall(string name) {
-		this.DeactivateProjectiles ();
+		this.DeactivateParticleObjs ();
 
 		this.DisableAllSpecials ();
 
@@ -446,11 +513,15 @@ public class Ball : MonoBehaviour {
 		gameScript.SetProjectileTransform (null);
 	}
 
+
+//_________________\\\\\\___DisableAllSpecials___//////_________________
 	private void DisableAllSpecials() {
 		specialBall = false;
 		this.EnableLinearRotation (false);
 	}
 
+
+//_________________\\\\\\___EnableLinearRotation___//////_________________
 	private void EnableLinearRotation(bool b) {
 		linearRotation = b;
 		linearRotationScript.enabled = b;

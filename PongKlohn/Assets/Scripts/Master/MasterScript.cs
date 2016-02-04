@@ -17,7 +17,7 @@ public class MasterScript : MonoBehaviour {
 
 	private EventSystem eventSystem;
 
-	private List<int> characters = new List<int>{ 1, 1 };
+	private List<int> characters = new List<int>{ 1, 2 };
 
 	private List<int> crystals = new List<int>{ 1, 1 };
 

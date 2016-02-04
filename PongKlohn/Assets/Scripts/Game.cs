@@ -93,19 +93,14 @@ public class Game : MonoBehaviour {
 		if (blockFac > 0.0f) {
 			ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
 			ballSpeed = ballSpeedUpCurve.Evaluate (ballSpeedAtTime) * (1 + blockFac);
-			Debug.Log ("Speed up | speed: " + ballSpeed + ", blockFac: " + blockFac + ", special: " + special);
 		} else {
 			ballSpeed = ballSpeedUpCurve.Evaluate (ballSpeedAtTime);
-			Debug.Log ("Speed Reset | speed: " + ballSpeed + ", blockFac: " + blockFac + ", special: " + special);
 		}
 
 		if (ballSpeed > maxBallSpeed && !special) {
 			ballSpeed = maxBallSpeed;
 			ballSpeedAtTime = 1.0f;
-			Debug.Log ("Max Speed | speed: " + ballSpeed + ", blockFac: " + blockFac + ", special: " + special);
 		}
-
-		Debug.Log ("Ball Speed Done | speed: " + ballSpeed + ", blockFac: " + blockFac + ", special: " + special);
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }
@@ -245,8 +240,8 @@ public class Game : MonoBehaviour {
 		int charP1 = masterScript.GetCharacter (1) - 1;
 		int charP2 = masterScript.GetCharacter (2) - 1;
 
-		GameObject p1 = Instantiate (charactersP1 [charP1], player1Spawn, new Quaternion ()) as GameObject;
-		GameObject p2 = Instantiate (charactersP2 [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
+		GameObject p1 = Instantiate (masterScript.players [charP1], player1Spawn, new Quaternion ()) as GameObject;
+		GameObject p2 = Instantiate (masterScript.players [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
 		Transform pEmpty = GameObject.FindGameObjectWithTag ("PlayerEmpty").transform;
 
 		player1 = p1.GetComponent<Player> ();

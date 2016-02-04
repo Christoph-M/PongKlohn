@@ -8,7 +8,6 @@ public static class ToolBox {
     public static Quaternion GetRotationFromVector(Vector3 dir)
     {
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Debug.Log("dir:" + dir + "   angle:" + angle);
         return Quaternion.Euler(0, 0, angle);
         //return Quaternion.LookRotation(dir,new Vector3(0,0,1));
         //Transform t = Transform.LookAt()

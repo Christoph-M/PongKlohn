@@ -89,9 +89,16 @@ public class Player : MonoBehaviour
     public GameObject DashCollider;
     private Curves curves;
 	public int dashEnergyCost { get; set; }
-    private int dashCost;
-	public int specialCost = 0;
-	public int buffCost = 0;
+    /// <summary>
+    /// /////////////////////////////////
+    /// </summary>
+    private int dashCost = 10;
+	private int specialCost = 75;
+	private int buffCost = 50;
+    
+    /// <summary>
+    /// ///////////////////////////
+    /// </summary>
     private bool blockWasHit = false;
     private int crystal = 0;
     private MasterScript masterScript;
@@ -231,7 +238,7 @@ public class Player : MonoBehaviour
             SetBlockColliderCale(1f);
             dashEnergyCost = dashCost;
         }
-
+        Debug.Log("dc:" + dashCost + "  sc:" + specialCost + "  bc:" + buffCost);
 
         if (zuLangsamZumFangenDuMong)///////////////Stun
 		{
@@ -525,6 +532,7 @@ public class Player : MonoBehaviour
 			case 1:////isStunned Action////
 				if(stunProgression == 1 && stunTimer.IsFinished())
 				{
+                    stunProgression = 0;
                     Debug.Log("stun endet");
                     zuLangsamZumFangenDuMong = false;
                     return true;

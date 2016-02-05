@@ -87,6 +87,7 @@ public class Game : MonoBehaviour {
 	}
 
 	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (); }
+	public void ProjectileBounceEvent(int i) {  }
 	public Transform GetProjectileTransform() { return projectile; }
 
 	public void BallSpeedUp(float blockFac, bool special = false){

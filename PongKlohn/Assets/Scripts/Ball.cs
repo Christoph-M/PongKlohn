@@ -34,7 +34,7 @@ public class Ball : MonoBehaviour {
 
 	private const float fieldHeight = 22.0f;
 	private const float fieldWidth = 70.0f;
-	private const float goalHeight = 11.0f;
+	private const float goalHeight = 10.0f;
 	private float wallTop;
 	private float wallBottom;
 	private float wallLeft;
@@ -47,6 +47,7 @@ public class Ball : MonoBehaviour {
 	private int p1char = -1;
 	private int p2char = -1;
 	private int crystal = -1;
+	private int bounceCount = -1;
 	private bool stopMovement = false;
 	private bool specialBall = false;
 
@@ -65,6 +66,8 @@ public class Ball : MonoBehaviour {
 
 
 		this.name = "Projectile";
+
+		bounceCount = 0;
 
 		wallTop    =  fieldHeight / 2;
 		wallBottom = -fieldHeight / 2;
@@ -134,10 +137,39 @@ public class Ball : MonoBehaviour {
 
 			Debug.DrawLine (new Vector3(startPoint.x, startPoint.y, -6.0f), new Vector3(hitPoint.x, hitPoint.y, -6.0f), Color.red, 3.0f);
 
-			startPoint = hitPoint;
-			startDirection = exitDirection;
+			if (path.Count == 1 && crystal > 0) {
+				switch (crystal) {
+					case 1:
+						Vector2 dir1 = new Vector2 ((this.tag == "BallP1") ? wallRight : wallLeft, (hitPoint.y >= 0) ? goalTop + 2 : goalBottom - 2) - hitPoint;
 
-			path.Add (hitPoint);
+						startPoint = hitPoint;
+						startDirection = dir1;
+
+						path.Add (hitPoint); break;
+					case 2:
+						Vector2 dir2 = new Vector2 ((this.tag == "BallP1") ? wallRight : wallLeft, (hitPoint.y >= 0) ? goalTop : goalBottom) - hitPoint;
+
+						startPoint = hitPoint;
+						startDirection = dir2;
+
+						path.Add (hitPoint); break;
+					case 3:
+						startPoint = new Vector2 (hitPoint.x, -hitPoint.y);
+
+						path.Add (startPoint); break;
+					default:
+						startPoint = hitPoint;
+						startDirection = exitDirection;
+
+						path.Add (hitPoint); break;
+				}
+			} else {
+				Debug.Log("else");
+				startPoint = hitPoint;
+				startDirection = exitDirection;
+
+				path.Add (hitPoint);
+			}
 		} while (hit.collider.gameObject.tag.Contains ("Wall") && path.Count <= maxPredictionCount);
 
 		gameScript.SetProjectileTransform (this.transform);
@@ -212,15 +244,15 @@ public class Ball : MonoBehaviour {
 			this.Catch (other);
 		} else if (other.tag == "DashTrigger") {
 			other.GetComponentInParent<Player>().SetDashTrigger(true);
+		} else if (other.tag == "Goal") {
+			this.Goal (other);
 		} else if (other.tag.Contains("Wall")) {
 			if (specialBall) {
 				this.BounceSpecial (other);
 			} else {
 				this.Bounce (other);
 			}
-		} else if (other.tag == "Goal") {
-			this.Goal (other);
-		}
+		} 
 	}
 
 
@@ -254,9 +286,6 @@ public class Ball : MonoBehaviour {
 			Vector2 exitDirection = Vector2.Reflect (playerDirection, hit.normal);
 
 			this.transform.rotation = ToolBox.GetRotationFromVector (exitDirection);
-//			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
-
-//			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
 
 
 			StartCoroutine (CalcPath (blockFreezeTime));
@@ -293,16 +322,18 @@ public class Ball : MonoBehaviour {
 		this.CheckScored ();
 
 
-		float distance = this.transform.right.magnitude;
-		Vector2 forward = this.transform.right / distance;
+		++bounceCount;
 
-		RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-		Vector2 exitDirection =  Vector2.Reflect(forward, hit.normal);
+		this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
+
+		gameScript.ProjectileBounceEvent (bounceCount);
+
+
+		Vector2 exitDirection = path [bounceCount + 1] - path [bounceCount];
 
 		this.transform.rotation = ToolBox.GetRotationFromVector (exitDirection);
 
 
-//		StartCoroutine (CalcPath (0.5f));
 		if (resetSpeed) this.SpeedUpProjectile(0.0f);
 
 		gameScript.ShakeScreen (2);
@@ -361,37 +392,46 @@ public class Ball : MonoBehaviour {
 // crystal is -1 and invokes a regular bounce if in special-mode
 //‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void BounceSpecial(GameObject other) {
-		if (other.tag == "WallRight" || other.tag == "WallLeft") {
-			crystal = -1;
+		if (other.tag == "WallRight" || other.tag == "WallLeft" || crystal <= 0) {
+			if (crystal == 1) ++bounceCount;
+
+			this.DisableAllSpecials ();
+			this.Bounce (other, true);
 		} else {
+			this.CheckScored ();
+
+			switch (crystal) {
+				case 1:
+					this.EnableLinearRotation (true);
+					
+					
+					float distance = this.transform.right.magnitude;
+					Vector2 forward = this.transform.right / distance;
+					
+					RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
+					
+					this.transform.rotation = ToolBox.GetRotationFromVector (hit.normal); break;
+				case 2:
+					++bounceCount;
+					float posY = path[bounceCount].y;
+					
+					this.transform.rotation = ToolBox.GetRotationFromVector(path [bounceCount + 1] - path [bounceCount]);
+					
+					gameScript.ProjectileBounceEvent (bounceCount);
+					
+					this.DisableAllSpecials (); break;
+				case 3:
+					++bounceCount;
+					this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
+					
+					gameScript.ProjectileBounceEvent (bounceCount);
+					
+					this.DisableAllSpecials (); break;
+				default:
+					break;
+			}
+
 			gameScript.ShakeScreen (3);
-		}
-
-
-		this.CheckScored ();
-
-
-		switch (crystal) {
-			case 1:
-				this.EnableLinearRotation (true);
-
-
-				float distance = this.transform.right.magnitude;
-				Vector2 forward = this.transform.right / distance;
-
-				RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-
-				this.transform.rotation = ToolBox.GetRotationFromVector (hit.normal); break;
-			case 2:
-				float posY = other.transform.position.y;
-
-				this.SetFieldMiddleRotation ((this.tag == "BallP1") ? wallRight : wallLeft, (posY >= 0) ? goalTop : goalBottom); break;
-			case 3:
-				this.transform.position = new Vector3 (this.transform.position.x, -this.transform.position.y, this.transform.position.z);
-				crystal = -1; break;
-			default:
-				this.DisableAllSpecials ();
-				this.Bounce (other, true); break;
 		}
 	}
 
@@ -493,6 +533,7 @@ public class Ball : MonoBehaviour {
 //_________________\\\\\\___ResetPath___//////_________________
 	private void ResetPath() {
 		path = new List<Vector2>();
+		bounceCount = 0;
 	}
 
 
@@ -518,6 +559,7 @@ public class Ball : MonoBehaviour {
 	private void DisableAllSpecials() {
 		specialBall = false;
 		this.EnableLinearRotation (false);
+		crystal = -1;
 	}
 
 

@@ -22,6 +22,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 	private const int p1 = 1;
 	private const int p2 = 2;
 
+	private List<int> selectedCharacters = new List<int> { -1, -1 };
 	private List<int> characters = new List<int> { 1, 1 };
 	private List<int> crystals = new List<int> { -1, -1 };
 
@@ -67,7 +68,9 @@ public class CharacterSelectionMenu : MonoBehaviour {
 	}
 
 	public void SelectPlayer1() {
-		this.PlayerSelect (p1);
+		if (characters [p1 - 1] != selectedCharacters [p2 - 1]) {
+			this.PlayerSelect (p1);
+		}
 	}
 
 	public void Crystal1OneEnter() {
@@ -121,7 +124,9 @@ public class CharacterSelectionMenu : MonoBehaviour {
 	}
 
 	public void SelectPlayer2() {
-		this.PlayerSelect (p2);
+		if (characters [p2 - 1] != selectedCharacters [p1 - 1]) {
+			this.PlayerSelect (p2);
+		}
 	}
 
 	public void Crystal2OneEnter() {
@@ -167,6 +172,12 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		GameObject sButtons = (player == 1) ? player1.FindChild ("Select_Buttons").gameObject : player2.FindChild ("Select_Buttons").gameObject;
 		GameObject cButtons = (player == 1) ? player1.FindChild ("Crystal_Buttons").gameObject : player2.FindChild ("Crystal_Buttons").gameObject;
 
+		if (selectedCharacters [player - 1] < 0) {
+			selectedCharacters [player - 1] = characters [player - 1];
+		} else {
+			selectedCharacters [player - 1] = -1;
+		}
+
 		if (!cButtons.activeSelf) {
 			sButtons.SetActive (false);
 			cButtons.SetActive (true);
@@ -201,9 +212,9 @@ public class CharacterSelectionMenu : MonoBehaviour {
 
 		this.DisableMenu ();
 
-		masterScript.SetCharacter (p1, characters [p1 - 1]);
+		masterScript.SetCharacter (p1, selectedCharacters [p1 - 1]);
 		masterScript.SetCrystal (p1, crystals[p1 - 1]);
-		masterScript.SetCharacter (p2, characters [p2 - 1]);
+		masterScript.SetCharacter (p2, selectedCharacters [p2 - 1]);
 		masterScript.SetCrystal (p2, crystals[p2 - 1]);
 
 		yield return new WaitForSeconds (3);

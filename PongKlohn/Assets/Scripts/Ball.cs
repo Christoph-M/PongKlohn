@@ -55,6 +55,9 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___Awake___//////_________________
+// Calculates wall positions and goal posts + sets
+// character + resets path
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	void Awake() {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
@@ -84,6 +87,9 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___OnEnable___//////_________________
+// Activates respective particle object + sets initial
+// direction + calculates projectile path
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	void OnEnable(){
 		if (this.tag == "BallP1") {
 			particleObjs[p1char].SetActive(true);
@@ -99,85 +105,10 @@ public class Ball : MonoBehaviour {
 	}
 
 
-//_________________\\\\\\___CalcPath___//////_________________
-	private IEnumerator CalcPath(float t) {
-		stopMovement = true;
-
-		this.ResetPath ();
-
-		RaycastHit2D hit;
-		Vector2 startPoint = this.transform.position;
-		Vector2 startDirection = this.transform.right;
-
-		yield return new WaitForSeconds (t);
-
-		path.Add (startPoint);
-
-		do {
-			hit = Physics2D.Raycast (startPoint, startDirection, Mathf.Infinity, -1, 0.09f, 0.11f);
-
-			string collTag = hit.collider.tag;
-			Vector2 hitPoint = Vector2.zero;
-
-			if (collTag.Contains("Wall")) {
-				if (collTag == "WallTop") {
-					hitPoint = new Vector2(hit.point.x, hit.point.y - 0.5f);
-				} else if (collTag == "WallBottom") {
-					hitPoint = new Vector2(hit.point.x, hit.point.y + 0.5f);
-				} else if (collTag == "WallRight") {
-					hitPoint = new Vector2(hit.point.x - 0.5f, hit.point.y);
-				} else if (collTag == "WallLeft") {
-					hitPoint = new Vector2(hit.point.x + 0.5f, hit.point.y);
-				}
-			} else {
-				hitPoint = hit.point;
-			}
-
-			Vector2 exitDirection = Vector2.Reflect (startDirection, hit.normal);
-
-			Debug.DrawLine (new Vector3(startPoint.x, startPoint.y, -6.0f), new Vector3(hitPoint.x, hitPoint.y, -6.0f), Color.red, 3.0f);
-
-			if (path.Count == 1 && crystal > 0) {
-				switch (crystal) {
-					case 1:
-						Vector2 dir1 = new Vector2 ((this.tag == "BallP1") ? wallRight : wallLeft, (hitPoint.y >= 0) ? goalTop + 2 : goalBottom - 2) - hitPoint;
-
-						startPoint = hitPoint;
-						startDirection = dir1;
-
-						path.Add (hitPoint); break;
-					case 2:
-						Vector2 dir2 = new Vector2 ((this.tag == "BallP1") ? wallRight : wallLeft, (hitPoint.y >= 0) ? goalTop : goalBottom) - hitPoint;
-
-						startPoint = hitPoint;
-						startDirection = dir2;
-
-						path.Add (hitPoint); break;
-					case 3:
-						startPoint = new Vector2 (hitPoint.x, -hitPoint.y);
-
-						path.Add (startPoint); break;
-					default:
-						startPoint = hitPoint;
-						startDirection = exitDirection;
-
-						path.Add (hitPoint); break;
-				}
-			} else {
-				startPoint = hitPoint;
-				startDirection = exitDirection;
-
-				path.Add (hitPoint);
-			}
-		} while (hit.collider.gameObject.tag.Contains ("Wall") && path.Count <= maxPredictionCount);
-
-		gameScript.SetProjectileTransform (this.transform);
-
-		stopMovement = false;
-	}
-
-
 //_________________\\\\\\___FixedUpdate___//////_________________
+// Moves projectile + sets projectile back into the field if it
+// goes beyond the bounds
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	void FixedUpdate() {
 		if (!stopMovement) {
 			if (move) moveScript.Update_ ();
@@ -202,6 +133,9 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___LateUpdate___//////_________________
+// Keeps time to prevent multiple block activations in a short
+// timeframe
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private float timeElapsed = 0.0f;
 	void LateUpdate() {
 		timeElapsed += Time.deltaTime;
@@ -209,6 +143,8 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___OnTriggerEnter2D___//////_________________
+// Called when projectile collides with a trigger
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	void OnTriggerEnter2D(Collider2D other){
 		this.Trigger (other.gameObject);
 	}
@@ -290,7 +226,7 @@ public class Ball : MonoBehaviour {
 			StartCoroutine (CalcPath (blockFreezeTime));
 			this.DeactivateParticleObjs ();
 
-			this.SetTurn (playerTag);
+			this.SetTag (playerTag);
 			if (this.tag == "BallP1") {
 				particleObjs[p1char].SetActive(true);
 			} else {
@@ -373,8 +309,8 @@ public class Ball : MonoBehaviour {
 			StartCoroutine (CalcPath (specialFreezeTime));
 			this.DeactivateParticleObjs ();
 
-			this.SetTurn (playerTag);
-			particleObjs[(this.tag == "BallP1") ? p1char : p2char + 5].SetActive (true);
+			this.SetTag (playerTag);
+			particleObjs[(this.tag == "BallP1") ? p1char : p2char + 6].SetActive (true);
 
 			this.SpeedUpProjectile (2.0f, true);
 
@@ -472,11 +408,95 @@ public class Ball : MonoBehaviour {
 	}
 
 
+//_________________\\\\\\___CalcPath___//////_________________
+// Stops movement + waits a given time + calculates projectile
+// path + sets projectile transform in game script + enables
+// projectile again
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+	private IEnumerator CalcPath(float t) {
+		stopMovement = true;
+
+		this.ResetPath ();
+
+		RaycastHit2D hit;
+		Vector2 startPoint = this.transform.position;
+		Vector2 startDirection = this.transform.right;
+
+		yield return new WaitForSeconds (t);
+
+		path.Add (startPoint);
+
+		do {
+			hit = Physics2D.Raycast (startPoint, startDirection, Mathf.Infinity, -1, 0.09f, 0.11f);
+
+			string collTag = hit.collider.tag;
+			Vector2 hitPoint = Vector2.zero;
+
+			if (collTag.Contains("Wall")) {
+				if (collTag == "WallTop") {
+					hitPoint = new Vector2(hit.point.x, hit.point.y - 0.5f);
+				} else if (collTag == "WallBottom") {
+					hitPoint = new Vector2(hit.point.x, hit.point.y + 0.5f);
+				} else if (collTag == "WallRight") {
+					hitPoint = new Vector2(hit.point.x - 0.5f, hit.point.y);
+				} else if (collTag == "WallLeft") {
+					hitPoint = new Vector2(hit.point.x + 0.5f, hit.point.y);
+				}
+			} else {
+				hitPoint = hit.point;
+			}
+
+			Vector2 exitDirection = Vector2.Reflect (startDirection, hit.normal);
+
+			Debug.DrawLine (new Vector3(startPoint.x, startPoint.y, -6.0f), new Vector3(hitPoint.x, hitPoint.y, -6.0f), Color.red, 3.0f);
+
+			if (path.Count == 1 && crystal > 0) {
+				switch (crystal) {
+					case 1:
+						Vector2 dir1 = new Vector2 ((this.tag == "BallP1") ? wallRight : wallLeft, (hitPoint.y >= 0) ? goalTop + 2 : goalBottom - 2) - hitPoint;
+						
+						startPoint = hitPoint;
+						startDirection = dir1;
+						
+						path.Add (hitPoint); break;
+					case 2:
+						Vector2 dir2 = new Vector2 ((this.tag == "BallP1") ? wallRight : wallLeft, (hitPoint.y >= 0) ? goalTop : goalBottom) - hitPoint;
+						
+						startPoint = hitPoint;
+						startDirection = dir2;
+						
+						path.Add (hitPoint); break;
+					case 3:
+						startPoint = new Vector2 (hitPoint.x, -hitPoint.y);
+						
+						path.Add (startPoint); break;
+					default:
+						startPoint = hitPoint;
+						startDirection = exitDirection;
+						
+						path.Add (hitPoint); break;
+				}
+			} else {
+				startPoint = hitPoint;
+				startDirection = exitDirection;
+
+				path.Add (hitPoint);
+			}
+		} while (hit.collider.gameObject.tag.Contains ("Wall") && path.Count <= maxPredictionCount);
+
+		gameScript.SetProjectileTransform (this.transform);
+
+		stopMovement = false;
+	}
+
+
 //____________________________________________________________\\\\\\___HelperMethods___//////_______________________________________________________________
 
 
-//_________________\\\\\\___SetTurn___//////_________________
-	private void SetTurn(string name) {
+//_________________\\\\\\___SetTag___//////_________________
+// Sets projectile tag to change particle effect accordingly
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+	private void SetTag(string name) {
 		if (name == "Goal_Red" || name == "Player1") {
 			this.tag = "BallP1";
 		} else {
@@ -486,6 +506,8 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___SetRotation___//////_________________
+// Randomly sets an initial start direction
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void SetRotation(float i) {
 		Vector2 direction = new Vector2 (Random.Range (-1.0f, 1.0f), i);
 		direction.Normalize ();
@@ -497,6 +519,8 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___SetFieldMiddleRotation___//////_________________
+// Sets direction to the middle top/bottom of the field
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void SetFieldMiddleRotation(float x, float y) {
 		Vector3 dir = new Vector3 (x, y, -6.0f) - this.transform.position;
 
@@ -505,6 +529,8 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___SpeedUpProjectile___//////_________________
+// Sets new projectile speed + initiates boost + updates speed
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void SpeedUpProjectile(float fac, bool special = false) {
 		gameScript.BallSpeedUp (fac, special);
 		StartCoroutine (gameScript.BallSpeedBoost ());
@@ -513,6 +539,9 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___CheckScored___//////_________________
+// Checks if projectile is within enemy part of field and
+// decreases enemy health
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void CheckScored() {
 		if (this.tag == "BallP1" && this.transform.position.x > 0.0f) {
 			gameScript.Player1Scored (true);
@@ -523,6 +552,8 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___DeactivateParticleObjs___//////_________________
+// Deactivates all particle objects
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void DeactivateParticleObjs() {
 		foreach (GameObject ball in particleObjs) {
 			ball.SetActive (false);
@@ -531,6 +562,8 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___ResetPath___//////_________________
+// Resets path and bounceCount
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void ResetPath() {
 		path = new List<Vector2>();
 		bounceCount = 0;
@@ -538,6 +571,11 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___ResetBall___//////_________________
+// Deactivates all particle objects + disables all specials +
+// sets projectile to homePoisition + sets projectile tag +
+// resets ball speed and updates it + resets path and sets
+// projectile transform to null in game script
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void ResetBall(string name) {
 		this.DeactivateParticleObjs ();
 
@@ -545,7 +583,7 @@ public class Ball : MonoBehaviour {
 
 		this.transform.position = homePosition;
 
-		this.SetTurn (name);
+		this.SetTag (name);
 
 		gameScript.ResetBallSpeed();
 		moveScript.UpdateBallSpeed ();
@@ -556,6 +594,8 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___DisableAllSpecials___//////_________________
+// Disables special-mode + disables linear rotation + resets crystal
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void DisableAllSpecials() {
 		specialBall = false;
 		this.EnableLinearRotation (false);
@@ -564,6 +604,8 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___EnableLinearRotation___//////_________________
+// Enables/disables linear rotation
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void EnableLinearRotation(bool b) {
 		linearRotation = b;
 		linearRotationScript.enabled = b;

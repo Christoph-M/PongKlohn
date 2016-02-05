@@ -164,7 +164,6 @@ public class Ball : MonoBehaviour {
 						path.Add (hitPoint); break;
 				}
 			} else {
-				Debug.Log("else");
 				startPoint = hitPoint;
 				startDirection = exitDirection;
 
@@ -508,6 +507,7 @@ public class Ball : MonoBehaviour {
 //_________________\\\\\\___SpeedUpProjectile___//////_________________
 	private void SpeedUpProjectile(float fac, bool special = false) {
 		gameScript.BallSpeedUp (fac, special);
+		StartCoroutine (gameScript.BallSpeedBoost ());
 		moveScript.UpdateBallSpeed ();
 	}
 

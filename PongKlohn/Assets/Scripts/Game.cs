@@ -39,7 +39,9 @@ public class Game : MonoBehaviour {
 	public float minBallSpeed;
 	public float maxBallSpeed;
 	public AnimationCurve ballSpeedUpCurve = AnimationCurve.EaseInOut(0.0f, 10.0f, 1.0f, 100.0f);
+	public AnimationCurve ballSpeedBoostCurve = AnimationCurve.EaseInOut(0.0f, 20.0f, 0.5f, 0.0f);
 	public float ballSpeedUpStep = 5.0f;
+	public float ballBoostTime = 0.5f;
 	public float catchSpeedDec = 2.0f;
 
 	[Header("Timer")]
@@ -102,6 +104,26 @@ public class Game : MonoBehaviour {
 			ballSpeed = maxBallSpeed;
 			ballSpeedAtTime = 1.0f;
 		}
+
+		projectile.GetComponent<Move>().UpdateBallSpeed ();
+	}
+
+	public IEnumerator BallSpeedBoost() {
+		float timeElapsed = 0.0f;
+		Move moveScript = projectile.GetComponent<Move> ();
+
+		float oldSpeed = ballSpeed;
+
+		while (timeElapsed < ballBoostTime) {
+			ballSpeed = oldSpeed + ballSpeedBoostCurve.Evaluate (timeElapsed / ballBoostTime);
+			moveScript.UpdateBallSpeed ();
+
+			timeElapsed += Time.deltaTime;
+
+			yield return new WaitForSeconds (0.01f);
+		}
+
+		ballSpeed = oldSpeed;
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }

@@ -11,10 +11,16 @@ public class Ball : MonoBehaviour {
 	public bool linearRotation = false;
 	public bool sinCosRotation = false;
 
-	[Space(10)]
+	[Header("Particle Objects")]
+	public List<GameObject> particleObjs;
+
+	[Header("Path Prediction")]
 	public int maxPredictionCount = 15;
+
+	[Header("Freeze Times")]
 	public float blockFreezeTime = 0.1f;
 	public float specialFreezeTime = 0.2f;
+
 
 //__________________________Private_____________________________
 	private MasterScript masterScript;
@@ -28,7 +34,7 @@ public class Ball : MonoBehaviour {
 
 	private const float fieldHeight = 22.0f;
 	private const float fieldWidth = 70.0f;
-	private const float goalHeight = 11.0f;
+	private const float goalHeight = 10.0f;
 	private float wallTop;
 	private float wallBottom;
 	private float wallLeft;
@@ -38,11 +44,17 @@ public class Ball : MonoBehaviour {
 
 	private List<Vector2> path;
 
+	private int p1char = -1;
+	private int p2char = -1;
 	private int crystal = -1;
+	private int bounceCount = -1;
 	private bool stopMovement = false;
 	private bool specialBall = false;
 
-//__________________________MonoMethods_____________________________
+//____________________________________________________________\\\\\\___MonoMethods___//////_______________________________________________________________
+
+
+//_________________\\\\\\___Awake___//////_________________
 	void Awake() {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
@@ -55,6 +67,8 @@ public class Ball : MonoBehaviour {
 
 		this.name = "Projectile";
 
+		bounceCount = 0;
+
 		wallTop    =  fieldHeight / 2;
 		wallBottom = -fieldHeight / 2;
 		wallRight  =  fieldWidth  / 2;
@@ -62,16 +76,21 @@ public class Ball : MonoBehaviour {
 		goalTop    =  goalHeight  / 2;
 		goalBottom = -goalHeight  / 2;
 
+		p1char = masterScript.GetCharacter (1) - 1;
+		p2char = masterScript.GetCharacter (2) - 1;
+
 		this.ResetPath ();
 	}
 
+
+//_________________\\\\\\___OnEnable___//////_________________
 	void OnEnable(){
 		if (this.tag == "BallP1") {
-			this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
+			particleObjs[p1char].SetActive(true);
 
 			this.SetRotation (1.0f);
 		} else {
-			this.transform.FindChild ("Elektro B R").gameObject.SetActive(true);
+			particleObjs[p2char].SetActive(true);
 
 			this.SetRotation (-1.0f);
 		}
@@ -79,6 +98,8 @@ public class Ball : MonoBehaviour {
 		StartCoroutine (CalcPath (2.0f));
 	}
 
+
+//_________________\\\\\\___CalcPath___//////_________________
 	private IEnumerator CalcPath(float t) {
 		stopMovement = true;
 
@@ -116,18 +137,47 @@ public class Ball : MonoBehaviour {
 
 			Debug.DrawLine (new Vector3(startPoint.x, startPoint.y, -6.0f), new Vector3(hitPoint.x, hitPoint.y, -6.0f), Color.red, 3.0f);
 
-			startPoint = hitPoint;
-			startDirection = exitDirection;
+			if (path.Count == 1 && crystal > 0) {
+				switch (crystal) {
+					case 1:
+						Vector2 dir1 = new Vector2 ((this.tag == "BallP1") ? wallRight : wallLeft, (hitPoint.y >= 0) ? goalTop + 2 : goalBottom - 2) - hitPoint;
 
-			path.Add (hitPoint);
+						startPoint = hitPoint;
+						startDirection = dir1;
+
+						path.Add (hitPoint); break;
+					case 2:
+						Vector2 dir2 = new Vector2 ((this.tag == "BallP1") ? wallRight : wallLeft, (hitPoint.y >= 0) ? goalTop : goalBottom) - hitPoint;
+
+						startPoint = hitPoint;
+						startDirection = dir2;
+
+						path.Add (hitPoint); break;
+					case 3:
+						startPoint = new Vector2 (hitPoint.x, -hitPoint.y);
+
+						path.Add (startPoint); break;
+					default:
+						startPoint = hitPoint;
+						startDirection = exitDirection;
+
+						path.Add (hitPoint); break;
+				}
+			} else {
+				startPoint = hitPoint;
+				startDirection = exitDirection;
+
+				path.Add (hitPoint);
+			}
 		} while (hit.collider.gameObject.tag.Contains ("Wall") && path.Count <= maxPredictionCount);
-
 
 		gameScript.SetProjectileTransform (this.transform);
 
 		stopMovement = false;
 	}
 
+
+//_________________\\\\\\___FixedUpdate___//////_________________
 	void FixedUpdate() {
 		if (!stopMovement) {
 			if (move) moveScript.Update_ ();
@@ -150,21 +200,38 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
+
+//_________________\\\\\\___LateUpdate___//////_________________
 	private float timeElapsed = 0.0f;
 	void LateUpdate() {
 		timeElapsed += Time.deltaTime;
 	}
 
+
+//_________________\\\\\\___OnTriggerEnter2D___//////_________________
 	void OnTriggerEnter2D(Collider2D other){
 		this.Trigger (other.gameObject);
 	}
 
-//__________________________Public_____________________________
+
+//____________________________________________________________\\\\\\___Public___//////_______________________________________________________________
+	
+
+//_________________\\\\\\___GetPath___//////_________________
+// Returns pre-calculated path of the projectile
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	public List<Vector2> GetPath() {
 		return path;
 	}
 
-//__________________________Private_____________________________
+
+//____________________________________________________________\\\\\\___Private___//////_______________________________________________________________
+
+
+//_________________\\\\\\___Trigger___//////_________________
+// Determines which trigger was hit and invokes the
+// respective action
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Trigger(GameObject other){
 		if (other.tag == "BlockTrigger") {
 			this.Block (other);
@@ -176,140 +243,23 @@ public class Ball : MonoBehaviour {
 			this.Catch (other);
 		} else if (other.tag == "DashTrigger") {
 			other.GetComponentInParent<Player>().SetDashTrigger(true);
+		} else if (other.tag == "Goal") {
+			this.Goal (other);
 		} else if (other.tag.Contains("Wall")) {
 			if (specialBall) {
 				this.BounceSpecial (other);
 			} else {
 				this.Bounce (other);
 			}
-		} else if (other.tag == "Goal") {
-			this.Goal (other);
-		}
+		} 
 	}
 
-	private void Bounce(GameObject other) {
-//		Debug.Log ("Bounced. Time: " + timeElapsed);
-//		timeElapsed = 0.0f;
 
-
-		if (this.tag == "BallP1" && this.transform.position.x > 0.0f) {
-			gameScript.Player1Scored (true);
-		} else if (this.tag == "BallP2" && this.transform.position.x < 0.0f) {
-			gameScript.Player2Scored (true);
-		}
-
-
-		float distance = this.transform.right.magnitude;
-		Vector2 forward = this.transform.right / distance;
-
-		RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-		Vector2 exitDirection =  Vector2.Reflect(forward, hit.normal);
-
-//			Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
-//			Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
-//			Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
-		
-		float angle = Mathf.Atan2(exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
-
-//		Vector3 diff = (Vector2)this.transform.position - hit.point;
-//		this.transform.position = (Mathf.Sqrt(diff.sqrMagnitude) * exitDirection) + hit.point;
-
-		this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-//		if (other.tag == "WallTop") {
-//			this.transform.position = new Vector3 (this.transform.position.x, wallTop - 0.5f, this.transform.position.z);
-//		} else if (other.tag == "WallBottom") {
-//			this.transform.position = new Vector3 (this.transform.position.x, wallBottom + 0.5f, this.transform.position.z);
-//		} else if (other.tag == "WallRight") {
-//			this.transform.position = new Vector3 (wallRight - 0.5f, this.transform.position.y, this.transform.position.z);
-//		} else if (other.tag == "WallLeft") {
-//			this.transform.position = new Vector3 (wallLeft + 0.5f, this.transform.position.y, this.transform.position.z);
-//		}
-
-
-//		StartCoroutine (CalcPath (0.5f));
-
-		gameScript.ShakeScreen (2);
-	}
-
-	private void BounceSpecial(GameObject other) {
-//		Debug.Log ("Bounce Special. Time: " + timeElapsed);
-//		timeElapsed = 0.0f;
-
-
-		if (other.tag == "WallRight" || other.tag == "WallLeft") {
-			crystal = -1;
-		}
-
-		switch (crystal) {
-		case 1:
-			linearRotation = true;
-			linearRotationScript.enabled = true;
-
-			float distance = this.transform.right.magnitude;
-			Vector2 forward = this.transform.right / distance;
-
-			RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
-			Vector2 exitDirection = Vector2.Reflect (forward, hit.normal);
-
-//				Debug.DrawRay (Vector2.zero, other.transform.position, Color.blue, 0.1f);
-//				Debug.DrawRay (hit.point, hit.normal, Color.green, 0.1f);
-//				Debug.DrawRay (hit.point, exitDirection, Color.red, 0.1f);
-
-			float angle1 = Mathf.Atan2 (hit.normal.y, hit.normal.x) * Mathf.Rad2Deg;
-
-			this.transform.rotation = Quaternion.AngleAxis (angle1, Vector3.forward);
-
-			gameScript.BallSpeedUp (4.0f);
-			moveScript.UpdateBallSpeed ();
-
-
-			gameScript.ShakeScreen (3);
-			break;
-		case 2:
-			Vector3 dir;
-
-			float x;
-
-			if (this.tag == "BallP1") {
-				x = wallRight;
-			} else {
-				x = wallLeft;
-			}
-
-			if (other.transform.position.y >= 0) {
-				dir = new Vector3 (x, goalTop, -6.0f) - this.transform.position;
-			} else {
-				dir = new Vector3 (x, goalBottom, -6.0f) - this.transform.position;
-			}
-
-			float angle2 = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
-
-			this.transform.rotation = Quaternion.AngleAxis (angle2, Vector3.forward);
-
-			gameScript.BallSpeedUp (4.0f);
-			moveScript.UpdateBallSpeed ();
-
-
-			gameScript.ShakeScreen (3);
-			break;
-		case 3:
-			this.transform.position = new Vector3 (this.transform.position.x, -this.transform.position.y, this.transform.position.z);
-			crystal = -1;
-
-			gameScript.BallSpeedUp (4.0f);
-			moveScript.UpdateBallSpeed ();
-
-
-			gameScript.ShakeScreen (3);
-			break;
-		default:
-			this.DisableAllSpecials ();
-			this.Bounce (other);
-			break;
-		}
-	}
-
+//_________________\\\\\\___Block___//////_________________
+// Adds energy to respective player, bounces projectile
+// off the shield, calculates new path, sets new 
+// ball particle and speeds up projectile
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Block(GameObject other) {
 		if (timeElapsed >= blockFreezeTime + 0.1f) {
 //			Debug.Log ("Blocked. Time: " + timeElapsed);
@@ -320,40 +270,37 @@ public class Ball : MonoBehaviour {
 
 			string playerTag = other.transform.parent.tag;
 
-			if (playerTag == "Player1") {
-				gameScript.Player1AddEnergy ();
-			} else {
-				gameScript.Player2AddEnergy ();
+			if (other.name != "DashCollider") {
+				if (playerTag == "Player1") {
+					gameScript.Player1AddEnergy ();
+				} else {
+					gameScript.Player2AddEnergy ();
+				}
 			}
 
 
 			Vector2 playerDirection = other.transform.parent.position - this.transform.position;
-			
+
 			RaycastHit2D hit = Physics2D.Raycast (this.transform.position, playerDirection);
 			Vector2 exitDirection = Vector2.Reflect (playerDirection, hit.normal);
-			
-//				Debug.DrawRay (this.transform.position, playerDirection, Color.blue, 1000);
-//				Debug.DrawRay (hit.point, hit.normal, Color.green, 1000);
-//				Debug.DrawRay (hit.point, exitDirection, Color.red, 1000);
-			
-			float angle = Mathf.Atan2 (exitDirection.y, exitDirection.x) * Mathf.Rad2Deg;
 
-			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+			this.transform.rotation = ToolBox.GetRotationFromVector (exitDirection);
 
 
 			StartCoroutine (CalcPath (blockFreezeTime));
-			this.DeactivateProjectiles ();
+			this.DeactivateParticleObjs ();
 
 			this.SetTurn (playerTag);
 			if (this.tag == "BallP1") {
-				this.transform.FindChild ("Elektro R R").gameObject.SetActive(true);
+				particleObjs[p1char].SetActive(true);
 			} else {
-				this.transform.FindChild ("Elektro B R").gameObject.SetActive(true);
+				particleObjs[p2char].SetActive(true);
 			}
 
-			if (other.transform.parent.name.Contains("Player")) {
-				gameScript.BallSpeedUp (other.GetComponentInParent<Player>().SetOnBlock());
-				moveScript.UpdateBallSpeed ();
+			string name = other.transform.parent.name;
+
+			if (name.Contains("Player")) {
+				this.SpeedUpProjectile (other.GetComponentInParent<Player> ().SetOnBlock ());
 			}
 
 
@@ -361,6 +308,42 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
+
+//_________________\\\\\\___Bounce___//////_________________
+// Takes enemy health if projectile is within the enemy side
+// of the field, bounces it off the wall and resets the
+// projectile speed to the last speed after a special
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+	private void Bounce(GameObject other, bool resetSpeed = false) {
+//		Debug.Log ("Bounced. Time: " + timeElapsed);
+//		timeElapsed = 0.0f;
+
+		this.CheckScored ();
+
+
+		++bounceCount;
+
+		this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
+
+		gameScript.ProjectileBounceEvent (bounceCount);
+
+
+		Vector2 exitDirection = path [bounceCount + 1] - path [bounceCount];
+
+		this.transform.rotation = ToolBox.GetRotationFromVector (exitDirection);
+
+
+		if (resetSpeed) this.SpeedUpProjectile(0.0f);
+
+		gameScript.ShakeScreen (2);
+	}
+
+
+//_____________________________\\\\\\___Special___//////_____________________________
+// Activates special-mode, sets crystal, sets linear rotation direction
+// if crystal is 1, sets target point to middleTop, middleBottm respectively,
+// calculates new path, sets new ball particle, sets projectile speed to special
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Special(GameObject other) {
 		if (timeElapsed >= specialFreezeTime + 0.1f) {
 //			Debug.Log ("Special. Time: " + timeElapsed);
@@ -369,49 +352,92 @@ public class Ball : MonoBehaviour {
 
 			specialBall = true;
 
-
-			Vector3 dir;
-
-			if (other.transform.position.y >= 0) {
-				dir = new Vector3 (0.0f, wallTop, -6.0f) - this.transform.position;
-			} else {
-				dir = new Vector3 (0.0f, wallBottom, -6.0f) - this.transform.position;
-			}
-
-			float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
-
-			this.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
-
-
 			string playerTag = other.transform.parent.tag;
+			float posY = other.transform.position.y;
+
 			crystal = masterScript.GetCrystal ((playerTag == "Player1") ? 1 : 2);
 
-			if (crystal == 1) {
-				string tag = other.transform.parent.tag;
-				float pos = this.transform.position.y;
 
-				if ((tag == "Player1" && pos < 0.0f) || (tag == "Player2" && pos > 0.0f)) {
-					linearRotationScript.SetDirection(-1);
-				} else if ((tag == "Player1" && pos > 0.0f) || (tag == "Player2" && pos < 0.0f)) {
-					linearRotationScript.SetDirection(1);
+			if (crystal == 1) {
+				if ((playerTag == "Player1" && posY < 0.0f) || (playerTag == "Player2" && posY > 0.0f)) {
+					linearRotationScript.SetDirection (-1);
+				} else if ((playerTag == "Player1" && posY > 0.0f) || (playerTag == "Player2" && posY < 0.0f)) {
+					linearRotationScript.SetDirection (1);
 				}
 			}
+				
+
+			this.SetFieldMiddleRotation (0.0f, (posY >= 0) ? wallTop : wallBottom);
 
 
 			StartCoroutine (CalcPath (specialFreezeTime));
-			this.DeactivateProjectiles ();
+			this.DeactivateParticleObjs ();
 
 			this.SetTurn (playerTag);
-			this.transform.FindChild ("Special_" + crystal).gameObject.SetActive (true);
+			particleObjs[(this.tag == "BallP1") ? p1char : p2char + 5].SetActive (true);
 
-			gameScript.BallSpeedUp (2.0f);
-			moveScript.UpdateBallSpeed ();
+			this.SpeedUpProjectile (2.0f, true);
 
 
 			gameScript.ShakeScreen (3);
 		}
 	}
 
+
+//_________________\\\\\\___BounceSpecial___//////_________________
+// Sets crystal to -1 if projectile hit the right or left wall,
+// takes enemy health if projectile is within enemy side of field,
+// performs the respective special, disable special-mode if
+// crystal is -1 and invokes a regular bounce if in special-mode
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+	private void BounceSpecial(GameObject other) {
+		if (other.tag == "WallRight" || other.tag == "WallLeft" || crystal <= 0) {
+			if (crystal == 1) ++bounceCount;
+
+			this.DisableAllSpecials ();
+			this.Bounce (other, true);
+		} else {
+			this.CheckScored ();
+
+			switch (crystal) {
+				case 1:
+					this.EnableLinearRotation (true);
+					
+					
+					float distance = this.transform.right.magnitude;
+					Vector2 forward = this.transform.right / distance;
+					
+					RaycastHit2D hit = Physics2D.Raycast (Vector2.zero, other.transform.position, Mathf.Infinity, -1, 0.09f, 0.11f);
+					
+					this.transform.rotation = ToolBox.GetRotationFromVector (hit.normal); break;
+				case 2:
+					++bounceCount;
+					float posY = path[bounceCount].y;
+					
+					this.transform.rotation = ToolBox.GetRotationFromVector(path [bounceCount + 1] - path [bounceCount]);
+					
+					gameScript.ProjectileBounceEvent (bounceCount);
+					
+					this.DisableAllSpecials (); break;
+				case 3:
+					++bounceCount;
+					this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
+					
+					gameScript.ProjectileBounceEvent (bounceCount);
+					
+					this.DisableAllSpecials (); break;
+				default:
+					break;
+			}
+
+			gameScript.ShakeScreen (3);
+		}
+	}
+
+
+//_________________\\\\\\___Catch___//////_________________
+// Decreases projectile speed
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Catch(GameObject other) {
 //		Debug.Log ("Stunned. Time: " + timeElapsed);
 //		timeElapsed = 0.0f;
@@ -420,6 +446,11 @@ public class Ball : MonoBehaviour {
 		moveScript.UpdateBallSpeed ();
 	}
 
+
+//_________________\\\\\\___Goal___//////_________________
+// Takes health from respective player, disables
+// projectile, resets it and enables it again
+//‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void Goal(GameObject other) {
 //		Debug.Log ("Goal. Time: " + timeElapsed);
 //		timeElapsed = 0.0f;
@@ -434,25 +465,27 @@ public class Ball : MonoBehaviour {
 		this.enabled = false;
 
 		this.ResetBall (other.name);
-		gameScript.ResetBallSpeed();
-		moveScript.UpdateBallSpeed ();
 
 		gameScript.ShakeScreen (1);
 
 		this.enabled = true;
 	}
 
-//__________________________HelperMethods_____________________________
+
+//____________________________________________________________\\\\\\___HelperMethods___//////_______________________________________________________________
+
+
+//_________________\\\\\\___SetTurn___//////_________________
 	private void SetTurn(string name) {
 		if (name == "Goal_Red" || name == "Player1") {
 			this.tag = "BallP1";
 		} else {
 			this.tag = "BallP2";
 		}
-
-		Debug.Log ("SetTurn(): " + this.tag);
 	}
 
+
+//_________________\\\\\\___SetRotation___//////_________________
 	private void SetRotation(float i) {
 		Vector2 direction = new Vector2 (Random.Range (-1.0f, 1.0f), i);
 		direction.Normalize ();
@@ -462,26 +495,51 @@ public class Ball : MonoBehaviour {
 		this.transform.rotation = Quaternion.LookRotation(direction, Vector3.forward);
 	}
 
-	private void DeactivateProjectiles() {
-		foreach (Transform child in this.transform) {
-			child.gameObject.SetActive (false);
-		}
 
-		Debug.Log ("DeactivateProjectiles()");
+//_________________\\\\\\___SetFieldMiddleRotation___//////_________________
+	private void SetFieldMiddleRotation(float x, float y) {
+		Vector3 dir = new Vector3 (x, y, -6.0f) - this.transform.position;
+
+		this.transform.rotation = ToolBox.GetRotationFromVector (dir);
 	}
 
+
+//_________________\\\\\\___SpeedUpProjectile___//////_________________
+	private void SpeedUpProjectile(float fac, bool special = false) {
+		gameScript.BallSpeedUp (fac, special);
+		StartCoroutine (gameScript.BallSpeedBoost ());
+		moveScript.UpdateBallSpeed ();
+	}
+
+
+//_________________\\\\\\___CheckScored___//////_________________
+	private void CheckScored() {
+		if (this.tag == "BallP1" && this.transform.position.x > 0.0f) {
+			gameScript.Player1Scored (true);
+		} else if (this.tag == "BallP2" && this.transform.position.x < 0.0f) {
+			gameScript.Player2Scored (true);
+		}
+	}
+
+
+//_________________\\\\\\___DeactivateParticleObjs___//////_________________
+	private void DeactivateParticleObjs() {
+		foreach (GameObject ball in particleObjs) {
+			ball.SetActive (false);
+		}
+	}
+
+
+//_________________\\\\\\___ResetPath___//////_________________
 	private void ResetPath() {
 		path = new List<Vector2>();
+		bounceCount = 0;
 	}
 
-	private  void DestroyBall() {
-		Object.Destroy (this.gameObject);
 
-		gameScript.SetProjectileTransform (null);
-	}
-
+//_________________\\\\\\___ResetBall___//////_________________
 	private void ResetBall(string name) {
-		this.DeactivateProjectiles ();
+		this.DeactivateParticleObjs ();
 
 		this.DisableAllSpecials ();
 
@@ -489,13 +547,25 @@ public class Ball : MonoBehaviour {
 
 		this.SetTurn (name);
 
+		gameScript.ResetBallSpeed();
+		moveScript.UpdateBallSpeed ();
+
 		this.ResetPath ();
 		gameScript.SetProjectileTransform (null);
 	}
 
+
+//_________________\\\\\\___DisableAllSpecials___//////_________________
 	private void DisableAllSpecials() {
 		specialBall = false;
-		linearRotation = false;
-		linearRotationScript.enabled = false;
+		this.EnableLinearRotation (false);
+		crystal = -1;
+	}
+
+
+//_________________\\\\\\___EnableLinearRotation___//////_________________
+	private void EnableLinearRotation(bool b) {
+		linearRotation = b;
+		linearRotationScript.enabled = b;
 	}
 }

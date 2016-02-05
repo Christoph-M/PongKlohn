@@ -39,7 +39,9 @@ public class Game : MonoBehaviour {
 	public float minBallSpeed;
 	public float maxBallSpeed;
 	public AnimationCurve ballSpeedUpCurve = AnimationCurve.EaseInOut(0.0f, 10.0f, 1.0f, 100.0f);
+	public AnimationCurve ballSpeedBoostCurve = AnimationCurve.EaseInOut(0.0f, 20.0f, 0.5f, 0.0f);
 	public float ballSpeedUpStep = 5.0f;
+	public float ballBoostTime = 0.5f;
 	public float catchSpeedDec = 2.0f;
 
 	[Header("Timer")]
@@ -87,16 +89,41 @@ public class Game : MonoBehaviour {
 	}
 
 	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (); }
+	public void ProjectileBounceEvent(int i) {  }
 	public Transform GetProjectileTransform() { return projectile; }
 
-	public void BallSpeedUp(float blockFac){
-		ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
-		ballSpeed = ballSpeedUpCurve.Evaluate(ballSpeedAtTime) * (1 + blockFac);
+	public void BallSpeedUp(float blockFac, bool special = false){
+		if (blockFac > 0.0f) {
+			ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
+			ballSpeed = ballSpeedUpCurve.Evaluate (ballSpeedAtTime) * (1 + blockFac);
+		} else {
+			ballSpeed = ballSpeedUpCurve.Evaluate (ballSpeedAtTime);
+		}
 
-		if (ballSpeed > maxBallSpeed) {
+		if (ballSpeed > maxBallSpeed && !special) {
 			ballSpeed = maxBallSpeed;
 			ballSpeedAtTime = 1.0f;
 		}
+
+		projectile.GetComponent<Move>().UpdateBallSpeed ();
+	}
+
+	public IEnumerator BallSpeedBoost() {
+		float timeElapsed = 0.0f;
+		Move moveScript = projectile.GetComponent<Move> ();
+
+		float oldSpeed = ballSpeed;
+
+		while (timeElapsed < ballBoostTime) {
+			ballSpeed = oldSpeed + ballSpeedBoostCurve.Evaluate (timeElapsed / ballBoostTime);
+			moveScript.UpdateBallSpeed ();
+
+			timeElapsed += Time.deltaTime;
+
+			yield return new WaitForSeconds (0.01f);
+		}
+
+		ballSpeed = oldSpeed;
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }
@@ -236,8 +263,8 @@ public class Game : MonoBehaviour {
 		int charP1 = masterScript.GetCharacter (1) - 1;
 		int charP2 = masterScript.GetCharacter (2) - 1;
 
-		GameObject p1 = Instantiate (charactersP1 [charP1], player1Spawn, new Quaternion ()) as GameObject;
-		GameObject p2 = Instantiate (charactersP2 [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
+		GameObject p1 = Instantiate (masterScript.players [charP1], player1Spawn, new Quaternion ()) as GameObject;
+		GameObject p2 = Instantiate (masterScript.players [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
 		Transform pEmpty = GameObject.FindGameObjectWithTag ("PlayerEmpty").transform;
 
 		player1 = p1.GetComponent<Player> ();

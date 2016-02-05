@@ -356,7 +356,7 @@ public class Player : MonoBehaviour
 				if(wallDistance.y < lerpedDash.y * dashLength){endVec.y = startVec.y - wallDistance.y;}
 			}
             Vector3 diff = (startVec - endVec);
-            GameObject g = Instance(DashCollider, transform.position -(diff/2), ToolBox.GetRorationFromVector(new Vector3(directionRaw_.x,directionRaw_.y,0)));
+            GameObject g = Instance(DashCollider, transform.position -(diff/2), ToolBox.GetRotationFromVector(new Vector3(directionRaw_.x,directionRaw_.y,0)));
             g.tag = this.tag;
         }
 
@@ -650,7 +650,7 @@ public class Player : MonoBehaviour
     public float SetOnBlock()
     {    
         blockWasHit = true;
-        return blockLoad;
+		return ballSpeedup;
     }
 
 	public void SetTrigger(int newState)

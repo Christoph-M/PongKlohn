@@ -261,7 +261,7 @@ public class Ball : MonoBehaviour {
 
 		this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
 
-		gameScript.ProjectileBounceEvent (bounceCount);
+		if (other.tag == "WallLeft") /*gameScript.ProjectileBounceEvent (bounceCount)*/ AI.SetNewTargetVectorCount();
 
 
 		Vector2 exitDirection = path [bounceCount + 1] - path [bounceCount];

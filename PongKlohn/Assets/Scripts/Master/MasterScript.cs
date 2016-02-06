@@ -75,14 +75,16 @@ public class MasterScript : MonoBehaviour {
 		spLoop = 1,
 		startScreen = 2,
 		mainMenu = 3,
-		optionsMenu = 4,
-		characterSelect = 5,
-		spMap = 6,
-		story = 7,
-		winScreen = 8,
-		loseScreen = 9,
-		gameScene = 10,
-		player = 11,
-		balls = 12
+		spMenu = 4,
+		optionsMenu = 5,
+		characterSelect = 6,
+		spMap = 7,
+		story = 8,
+		winScreen = 9,
+		loseScreen = 10,
+		versusEndScreen = 11,
+		gameScene = 12,
+		player = 13,
+		balls = 14
 	}
 }

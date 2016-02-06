@@ -58,6 +58,8 @@ public class Game : MonoBehaviour {
 	private const int p1 = 1;
 	private const int p2 = 2;
 
+	private bool singleplayer;
+
 	private float ballSpeed;
 	private float ballSpeedAtTime;
 	private int player1Score = 0;
@@ -66,6 +68,8 @@ public class Game : MonoBehaviour {
 	void Awake() {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
+		singleplayer = (masterScript.GetPlayerType (2) == "Ai") ? true : false;
 
 		StartCoroutine (SpawnGameObjects ());
 		
@@ -314,23 +318,17 @@ public class Game : MonoBehaviour {
 
 			this.EnablePlayers (false);
 
-			StartCoroutine(sceneHandlerScript.EndGame ((int)MasterScript.Scene.winScreen));
+			yield return new WaitForSeconds (3);
 
-			yield return 0;
-
-//			if (winner == 1) {
-//				masterScript.LoadScene (1);
-//
-//				yield return new WaitUntil(() => SceneManager.GetSceneAt(1).isLoaded);
-//
-//				masterScript.UnloadScene (scene);
-//			} else {
-//				masterScript.LoadScene (1);
-//
-//				yield return new WaitUntil(() => SceneManager.GetSceneAt(1).isLoaded);
-//
-//				masterScript.UnloadScene (scene);
-//			}
+			if (singleplayer) {
+				if (winner == 1) {
+					StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.winScreen));
+				} else {
+					StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.loseScreen));
+				}
+			} else {
+				StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.versusEndScreen));
+			}
 		} else {
 			uiScript.GetComponent<MatchUI> ().RoundEnd (p);
 			

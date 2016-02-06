@@ -238,7 +238,7 @@ public class Player : MonoBehaviour
             SetBlockColliderCale(1f);
             dashEnergyCost = dashCost;
         }
-        Debug.Log("dc:" + dashCost + "  sc:" + specialCost + "  bc:" + buffCost);
+//        Debug.Log("dc:" + dashCost + "  sc:" + specialCost + "  bc:" + buffCost);
 
         if (zuLangsamZumFangenDuMong)///////////////Stun
 		{

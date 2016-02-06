@@ -27,7 +27,9 @@ public class MainMenu : MonoBehaviour {
 		masterScript.SetPlayerType (1, "KeyP1");
 		masterScript.SetPlayerType (2, "Ai");
 
-		StartCoroutine(sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.mainMenu));
+		masterScript.LoadScene (masterScript.scenes[(int)MasterScript.Scene.spLoop], false);
+
+//		StartCoroutine(sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void Multiplayer() {

@@ -28,12 +28,14 @@ public class MasterScript : MonoBehaviour {
 	void Start () {
 		eventSystem = EventSystem.current;
 
-		this.LoadScene (scenes[1]);
+		this.LoadScene (scenes[(int)Scene.startScreen]);
 	}
 
 	public void LoadScene(string scene, bool setActive = true) {
-		SceneManager.LoadScene (scene, LoadSceneMode.Additive);
-		if (setActive) StartCoroutine (SetActiveScene (scene));
+		if (!SceneManager.GetSceneByName (scene).isLoaded) {
+			SceneManager.LoadScene (scene, LoadSceneMode.Additive);
+			if (setActive) StartCoroutine (SetActiveScene (scene));
+		}
 	}
 
 	private IEnumerator SetActiveScene(string scene) {
@@ -70,13 +72,17 @@ public class MasterScript : MonoBehaviour {
 
 	public enum Scene {
 		master = 0,
-		startScreen = 1,
-		mainMenu = 2,
-		optionsMenu = 3,
-		characterSelect = 4,
-		winScreen = 5,
-		gameScene = 6,
-		player = 7,
-		balls = 8
+		spLoop = 1,
+		startScreen = 2,
+		mainMenu = 3,
+		optionsMenu = 4,
+		characterSelect = 5,
+		spMap = 6,
+		story = 7,
+		winScreen = 8,
+		loseScreen = 9,
+		gameScene = 10,
+		player = 11,
+		balls = 12
 	}
 }

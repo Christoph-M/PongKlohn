@@ -124,7 +124,7 @@ public class Game : MonoBehaviour {
 
 			timeElapsed += Time.deltaTime;
 
-			yield return new WaitForSeconds (0.01f);
+			yield return new WaitForSeconds (0.01f * Time.deltaTime);
 		}
 
 		ballSpeed = oldSpeed;

@@ -28,7 +28,7 @@ public class WinScreenMenu : MonoBehaviour {
 	
 	public void Continue() {
 		if (singleplayerScript.RoundContinues ()) {
-			singleplayerScript.StartRound ((int)MasterScript.Scene.winScreen);
+			singleplayerScript.StartMatch ((int)MasterScript.Scene.winScreen);
 		} else {
 			singleplayerScript.UpdateRound ();
 			singleplayerScript.EndRound ((int)MasterScript.Scene.winScreen);

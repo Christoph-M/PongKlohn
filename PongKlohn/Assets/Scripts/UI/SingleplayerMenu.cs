@@ -26,7 +26,10 @@ public class SingleplayerMenu : MonoBehaviour {
 
 	public void Continue() {
 		singleplayerScript.LoadGame ();
-		if (!singleplayerScript.RoundContinues()) singleplayerScript.UpdateRound ();
+		if (!singleplayerScript.RoundContinues ()) {
+			singleplayerScript.UpdateRound ();
+			singleplayerScript.EndRound (-1, false);
+		}
 
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.spMap, (int)MasterScript.Scene.spMenu));
 	}

@@ -16,6 +16,6 @@ public class Story : MonoBehaviour {
 	private IEnumerator PlayStory() {
 		yield return new WaitForSeconds (5);
 
-		singleplayerScript.StartRound ((int)MasterScript.Scene.story);
+		singleplayerScript.StartMatch ((int)MasterScript.Scene.story);
 	}
 }

@@ -9,7 +9,10 @@ public class SingleplayerMap : MonoBehaviour {
 	public GameObject firstSelectElement;
 	public GameObject crystalCountUp;
 	public GameObject crystalCountDown;
+	public Text crystalText;
 	public List<Text> crystalCount;
+	public List<Toggle> crystalSelect;
+	public List<GameObject> crystalUnlock;
 
 
 	private MasterScript masterScript;
@@ -18,6 +21,10 @@ public class SingleplayerMap : MonoBehaviour {
 
 	private EventSystem eventSystem;
 
+	private List<bool> crystalUnlocked;
+
+	private int crystalInfoText = -1;
+
 	void Start () {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
@@ -25,21 +32,63 @@ public class SingleplayerMap : MonoBehaviour {
 
 		eventSystem = EventSystem.current;
 
-		eventSystem.SetSelectedGameObject(firstSelectElement);
+		crystalUnlocked = singleplayerScript.GetCrystalUnlockStatus ();
 
-		foreach (Button button in singleplayerMapMenu.GetComponentsInChildren<Button>()) {
-			button.interactable = false;
+		StartCoroutine (this.UnlockSpecial ());
+	}
+
+	public void Crystal(int i) {
+		masterScript.SetCrystal (1, i);
+		crystalInfoText = i;
+	}
+
+	public void ChangeText(int i) {
+		if (i > 0 && crystalSelect [i - 1].interactable) {
+			switch (i) {
+			case 1:
+				crystalText.text = "Crystal One"; break;
+			case 2:
+				crystalText.text = "Crystal Two"; break;
+			case 3:
+				crystalText.text = "Crystal Three"; break;
+			default:
+				break;
+			}
+		} else if (i > 0) {
+			crystalText.text = "Locked";
+		} else if (i == 0) {
+			this.ChangeText (crystalInfoText);
 		}
-
-		StartCoroutine (this.UpdateCrystalCount ());
 	}
 
 	public void Next() {
-		singleplayerScript.StartRound ((int)MasterScript.Scene.spMap);
+		singleplayerScript.StartMatch ((int)MasterScript.Scene.spMap);
 	}
 
 	public void Back() {
 		StartCoroutine (sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.spMap));
+	}
+
+
+	private IEnumerator UnlockSpecial() {
+		if (singleplayerScript.GetNewUnlock ()) {
+			for (int i = crystalUnlocked.Count - 1; i >= 0; --i) {
+				if (crystalUnlocked [i]) {
+					yield return new WaitForSeconds (1.0f);
+
+					crystalUnlock [i].SetActive (true);
+
+					yield return new WaitUntil (() => Input.anyKeyDown);
+
+					crystalUnlock [i].SetActive (false);
+					break;
+				}
+			}
+		}
+
+		eventSystem.SetSelectedGameObject(firstSelectElement);
+
+		yield return StartCoroutine (this.UpdateCrystalCount ());
 	}
 
 	private IEnumerator UpdateCrystalCount() {
@@ -77,6 +126,13 @@ public class SingleplayerMap : MonoBehaviour {
 
 		foreach (Button button in singleplayerMapMenu.GetComponentsInChildren<Button>()) {
 			button.interactable = true;
+		}
+
+		for (int i = 0; i < crystalSelect.Count; ++i) {
+			if (crystalUnlocked [i]) {
+				crystalSelect [i].interactable = true;
+				if (masterScript.GetCrystal (1) == i + 1) crystalSelect [i].isOn = true;
+			}
 		}
 	}
 }

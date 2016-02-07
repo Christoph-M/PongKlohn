@@ -9,7 +9,9 @@ public class SingleplayerMap : MonoBehaviour {
 	public GameObject firstSelectElement;
 	public GameObject crystalCountUp;
 	public GameObject crystalCountDown;
+	public GameObject tournamentWin;
 	public Text crystalText;
+	public List<GameObject> temple;
 	public List<Text> crystalCount;
 	public List<Toggle> crystalSelect;
 	public List<GameObject> crystalUnlock;
@@ -33,6 +35,14 @@ public class SingleplayerMap : MonoBehaviour {
 		eventSystem = EventSystem.current;
 
 		crystalUnlocked = singleplayerScript.GetCrystalUnlockStatus ();
+
+		for (int i = 0; i < crystalCount.Count; ++i) {
+			crystalCount [i].text = "" + singleplayerScript.GetStartCrystalCount (i + 1);
+			if (int.Parse (crystalCount [i].text) <= 0) {
+				crystalCount [i].text = "" + 0;
+				crystalCount [i].color = new Color32 (169, 0, 0, 255);
+			}
+		}
 
 		StartCoroutine (this.UnlockSpecial ());
 	}
@@ -92,11 +102,10 @@ public class SingleplayerMap : MonoBehaviour {
 	}
 
 	private IEnumerator UpdateCrystalCount() {
-		for (int i = 0; i < crystalCount.Count; ++i) {
-			crystalCount [i].text = "" + singleplayerScript.GetStartCrystalCount (i + 1);
-		}
+		singleplayerScript.SaveGame ();
 
 		yield return new WaitForSeconds (3.0f);
+		int enemiesAlive = 5;
 
 		for (int i = 0; i < crystalCount.Count; ++i) {
 			int crystalCnt = singleplayerScript.GetCrystalCount (i + 1);
@@ -113,7 +122,8 @@ public class SingleplayerMap : MonoBehaviour {
 
 			if (crystalCnt <= 0) {
 				crystalCount [i].text = "" + 0;
-				crystalCount [i].color = new Color (169, 0, 0, 255);
+				crystalCount [i].color = new Color32 (169, 0, 0, 255);
+				--enemiesAlive;
 			}
 
 			singleplayerScript.SetStartCrystalCount (i + 1, crystalCnt);
@@ -122,6 +132,16 @@ public class SingleplayerMap : MonoBehaviour {
 
 			crystalCountUp.SetActive (false);
 			crystalCountDown.SetActive (false);
+
+			if (enemiesAlive <= 0) {
+				yield return new WaitForSeconds (1.0f);
+
+				tournamentWin.SetActive (true);
+
+				yield return new WaitUntil (() => Input.anyKeyDown);
+
+				tournamentWin.SetActive (false);
+			}
 		}
 
 		foreach (Button button in singleplayerMapMenu.GetComponentsInChildren<Button>()) {

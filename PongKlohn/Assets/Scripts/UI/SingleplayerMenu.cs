@@ -6,6 +6,7 @@ using System.Collections;
 public class SingleplayerMenu : MonoBehaviour {
 	public GameObject winScreenMenu;
 	public GameObject firstSelectElement;
+	public Button continueButton;
 
 
 	private MasterScript masterScript;
@@ -21,7 +22,12 @@ public class SingleplayerMenu : MonoBehaviour {
 
 		eventSystem = EventSystem.current;
 
-		eventSystem.SetSelectedGameObject(firstSelectElement);
+		if (!bool.Parse (Ini.IniReadValue ("Other", "deleted"))) {
+			continueButton.interactable = true;
+			eventSystem.SetSelectedGameObject (continueButton.gameObject);
+		} else {
+			eventSystem.SetSelectedGameObject(firstSelectElement);
+		}
 	}
 
 	public void Continue() {
@@ -35,6 +41,8 @@ public class SingleplayerMenu : MonoBehaviour {
 	}
 
 	public void NewGame() {
+		singleplayerScript.DeleteGame ();
+
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.story, (int)MasterScript.Scene.spMenu));
 	}
 

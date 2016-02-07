@@ -22,7 +22,8 @@ public class Singleplayer : MonoBehaviour {
 	private bool newUnlock = false;
 
 	private int round = -1;
-	private int match = 0;
+	private int match = -1;
+	private int enemyCharacter = -1;
 	private int winner = -1;
 	private bool roundContinues = true;
 
@@ -33,6 +34,8 @@ public class Singleplayer : MonoBehaviour {
 		playerCrystalCount = playerStartCrystalCount;
 
 		round = 1;
+		match = 0;
+		enemyCharacter = 1;
 
 		for (int i = 0; i < aiCrystalCount.Count; ++i) {
 			aiCrystalCount[i] = Random.Range (minStartAiCrystalCount, maxStartAiCrystalCount);
@@ -43,17 +46,31 @@ public class Singleplayer : MonoBehaviour {
 
 	public void StartMatch(int sceneUL) {
 		++match;
+		++enemyCharacter;
+		int matches = 0;
 
-		if (match <= 0) {
+		foreach (bool b in aiStillAlive) {
+			if (b) ++matches;
+		}
+		Debug.Log ("matches: " + matches);
+
+		if (match < matches) {
 			roundContinues = true;
 		} else {
 			roundContinues = false;
 		}
 
+
 		newUnlock = false;
 
-		masterScript.SetCharacter (2, match + 1);
-		masterScript.SetCrystal(2, Random.Range(1, 3));
+		for (int i = enemyCharacter - 2; i < aiStillAlive.Count && !aiStillAlive[i]; ++i) {
+			if (!aiStillAlive [i]) {
+				++enemyCharacter;
+			}
+		}
+
+		masterScript.SetCharacter (2, enemyCharacter);
+		masterScript.SetCrystal (2, Random.Range (1, 3));
 
 		StartCoroutine (sceneHandlerScript.StartGame((int)MasterScript.Scene.gameScene, sceneUL));
 	}
@@ -63,7 +80,8 @@ public class Singleplayer : MonoBehaviour {
 
 		++round;
 
-		masterScript.SetCharacter (2, 2);
+		match = 0;
+		enemyCharacter = 1;
 
 		for (int i = 0; i < aiDifficulty.Count; ++i) {
 			this.SetAiDifficulty (i);
@@ -174,8 +192,11 @@ public class Singleplayer : MonoBehaviour {
 
 		Ini.IniWriteValue ("Game", "round", round.ToString ());
 		Ini.IniWriteValue ("Game", "match", match.ToString ());
+		Ini.IniWriteValue ("Game", "enemyCharacter", enemyCharacter.ToString ());
 		Ini.IniWriteValue ("Game", "winner", winner.ToString ());
 		Ini.IniWriteValue ("Game", "roundContinues", roundContinues.ToString ());
+
+		Ini.IniWriteValue ("Other", "deleted", "False");
 	}
 
 	public void LoadGame() {
@@ -207,8 +228,45 @@ public class Singleplayer : MonoBehaviour {
 
 		round = int.Parse (Ini.IniReadValue ("Game", "round"));
 		match = int.Parse (Ini.IniReadValue ("Game", "match"));
+		enemyCharacter = int.Parse (Ini.IniReadValue ("Game", "enemyCharacter"));
 		winner = int.Parse (Ini.IniReadValue ("Game", "winner"));
 		roundContinues = bool.Parse (Ini.IniReadValue ("Game", "roundContinues"));
+	}
+
+	public void DeleteGame() {
+		Ini.IniWriteValue ("Player", "playerStartCrystalCount", "1");
+		Ini.IniWriteValue ("Player", "playerCrystalCount", "-1");
+		Ini.IniWriteValue ("Player", "playerStillAllive", "True");
+
+
+		for (int i = 0; i < aiStartCrystalCount.Count; ++i) {
+			Ini.IniWriteValue ("Ai", "aiStartCrystalCount " + i , "-1");
+		}
+
+		for (int i = 0; i < aiCrystalCount.Count; ++i) {
+			Ini.IniWriteValue ("Ai", "aiCrystalCount " + i , "-1");
+		}
+
+		for (int i = 0; i < aiDifficulty.Count; ++i) {
+			Ini.IniWriteValue ("Ai", "aiDifficulty " + i , "-1");
+		}
+
+		for (int i = 0; i < aiStillAlive.Count; ++i) {
+			Ini.IniWriteValue ("Ai", "aiStillAlive " + i , "True");
+		}
+
+
+		for (int i = 0; i < crystalUnlocked.Count; ++i) {
+			Ini.IniWriteValue ("Game", "crystalUnlocked " + i , "False");
+		}
+
+		Ini.IniWriteValue ("Game", "round", "-1");
+		Ini.IniWriteValue ("Game", "match", "-1");
+		Ini.IniWriteValue ("Game", "enemyCharacter", "-1");
+		Ini.IniWriteValue ("Game", "winner", "-1");
+		Ini.IniWriteValue ("Game", "roundContinues", "True");
+
+		Ini.IniWriteValue ("Other", "deleted", "True");
 	}
 
 

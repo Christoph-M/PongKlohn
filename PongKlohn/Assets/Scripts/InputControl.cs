@@ -11,12 +11,20 @@ public class InputControl
 	private string dash  = "d";
 	private string buff  = "B";
 	private string powerShoot = "p";
+    private string xAxis2 = "x";
+    private string yAxis2 = "y";
+    private string shoot2 = "s";
+    private string block2 = "b";
+    private string dash2 = "d";
+    private string buff2 = "B";
+    private string powerShoot2 = "p";
+
+    bool isAiPlayer = false;
 	
-	bool isAiPlayer = false;
-	
-	public InputControl(string player,Transform playerTransform)
+	public InputControl(GameObject Player_XX)
 	{
-		if(player == "KeyP1")
+        Debug.Log("tag:" + Player_XX.tag);
+        if (Player_XX.tag == "Player1")
 		{
 			isAiPlayer = false;
 			xAxis = "HorizontalP1";
@@ -26,9 +34,16 @@ public class InputControl
 			dash = "DashP1";
 			buff = "BuffP1";
 			powerShoot = "PowerShootP1";
-		}
+            xAxis2 = "ControllerHorizontalP1";
+            yAxis2 = "ControllerVerticalP1";
+            shoot2 = "ShootControler1";
+            block2 = "BlockControler1";
+            dash2 = "DashControler1";
+            buff2 = "BuffControler1";
+            powerShoot2 = "PowerShootControler1";
+        }
 		
-		else if(player == "KeyP2")
+		else if(Player_XX.tag == "Player2")
 		{
 			isAiPlayer = false;
 			xAxis = "HorizontalP2";
@@ -37,46 +52,24 @@ public class InputControl
 			block = "BlockP2";
 			dash = "DashP2";
 			buff = "BuffP2";
-			powerShoot = "PowerShootP2";
-		}
-		
-		else if(player == "ConP1")
-		{
-			isAiPlayer = false;
-			xAxis = "ControllerHorizontalP1";
-			yAxis = "ControllerVerticalP1";
-			shoot = "ShootControler1";
-			block = "BlockControler1";
-			dash = "DashControler1";
-			buff = "BuffControler1";
-			powerShoot = "PowerShootControler1";
-		}
-		
-		else if(player == "ConP2")
-		{
-			isAiPlayer = false;
-			xAxis = "ControllerHorizontalP2";
-			yAxis = "ControllerVerticalP2";
-			shoot = "ShootControler2";
-			block = "BlockControler2";
-			dash = "DashControler2";
-			buff = "BuffControler2";
-			powerShoot = "PowerShootControler2";
-		}
-		
-		else if(player == "Ai")
-		{
-			isAiPlayer =true;
-			ai = new AI(playerTransform);
-		}
-		else
-		{
-			isAiPlayer = true;
-			ai = new AI(playerTransform);
-		}
+            xAxis2 = "ControllerHorizontalP2";
+            yAxis2 = "ControllerVerticalP2";
+            powerShoot = "PowerShootP2";
+            shoot2 = "ShootControler2";
+            block2 = "BlockControler2";
+            dash2 = "DashControler2";
+            buff2 = "BuffControler2";
+            powerShoot2 = "PowerShootControler2";
+        }
 	}
-	
-	public Vector2 UpdateMovement () 
+
+    public InputControl(Transform playerTransform)
+    {
+        isAiPlayer = true;
+        ai = new AI(playerTransform);
+    }
+
+    public Vector2 UpdateMovement () 
 	{
 		//Debug.Log("jea");
 		if(isAiPlayer)
@@ -87,7 +80,11 @@ public class InputControl
 		else
 		{
 			//Debug.Log("YippiJea");
-			return new Vector2(Input.GetAxis(xAxis),Input.GetAxis(yAxis));
+            if(Input.GetAxis(xAxis2)!=0 || Input.GetAxis(yAxis2)!=0)
+            {
+                return new Vector2(Input.GetAxisRaw(xAxis2), Input.GetAxisRaw(yAxis2));
+            }
+			return new Vector2(Input.GetAxisRaw(xAxis),Input.GetAxisRaw(yAxis));
 		}
 	}
 	
@@ -101,8 +98,12 @@ public class InputControl
 		
 		else
 		{
-			//Debug.Log("YippiJea");
-			return new Vector2(Input.GetAxisRaw(xAxis),Input.GetAxisRaw(yAxis));
+            //Debug.Log("YippiJea");
+            if (Input.GetAxis(xAxis2) != 0 || Input.GetAxis(yAxis2) != 0)
+            {
+                return new Vector2(Input.GetAxisRaw(xAxis2), Input.GetAxisRaw(yAxis2));
+            }
+            return new Vector2(Input.GetAxisRaw(xAxis),Input.GetAxisRaw(yAxis));
 		}
 	}
 	
@@ -115,7 +116,11 @@ public class InputControl
 		
 		else
 		{
-			if(Input.GetAxisRaw(block)!=0)
+            if (Input.GetAxisRaw(block2) != 0)
+            {
+                return true;
+            }
+            if (Input.GetAxisRaw(block)!=0)
 			{
 				return true;
 			}
@@ -132,8 +137,12 @@ public class InputControl
 		
 		else
 		{
-			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxisRaw(shoot) != 0 && att)
+            //Debug.Log("player Shoot:"+ att);
+            if (Input.GetAxisRaw(shoot2) != 0)
+            {
+                return true;
+            }
+            if (Input.GetAxisRaw(shoot) != 0 && att)
 			{
 				return true;
 			}
@@ -150,8 +159,12 @@ public class InputControl
 		
 		else
 		{
-			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxisRaw(buff) != 0)
+            //Debug.Log("player Shoot:"+ att);
+            if (Input.GetAxisRaw(buff2) != 0)
+            {
+                return true;
+            }
+            if (Input.GetAxisRaw(buff) != 0)
 			{
                 //Debug.Log("buff is active funst: "+ Input.GetAxisRaw(buff));
 				return true;
@@ -169,8 +182,12 @@ public class InputControl
 		
 		else
 		{
-			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxisRaw(dash) != 0)
+            //Debug.Log("player Shoot:"+ att);
+            if (Input.GetAxisRaw(dash2) != 0)
+            {
+                return true;
+            }
+            if (Input.GetAxisRaw(dash) != 0)
 			{
 				return true;
 			}
@@ -187,8 +204,12 @@ public class InputControl
 		
 		else
 		{
-			//Debug.Log("player Shoot:"+ att);
-			if(Input.GetAxisRaw(powerShoot) != 0f && att)
+            //Debug.Log("player Shoot:"+ att);
+            if (Input.GetAxisRaw(powerShoot2) != 0f)
+            {
+                return true;
+            }
+            if (Input.GetAxisRaw(powerShoot) != 0f)
 			{
 				return true;
 			}

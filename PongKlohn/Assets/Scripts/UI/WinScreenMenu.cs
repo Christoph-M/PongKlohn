@@ -10,27 +10,41 @@ public class WinScreenMenu : MonoBehaviour {
 
 	private MasterScript masterScript;
 	private SceneHandler sceneHandlerScript;
+	private Singleplayer singleplayerScript;
 
 	private EventSystem eventSystem;
 
 	void Start () {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+		singleplayerScript = GameObject.FindObjectOfType (typeof(Singleplayer)) as Singleplayer;
 
 		eventSystem = EventSystem.current;
 
 		eventSystem.SetSelectedGameObject(firstSelectElement);
+
+		singleplayerScript.SetWinner (1);
 	}
 	
-	public void Rematch() {
-		StartCoroutine (sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.winScreen));
+	public void Continue() {
+		if (singleplayerScript.RoundContinues ()) {
+			singleplayerScript.StartMatch ((int)MasterScript.Scene.winScreen);
+		} else {
+			singleplayerScript.UpdateRound ();
+			singleplayerScript.EndRound ((int)MasterScript.Scene.winScreen);
+		}
+
+		singleplayerScript.SaveGame ();
 	}
 
-	public void CharSelect() {
-		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.characterSelect, (int)MasterScript.Scene.winScreen));
-	}
+	public void SaveAndExit() {
+		if (!singleplayerScript.RoundContinues ()) {
+			singleplayerScript.UpdateRound ();
+			singleplayerScript.EndRound (-1, false);
+		}
 
-	public void Quit() {
+		singleplayerScript.SaveGame ();
+
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.winScreen));
 	}
 }

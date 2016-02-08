@@ -22,16 +22,8 @@ public class OptionsMenu : MonoBehaviour {
 		eventSystem.SetSelectedGameObject(firstSelectElement);
 	}
 
-	public void Video() {
-		
-	}
-
-	public void Audio() {
-		
-	}
-
-	public void Gameplay() {
-		
+	public void HowTo() {
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.howToMenu, (int)MasterScript.Scene.optionsMenu));
 	}
 
 	public void Back() {

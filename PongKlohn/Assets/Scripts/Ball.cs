@@ -222,6 +222,12 @@ public class Ball : MonoBehaviour {
 
 			this.transform.rotation = ToolBox.GetRotationFromVector (exitDirection);
 
+			if (other.transform.parent.tag == "Player2" && masterScript.GetPlayerType (2) == "Ai") {
+				AI.SetNewTargetVectorCount (2);
+			} else if (other.transform.parent.tag == "Player1") {
+				AI.SetNewTargetVectorCount (1);
+			}
+
 
 			StartCoroutine (CalcPath (blockFreezeTime));
 			this.DeactivateParticleObjs ();
@@ -250,7 +256,7 @@ public class Ball : MonoBehaviour {
 // of the field, bounces it off the wall and resets the
 // projectile speed to the last speed after a special
 //‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-	private void Bounce(GameObject other, bool resetSpeed = false) {
+	private void Bounce(GameObject other) {
 //		Debug.Log ("Bounced. Time: " + timeElapsed);
 //		timeElapsed = 0.0f;
 
@@ -261,7 +267,7 @@ public class Ball : MonoBehaviour {
 
 		this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
 
-		gameScript.ProjectileBounceEvent (bounceCount);
+		if (other.tag == "WallLeft") AI.SetNewTargetVectorCount(0);
 
 
 		Vector2 exitDirection = path [bounceCount + 1] - path [bounceCount];
@@ -269,7 +275,15 @@ public class Ball : MonoBehaviour {
 		this.transform.rotation = ToolBox.GetRotationFromVector (exitDirection);
 
 
-		if (resetSpeed) this.SpeedUpProjectile(0.0f);
+		if (other.tag == "WallRight" || other.tag == "WallLeft") {
+			this.DeactivateParticleObjs ();
+			if (this.tag == "BallP1") {
+				particleObjs[p1char].SetActive(true);
+			} else {
+				particleObjs[p2char].SetActive(true);
+			}
+		}
+
 
 		gameScript.ShakeScreen (2);
 	}
@@ -331,7 +345,7 @@ public class Ball : MonoBehaviour {
 			if (crystal == 1) ++bounceCount;
 
 			this.DisableAllSpecials ();
-			this.Bounce (other, true);
+			this.Bounce (other);
 		} else {
 			this.CheckScored ();
 
@@ -352,14 +366,10 @@ public class Ball : MonoBehaviour {
 					
 					this.transform.rotation = ToolBox.GetRotationFromVector(path [bounceCount + 1] - path [bounceCount]);
 					
-					gameScript.ProjectileBounceEvent (bounceCount);
-					
 					this.DisableAllSpecials (); break;
 				case 3:
 					++bounceCount;
 					this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
-					
-					gameScript.ProjectileBounceEvent (bounceCount);
 					
 					this.DisableAllSpecials (); break;
 				default:
@@ -594,12 +604,15 @@ public class Ball : MonoBehaviour {
 
 
 //_________________\\\\\\___DisableAllSpecials___//////_________________
-// Disables special-mode + disables linear rotation + resets crystal
+// Disables special-mode + disables linear rotation + resets crystal +
+// sets respective particle object
 //‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void DisableAllSpecials() {
 		specialBall = false;
 		this.EnableLinearRotation (false);
 		crystal = -1;
+
+		this.SpeedUpProjectile(0.0f);
 	}
 
 

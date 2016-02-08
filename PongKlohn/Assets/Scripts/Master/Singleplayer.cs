@@ -159,6 +159,10 @@ public class Singleplayer : MonoBehaviour {
 		return newUnlock;
 	}
 
+	public int GetAiDifficulty(int character) {
+		return aiDifficulty [character];
+	}
+
 	public bool RoundContinues() {
 		return roundContinues;
 	}

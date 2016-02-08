@@ -222,6 +222,12 @@ public class Ball : MonoBehaviour {
 
 			this.transform.rotation = ToolBox.GetRotationFromVector (exitDirection);
 
+			if (other.transform.parent.tag == "Player2" && masterScript.GetPlayerType (2) == "Ai") {
+				AI.SetNewTargetVectorCount (2);
+			} else if (other.transform.parent.tag == "Player1") {
+				AI.SetNewTargetVectorCount (1);
+			}
+
 
 			StartCoroutine (CalcPath (blockFreezeTime));
 			this.DeactivateParticleObjs ();
@@ -261,7 +267,7 @@ public class Ball : MonoBehaviour {
 
 		this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
 
-		if (other.tag == "WallLeft") /*gameScript.ProjectileBounceEvent (bounceCount)*/ AI.SetNewTargetVectorCount();
+		if (other.tag == "WallLeft") AI.SetNewTargetVectorCount(0);
 
 
 		Vector2 exitDirection = path [bounceCount + 1] - path [bounceCount];
@@ -360,14 +366,10 @@ public class Ball : MonoBehaviour {
 					
 					this.transform.rotation = ToolBox.GetRotationFromVector(path [bounceCount + 1] - path [bounceCount]);
 					
-					gameScript.ProjectileBounceEvent (bounceCount);
-					
 					this.DisableAllSpecials (); break;
 				case 3:
 					++bounceCount;
 					this.transform.position = new Vector3 (path [bounceCount].x, path [bounceCount].y, this.transform.position.z);
-					
-					gameScript.ProjectileBounceEvent (bounceCount);
 					
 					this.DisableAllSpecials (); break;
 				default:

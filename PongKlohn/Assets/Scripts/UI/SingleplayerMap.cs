@@ -191,6 +191,14 @@ public class SingleplayerMap : MonoBehaviour {
 				--enemiesAlive;
 			}
 
+			if (singleplayerScript.GetCrystalCount (1) <= 0) {
+				yield return new WaitUntil (() => Input.anyKeyDown);
+
+				StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.spMenu, (int)MasterScript.Scene.spMap));
+
+				yield break;
+			}
+
 			if (enemiesAlive <= 0) {
 				yield return new WaitForSeconds (1.0f);
 

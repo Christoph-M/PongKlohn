@@ -1,0 +1,3626 @@
+fileFormatVersion: 2
+guid: 14461b15c78d64f46801821e22a3b481
+timeCreated: 1454779542
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: chest
+    100002: Control_Kopf
+    100004: Empty
+    100006: f_middle_L
+    100008: f_middle_R
+    100010: foot_L
+    100012: foot_R
+    100014: forearm_L
+    100016: forearm_R
+    100018: GOOD_MONK_000
+    100020: H_fte_R
+    100022: hand_L
+    100024: hand_R
+    100026: Handle_Body
+    100028: Handle_Brust
+    100030: Handle_DaumenSpitze_L
+    100032: Handle_FingerSpitze_L
+    100034: Handle_FingerSpitze_R
+    100036: Handle_foot_L
+    100038: Handle_foot_R
+    100040: Handle_Hand_L
+    100042: Handle_Hand_R
+    100044: head
+    100046: hips_L
+    100048: Kette
+    100050: Kette_001
+    100052: Kette_002
+    100054: neck
+    100056: P
+    100058: palm_L
+    100060: palm_R
+    100062: //RootNode
+    100064: Poltarget_BauchRotation
+    100066: Poltarget_Daumen_L
+    100068: Poltarget_H_fte
+    100070: Poltarget_Hand_L
+    100072: Poltarget_Hand_R
+    100074: Poltarget_Kopfrotation
+    100076: Rigg
+    100078: shin_L
+    100080: shin_R
+    100082: shoulder_L
+    100084: shoulder_R
+    100086: spine
+    100088: thigh_L
+    100090: thigh_R
+    100092: thumb_01_L
+    100094: thumb_01_R
+    100096: thumb_02_L
+    100098: thumb_02_R
+    100100: toe_L
+    100102: toe_R
+    100104: upper_arm_L
+    100106: upper_arm_R
+    400000: chest
+    400002: Control_Kopf
+    400004: Empty
+    400006: f_middle_L
+    400008: f_middle_R
+    400010: foot_L
+    400012: foot_R
+    400014: forearm_L
+    400016: forearm_R
+    400018: GOOD_MONK_000
+    400020: H_fte_R
+    400022: hand_L
+    400024: hand_R
+    400026: Handle_Body
+    400028: Handle_Brust
+    400030: Handle_DaumenSpitze_L
+    400032: Handle_FingerSpitze_L
+    400034: Handle_FingerSpitze_R
+    400036: Handle_foot_L
+    400038: Handle_foot_R
+    400040: Handle_Hand_L
+    400042: Handle_Hand_R
+    400044: head
+    400046: hips_L
+    400048: Kette
+    400050: Kette_001
+    400052: Kette_002
+    400054: neck
+    400056: P
+    400058: palm_L
+    400060: palm_R
+    400062: //RootNode
+    400064: Poltarget_BauchRotation
+    400066: Poltarget_Daumen_L
+    400068: Poltarget_H_fte
+    400070: Poltarget_Hand_L
+    400072: Poltarget_Hand_R
+    400074: Poltarget_Kopfrotation
+    400076: Rigg
+    400078: shin_L
+    400080: shin_R
+    400082: shoulder_L
+    400084: shoulder_R
+    400086: spine
+    400088: thigh_L
+    400090: thigh_R
+    400092: thumb_01_L
+    400094: thumb_01_R
+    400096: thumb_02_L
+    400098: thumb_02_R
+    400100: toe_L
+    400102: toe_R
+    400104: upper_arm_L
+    400106: upper_arm_R
+    4300000: GOOD_MONK_000
+    7400000: Default Take
+    7400002: Start
+    7400004: 0_idle
+    7400006: 1_Forward
+    7400008: 2_FR
+    7400010: 3_Right
+    7400012: 4_RB
+    7400014: 5_Back
+    7400016: 6_BR
+    7400018: 7_Left
+    7400020: 8_LF
+    7400022: Block_0_Idle
+    7400024: Block_1_F
+    7400026: Block_2_LR
+    7400028: Block_3_R
+    7400030: Block_4_RB
+    7400032: Block_5_B
+    7400034: Block_6_BL
+    7400036: Bock_7_L
+    7400038: Block_8_LF
+    7400040: Stund_0_In
+    7400042: Stund_1_Out
+    7400044: Lose
+    7400046: Win
+    7400048: Buff
+    9500000: //RootNode
+    13700000: GOOD_MONK_000
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: "\nClip 'Default Take' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'P' has translation animation that will be
+      discarded.\n\t'Poltarget_H_fte' has translation animation that will be discarded.\n\t'Poltarget_H_fte'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'Handle_Body'
+      has translation animation that will be discarded.\n\t'Handle_Body' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'spine'
+      has translation animation that will be discarded.\n\nClip 'RiggAction' has import
+      animation warnings that might lower retargeting quality:\nNote: Activate translation
+      DOF on avatar to improve retargeting quality.\n\t'P' has translation animation
+      that will be discarded.\n\t'Poltarget_H_fte' has translation animation that
+      will be discarded.\n\t'Poltarget_H_fte' is inbetween humanoid transforms and
+      has rotation animation that will be discarded.\n\t'Handle_Body' has translation
+      animation that will be discarded.\n\t'Handle_Body' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'thigh_L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'spine'
+      has translation animation that will be discarded.\n"
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default Take
+      takeName: Default Take
+      firstFrame: -1
+      lastFrame: 1080
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Start
+      takeName: RiggAction
+      firstFrame: 19
+      lastFrame: 219
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 0_idle
+      takeName: Default Take
+      firstFrame: 219
+      lastFrame: 250
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 1_Forward
+      takeName: Default Take
+      firstFrame: 299
+      lastFrame: 300
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 2_FR
+      takeName: Default Take
+      firstFrame: 319
+      lastFrame: 320
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 3_Right
+      takeName: Default Take
+      firstFrame: 339
+      lastFrame: 340
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 4_RB
+      takeName: Default Take
+      firstFrame: 359
+      lastFrame: 360
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 5_Back
+      takeName: Default Take
+      firstFrame: 379
+      lastFrame: 380
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 6_BR
+      takeName: Default Take
+      firstFrame: 399
+      lastFrame: 400
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 7_Left
+      takeName: Default Take
+      firstFrame: 419
+      lastFrame: 420
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 8_LF
+      takeName: Default Take
+      firstFrame: 439
+      lastFrame: 440
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Block_0_Idle
+      takeName: Default Take
+      firstFrame: 479
+      lastFrame: 480
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Block_1_F
+      takeName: Default Take
+      firstFrame: 499
+      lastFrame: 500
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Block_2_LR
+      takeName: Default Take
+      firstFrame: 519
+      lastFrame: 520
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Block_3_R
+      takeName: Default Take
+      firstFrame: 539
+      lastFrame: 540
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Block_4_RB
+      takeName: Default Take
+      firstFrame: 360
+      lastFrame: 560
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Block_5_B
+      takeName: Default Take
+      firstFrame: 579
+      lastFrame: 580
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Block_6_BL
+      takeName: Default Take
+      firstFrame: 599
+      lastFrame: 600
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Bock_7_L
+      takeName: Default Take
+      firstFrame: 619
+      lastFrame: 620
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Block_8_LF
+      takeName: Default Take
+      firstFrame: 639
+      lastFrame: 640
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Stund_0_In
+      takeName: Default Take
+      firstFrame: 659
+      lastFrame: 719
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Stund_1_Out
+      takeName: Default Take
+      firstFrame: 779
+      lastFrame: 819
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Lose
+      takeName: Default Take
+      firstFrame: 959
+      lastFrame: 999
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Win
+      takeName: Default Take
+      firstFrame: 1039
+      lastFrame: 1079
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Buff
+      takeName: Default Take
+      firstFrame: 859
+      lastFrame: 919
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Empty
+        weight: 1
+      - path: GOOD_MONK_000
+        weight: 1
+      - path: Rigg
+        weight: 1
+      - path: Rigg/Handle_foot_L
+        weight: 1
+      - path: Rigg/Handle_foot_R
+        weight: 1
+      - path: Rigg/P
+        weight: 1
+      - path: Rigg/P/Control_Kopf
+        weight: 1
+      - path: Rigg/P/Handle_Brust
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Handle_DaumenSpitze_L/Poltarget_Daumen_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_L/Handle_FingerSpitze_L/Poltarget_Hand_L
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R
+        weight: 1
+      - path: Rigg/P/Handle_Hand_R/Handle_FingerSpitze_R/Poltarget_Hand_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/H_fte_R/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Rigg/P/Poltarget_H_fte/Handle_Body/hips_L/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Rigg/Poltarget_BauchRotation
+        weight: 1
+      - path: Rigg/Poltarget_Kopfrotation
+        weight: 1
+      - path: Rigg/spine
+        weight: 1
+      - path: Rigg/spine/chest
+        weight: 1
+      - path: Rigg/spine/chest/neck
+        weight: 1
+      - path: Rigg/spine/chest/neck/head
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/palm_L/f_middle_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/thumb_01_L/thumb_02_L
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_L/upper_arm_L/forearm_L/Kette/Kette_001/Kette_002
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/palm_R/f_middle_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R
+        weight: 1
+      - path: Rigg/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/thumb_01_R/thumb_02_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

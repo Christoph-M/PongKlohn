@@ -18,7 +18,7 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/Level/sceneAlb.unity
-  isLoaded: 1
+  isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/AssetScenes/Player.unity
   isLoaded: 0

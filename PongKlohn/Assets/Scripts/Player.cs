@@ -4,15 +4,13 @@ using System.Collections.Generic;
 
 
 public class Player : MonoBehaviour 
-{	
-	public Transform ballSpohorn;
-	public List<GameObject> balls;
-	public int health { get; set; }
-	public int power { get; set; }
-	public float blockTime { get; set; }
-	public float speed { get; set; }
-	public float dashSpeed { get; set; }
-	public bool InvertMotion = false;
+{
+    public int health;
+    public int power;
+    public float blockTime;
+    public float speed;
+    public float dashSpeed;
+    public bool InvertMotion = false;
 	protected const float fieldHeight = 22.0f;
 	protected const float fieldWidth = 70.0f;
 	protected float wallTop;
@@ -30,10 +28,7 @@ public class Player : MonoBehaviour
 	private Rigidbody2D myTransform;
 	private Animator animator;
 	private Game gameScript;
-	private GameObject catchTrigger;
-	private GameObject blockTrigger;
-	private GameObject dashTrigger;
-	private GameObject missTrigger;
+
 	private InputControl controls;
 	private float motionInverter = 1;
 	private AudioLoop audioDing;
@@ -80,15 +75,20 @@ public class Player : MonoBehaviour
 	private Vector3 newValue = Vector3.zero;
 	private Vector3 wallDistance = Vector3.zero;
 	private Vector3 lerpedDash = Vector3.zero;
-	private int oldState =0;
+	private Curves curves;
+    private int oldState =0;
 	private bool dashBool = true;
-	public GameObject smoke;
-	public GameObject fangShild;
-	public GameObject blockShild;
-    public GameObject BlockCollider;
+
+    public GameObject smoke;
     public GameObject DashCollider;
-    private Curves curves;
-	public int dashEnergyCost { get; set; }
+    public GameObject blockShild;
+    public GameObject dashEffect;
+    public GameObject buffEffect;
+    public GameObject blockTrigger;
+    public GameObject missTrigger;
+
+
+    public int dashEnergyCost { get; set; }
     /// <summary>
     /// /////////////////////////////////
     /// </summary>
@@ -107,9 +107,9 @@ public class Player : MonoBehaviour
 
     void Start() 
 	{
-		curves = GameObject.FindObjectOfType (typeof(Curves)) as Curves;
+        animator = GetComponent<Animator>();
+        curves = GameObject.FindObjectOfType (typeof(Curves)) as Curves;
 		audioDing = GameObject.FindObjectOfType (typeof(AudioLoop)) as AudioLoop;
-		fangShild.transform.localScale = Vector3.zero;
         buffCoolDown = new Timer();
         catchTimer = new Timer();
 		blockTimer  = new Timer();
@@ -130,40 +130,21 @@ public class Player : MonoBehaviour
             c = 2;
         }
         crystal = masterScript.GetCrystal(c);
-        animator = GetComponent<Animator>();
+       // animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
 		
 		//var children = gameObject.GetComponentsInChildren<Transform>() as GameObject;// finde Trigger  
 		//foreach (var child in children)
-		foreach (Transform child in transform)
-		{
-			if (child.name == "Catch_Trigger")
-			{
-				catchTrigger = child.gameObject;
-			}
-			
-			if (child.name == "Block_Trigger")
-			{
-				blockTrigger = child.gameObject;
-			}
-			
-			if (child.name == "Dash_Trigger")
-			{
-				dashTrigger = child.gameObject;
-			}
-			
-			if (child.name == "Miss_Trigger")
-			{
-				missTrigger = child.gameObject;
-			}
-		}
 		
-		catchTrigger.SetActive(true);///////////////
 		missTrigger.SetActive(false);
 		blockTrigger.SetActive(false);
-		dashTrigger.SetActive(false);
+        smoke.SetActive(false);
+        //blockShild.SetActive(false);
+        dashEffect.SetActive(false);
+        buffEffect.SetActive(false);
 
-		wallTop = fieldHeight / 2;
+
+        wallTop = fieldHeight / 2;
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
@@ -238,7 +219,7 @@ public class Player : MonoBehaviour
             SetBlockColliderCale(1f);
             dashEnergyCost = dashCost;
         }
-        Debug.Log("dc:" + dashCost + "  sc:" + specialCost + "  bc:" + buffCost);
+        //Debug.Log("dc:" + dashCost + "  sc:" + specialCost + "  bc:" + buffCost);
 
         if (zuLangsamZumFangenDuMong)///////////////Stun
 		{
@@ -265,7 +246,7 @@ public class Player : MonoBehaviour
 
         if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero&& power >= dashEnergyCost)//Dash input
 		{
-			audioDing.SetSrei();
+			audioDing.SetSrei(0);
 			power -= dashEnergyCost;
 			actionIndex = 3;//Do Dash
 			isInAction = true;
@@ -408,10 +389,11 @@ public class Player : MonoBehaviour
 		}
 	}
 	
-	public void SetPlayer(string player) 
+	public void SetPlayer(string playerTyp) 
 	{
-		controls = new InputControl(player,this.transform);
+            controls = new InputControl(this.gameObject, playerTyp);	
 	}
+
 	
 	public void SetZuLangsamZumFangenDuMong(bool zLZFDM)
 	{
@@ -716,7 +698,6 @@ public class Player : MonoBehaviour
 				case 5://start
 					//Debug.Log("start");
 					RestTrigger();
-					catchTrigger.SetActive(true);
 					canMovement = true;
 					ResetAnimator();
 					oldState = newState;
@@ -757,7 +738,6 @@ public class Player : MonoBehaviour
 				case 10://dash
 					RestTrigger();
 					blockTrigger.SetActive(true);
-                    dashTrigger.SetActive(true);
 					canMovement = false;
 					ResetAnimator();
 					animator.SetBool ("Block", true);
@@ -782,9 +762,11 @@ public class Player : MonoBehaviour
 	
 	public void RestTrigger()
 	{
-		catchTrigger.SetActive(false);
-		missTrigger.SetActive(false);/////////
-		blockTrigger.SetActive(false);
-		dashTrigger.SetActive(false);
-	}
+        missTrigger.SetActive(false);
+        blockTrigger.SetActive(false);
+        //smoke.SetActive(false);
+        blockShild.SetActive(false);
+        //dashEffect.SetActive(false);
+        buffEffect.SetActive(false);
+    }
 }

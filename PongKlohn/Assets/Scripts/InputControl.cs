@@ -66,7 +66,7 @@ public class InputControl
     public InputControl(Transform playerTransform)
     {
         isAiPlayer = true;
-        ai = new AI(playerTransform);
+        ai = new AI(playerTransform, 7654);
     }
 
     public Vector2 UpdateMovement () 

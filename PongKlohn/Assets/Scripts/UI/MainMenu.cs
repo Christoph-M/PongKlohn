@@ -45,7 +45,7 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void Credits() {
-
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.credits, (int)MasterScript.Scene.mainMenu));
 	}
 	
 	public void Quit() {

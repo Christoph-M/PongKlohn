@@ -48,7 +48,7 @@ public class Singleplayer : MonoBehaviour {
 		++match;
 		++enemyCharacter;
 		int matches = 0;
-
+		Debug.Log ("Still alive: " + aiStillAlive[0] + aiStillAlive[1] + aiStillAlive[2] + aiStillAlive[3] + aiStillAlive[4]);
 		foreach (bool b in aiStillAlive) {
 			if (b) ++matches;
 		}
@@ -63,12 +63,12 @@ public class Singleplayer : MonoBehaviour {
 
 		newUnlock = false;
 
-		for (int i = enemyCharacter - 2; i < aiStillAlive.Count && !aiStillAlive[i]; ++i) {
+		for (int i = enemyCharacter - 2; i < aiStillAlive.Count && !aiStillAlive[enemyCharacter - 2]; ++i) {
 			if (!aiStillAlive [i]) {
 				++enemyCharacter;
 			}
 		}
-
+		Debug.Log ("EnemyCharacter: " + enemyCharacter);
 		masterScript.SetCharacter (2, enemyCharacter);
 		masterScript.SetCrystal (2, Random.Range (1, 3));
 
@@ -266,6 +266,9 @@ public class Singleplayer : MonoBehaviour {
 		Ini.IniWriteValue ("Game", "winner", "-1");
 		Ini.IniWriteValue ("Game", "roundContinues", "True");
 
+		for (int i = 0; i < crystalUnlocked.Count; ++i) {
+			Ini.IniWriteValue ("Other", "unlock" + i + "HasBeenShown", "False");
+		}
 		Ini.IniWriteValue ("Other", "deleted", "True");
 	}
 

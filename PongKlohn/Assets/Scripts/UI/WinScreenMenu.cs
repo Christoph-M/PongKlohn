@@ -33,9 +33,16 @@ public class WinScreenMenu : MonoBehaviour {
 			singleplayerScript.UpdateRound ();
 			singleplayerScript.EndRound ((int)MasterScript.Scene.winScreen);
 		}
+
+		singleplayerScript.SaveGame ();
 	}
 
 	public void SaveAndExit() {
+		if (!singleplayerScript.RoundContinues ()) {
+			singleplayerScript.UpdateRound ();
+			singleplayerScript.EndRound (-1, false);
+		}
+
 		singleplayerScript.SaveGame ();
 
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.winScreen));

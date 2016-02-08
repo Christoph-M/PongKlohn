@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 /// </summary>
 public class Ini : MonoBehaviour
 {
-	private static string path = Application.dataPath + "/savegame.ini";
+	private static string path = Application.dataPath + "/SaveGames/savegame.ini";
 
 	[DllImport("kernel32")]
 	private static extern long WritePrivateProfileString(string section,

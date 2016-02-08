@@ -29,9 +29,15 @@ public class LoseScreenMenu : MonoBehaviour {
 
 	public void Continue() {
 		singleplayerScript.EndRound ((int)MasterScript.Scene.loseScreen);
+
+		singleplayerScript.SaveGame ();
 	}
 
 	public void SaveAndExit() {
+		if (!singleplayerScript.RoundContinues ()) {
+			singleplayerScript.EndRound (-1, false);
+		}
+
 		singleplayerScript.SaveGame ();
 
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.loseScreen));

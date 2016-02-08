@@ -17,6 +17,9 @@ sceneSetups:
 - path: Assets/Scenes/UI/OptionsMenu.unity
   isLoaded: 0
   isActive: 0
+- path: Assets/Scenes/UI/HowToMenu.unity
+  isLoaded: 0
+  isActive: 0
 - path: Assets/Scenes/UI/CharacterSelect.unity
   isLoaded: 0
   isActive: 0
@@ -42,5 +45,8 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/AssetScenes/Balls.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/UI/Credits.unity
   isLoaded: 0
   isActive: 0

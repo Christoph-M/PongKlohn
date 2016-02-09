@@ -1,53 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AudioLoop : MonoBehaviour {
-	public AudioSource monkIntroAudio;
-	public AudioSource monkLoopAudio;
+public class AudioLoop : MonoBehaviour
+{
+    public AudioSource monkIntroAudio;
+    public AudioSource monkLoopAudio;
     /*public AudioSource monkLoopAudio;
     public AudioSource monkLoopAudio;
     public AudioSource monkLoopAudio;*/
 
     public AudioSource schrei1;
-	public AudioSource schrei2;
-	public AudioSource schrei3;
-	public AudioSource schrei4;
-    public AudioSource schrei5;
-	public AudioSource schrei6;
-	public AudioSource schrei7;
-	public AudioSource schrei8;
+    public AudioSource schrei2;
+    public AudioSource schrei3;
+    public AudioSource schrei4;
+
     public AudioSource Dash_0;
     public AudioSource Dash_1;
     public AudioSource Dash_2;
     public AudioSource Dash_3;
+    public AudioSource Dash_4;
+    public AudioSource Dash_5;
+    public AudioSource Dash_6;
+    public AudioSource Dash_7;
+    public AudioSource Dash_8;
+
     public AudioSource Block;
+
     public AudioSource Block_0_move;
     public AudioSource Block_1_move;
     public AudioSource Block_2_move;
     public AudioSource Block_3_move;
-    public AudioSource Ball_fast_0;
-    public AudioSource Ball_fast_1;
-    public AudioSource Ball_fast_2;
-    public AudioSource Ball_medium_0;
-    public AudioSource Ball_medium_1;
-    public AudioSource Ball_medium_2;
-    public AudioSource Ball_slow_0;
-    public AudioSource Ball_slow_1;
-    public AudioSource Ball_slow_2;
-    public AudioSource Ball_Background;
+    public AudioSource Block_4_move;
+    public AudioSource Block_5_move;
+    public AudioSource Block_6_move;
+    public AudioSource Block_7_move;
 
-	
-	public void PlayBallSound(int i)
+
+
+
+    public void PlaySchreiSound()
     {
-        int schreiSound =0;
-        if (i == 0)
-        {
-            schreiSound = (int)Random.Range(0f, 3f);
-        }
-        else if (i == 1)
-        {
-            schreiSound = (int)Random.Range(4f, 7f);
-        }
+
+        int schreiSound = (int)Random.Range(0f, 4f);
+
 
         switch (schreiSound)
         {
@@ -59,50 +54,73 @@ public class AudioLoop : MonoBehaviour {
                 schrei3.Play(); break;
             case 3:
                 schrei4.Play(); break;
-            case 4:
-                schrei5.Play(); break;
-            case 5:
-                schrei6.Play(); break;
-            case 6:
-                schrei7.Play(); break;
-            case 7:
-                schrei8.Play(); break;
             default:
                 break;
         }
     }
-	
-	public void SetSrei(int i)
-	{
-        int schreiSound =0;
-        if (i==0)
-        {
-            schreiSound = (int)Random.Range(0f,3f);
-        }else if (i == 1)
-        {
-            schreiSound = (int)Random.Range(4f, 7f);
-        }
 
-        switch (schreiSound)
+    public void PlayBlockMoveSound()
+    {
+
+        int blockMoveSound = (int)Random.Range(0f, 8f);
+
+
+        switch (blockMoveSound)
         {
             case 0:
-                schrei1.Play(); break;
+                Block_0_move.Play(); break;
             case 1:
-                schrei2.Play(); break;
+                Block_1_move.Play(); break;
             case 2:
-                schrei3.Play(); break;
+                Block_2_move.Play(); break;
             case 3:
-                schrei4.Play(); break;
+                Block_3_move.Play(); break;
             case 4:
-                schrei5.Play(); break;
+                Block_4_move.Play(); break;
             case 5:
-                schrei6.Play(); break;
+                Block_5_move.Play(); break;
             case 6:
-                schrei7.Play(); break;
+                Block_6_move.Play(); break;
             case 7:
-                schrei8.Play(); break;
+                Block_7_move.Play(); break;
             default:
                 break;
         }
     }
+
+    public void PlayDashSound()
+    {
+
+        int dashSound = (int)Random.Range(0f, 9f);
+
+
+        switch (dashSound)
+        {
+            case 0:
+                Dash_0.Play(); break;
+            case 1:
+                Dash_1.Play(); break;
+            case 2:
+                Dash_2.Play(); break;
+            case 3:
+                Dash_3.Play(); break;
+            case 4:
+                Dash_4.Play(); break;
+            case 5:
+                Dash_5.Play(); break;
+            case 6:
+                Dash_6.Play(); break;
+            case 7:
+                Dash_7.Play(); break;
+            default:
+                break;
+        }
+    }
+
+    public void PlayerBlockSound()
+    {
+        Block.Play();
+    }
+
+
 }

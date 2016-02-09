@@ -1,0 +1,180 @@
+fileFormatVersion: 2
+guid: 5f40696eddfea2144b3b386617ca1990
+timeCreated: 1454972964
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: porp_Kristall_
+    100004: porp_Kristall_02
+    100006: porp_Kristall_03
+    100008: porp_Kristall_04
+    100010: porp_Kristall_05
+    100012: porp_Kristall_06
+    100014: porp_Kristall_07
+    100016: porp_Kristall_08
+    100018: porp_Kristall_09
+    100020: porp_Kristall_10
+    100022: porp_Kristall_11
+    100024: porp_Kristall_12
+    100026: porp_Kristall_13
+    100028: porp_Kristall_14
+    100030: porp_Kristall_15
+    100032: porp_Kristall_16
+    100034: porp_Kristall_17
+    100036: porp_Kristall_18
+    100038: porp_Kristall_19
+    100040: porp_Kristall_20
+    100042: porp_Kristall_21
+    400000: //RootNode
+    400002: porp_Kristall_
+    400004: porp_Kristall_02
+    400006: porp_Kristall_03
+    400008: porp_Kristall_04
+    400010: porp_Kristall_05
+    400012: porp_Kristall_06
+    400014: porp_Kristall_07
+    400016: porp_Kristall_08
+    400018: porp_Kristall_09
+    400020: porp_Kristall_10
+    400022: porp_Kristall_11
+    400024: porp_Kristall_12
+    400026: porp_Kristall_13
+    400028: porp_Kristall_14
+    400030: porp_Kristall_15
+    400032: porp_Kristall_16
+    400034: porp_Kristall_17
+    400036: porp_Kristall_18
+    400038: porp_Kristall_19
+    400040: porp_Kristall_20
+    400042: porp_Kristall_21
+    2300000: porp_Kristall_
+    2300002: porp_Kristall_02
+    2300004: porp_Kristall_03
+    2300006: porp_Kristall_04
+    2300008: porp_Kristall_05
+    2300010: porp_Kristall_06
+    2300012: porp_Kristall_07
+    2300014: porp_Kristall_08
+    2300016: porp_Kristall_09
+    2300018: porp_Kristall_10
+    2300020: porp_Kristall_11
+    2300022: porp_Kristall_12
+    2300024: porp_Kristall_13
+    2300026: porp_Kristall_14
+    2300028: porp_Kristall_15
+    2300030: porp_Kristall_16
+    2300032: porp_Kristall_17
+    2300034: porp_Kristall_18
+    2300036: porp_Kristall_19
+    2300038: porp_Kristall_20
+    2300040: porp_Kristall_21
+    3300000: porp_Kristall_
+    3300002: porp_Kristall_02
+    3300004: porp_Kristall_03
+    3300006: porp_Kristall_04
+    3300008: porp_Kristall_05
+    3300010: porp_Kristall_06
+    3300012: porp_Kristall_07
+    3300014: porp_Kristall_08
+    3300016: porp_Kristall_09
+    3300018: porp_Kristall_10
+    3300020: porp_Kristall_11
+    3300022: porp_Kristall_12
+    3300024: porp_Kristall_13
+    3300026: porp_Kristall_14
+    3300028: porp_Kristall_15
+    3300030: porp_Kristall_16
+    3300032: porp_Kristall_17
+    3300034: porp_Kristall_18
+    3300036: porp_Kristall_19
+    3300038: porp_Kristall_20
+    3300040: porp_Kristall_21
+    4300000: porp_Kristall_
+    4300002: porp_Kristall_13
+    4300004: porp_Kristall_14
+    4300006: porp_Kristall_02
+    4300008: porp_Kristall_04
+    4300010: porp_Kristall_16
+    4300012: porp_Kristall_20
+    4300014: porp_Kristall_07
+    4300016: porp_Kristall_10
+    4300018: porp_Kristall_17
+    4300020: porp_Kristall_12
+    4300022: porp_Kristall_06
+    4300024: porp_Kristall_18
+    4300026: porp_Kristall_03
+    4300028: porp_Kristall_15
+    4300030: porp_Kristall_05
+    4300032: porp_Kristall_21
+    4300034: porp_Kristall_11
+    4300036: porp_Kristall_09
+    4300038: porp_Kristall_08
+    4300040: porp_Kristall_19
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

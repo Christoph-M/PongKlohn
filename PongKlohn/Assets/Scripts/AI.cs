@@ -60,7 +60,7 @@ public class AI
     public static bool newTargetVectorCountLeft = false;
     public static bool newTargetVectorCountRight = false;
     // Use this for initialization
-    public AI (Transform p, int s) 
+    public AI (Transform p) 
 	{
         minimumPlayerDistance = minimumPlayerDistanceReset;
         maximumPlayerDistance = maximumPlayerDistanceReset;
@@ -70,7 +70,7 @@ public class AI
         SetLeftRightPlayer();
         SetEnemyPlayer();
         state = State.neutral;
-        aiStrength = s;
+//        aiStrength = s;
 		//aiStrength = gameScript.aiStrength;
         missChnc = GetMissingChance(aiStrength);
 		percentageX = StatePercentage();

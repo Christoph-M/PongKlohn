@@ -4,15 +4,13 @@ using System.Collections.Generic;
 
 
 public class Player : MonoBehaviour 
-{	
-	public Transform ballSpohorn;
-	public List<GameObject> balls;
-	public int health { get; set; }
-	public int power { get; set; }
-	public float blockTime { get; set; }
-	public float speed { get; set; }
-	public float dashSpeed { get; set; }
-	public bool InvertMotion = false;
+{
+    public int health;
+    public int power;
+    public float blockTime;
+    public float speed;
+    public float dashSpeed;
+    public bool InvertMotion = false;
 	protected const float fieldHeight = 22.0f;
 	protected const float fieldWidth = 70.0f;
 	protected float wallTop;
@@ -30,10 +28,7 @@ public class Player : MonoBehaviour
 	private Rigidbody2D myTransform;
 	private Animator animator;
 	private Game gameScript;
-	private GameObject catchTrigger;
-	private GameObject blockTrigger;
-	private GameObject dashTrigger;
-	private GameObject missTrigger;
+
 	private InputControl controls;
 	private float motionInverter = 1;
 	private AudioLoop audioDing;
@@ -80,17 +75,56 @@ public class Player : MonoBehaviour
 	private Vector3 newValue = Vector3.zero;
 	private Vector3 wallDistance = Vector3.zero;
 	private Vector3 lerpedDash = Vector3.zero;
-	private int oldState =0;
+	private Curves curves;
+    private int oldState =0;
 	private bool dashBool = true;
-	public GameObject smoke;
-	public GameObject fangShild;
-	public GameObject blockShild;
-    public GameObject BlockCollider;
+
+    public AudioSource Vocal1;
+    public AudioSource Vocal2;
+    public AudioSource Vocal3;
+    public AudioSource Vocal4;
+
+    public AudioSource BlockSound;
+
+    public AudioSource move0;
+    public AudioSource move1;
+    public AudioSource move2;
+    public AudioSource move3;
+    public AudioSource move4;
+    public AudioSource move5;
+    public AudioSource move6;
+    public AudioSource move7;
+
+    public AudioSource Dash1;
+    public AudioSource Dash2;
+    public AudioSource Dash3;
+    public AudioSource Dash4;
+    public AudioSource Dash5;
+    public AudioSource Dash6;
+    public AudioSource Dash7;
+    public AudioSource Dash8;
+    public AudioSource Dash9;
+
+    public GameObject smoke;
     public GameObject DashCollider;
-    private Curves curves;
-	public int dashEnergyCost { get; set; }
-	public int specialCost = 0;
-	public int buffCost = 0;
+    public GameObject blockShild;
+    public GameObject dashEffect;
+    public GameObject buffEffect;
+    public GameObject blockTrigger;
+    public GameObject missTrigger;
+
+
+    public int dashEnergyCost { get; set; }
+    /// <summary>
+    /// /////////////////////////////////
+    /// </summary>
+    private int dashCost = 10;
+	private int specialCost = 75;
+	private int buffCost = 50;
+    
+    /// <summary>
+    /// ///////////////////////////
+    /// </summary>
     private bool blockWasHit = false;
     private int crystal = 0;
     private MasterScript masterScript;
@@ -99,9 +133,9 @@ public class Player : MonoBehaviour
 
     void Start() 
 	{
-		curves = GameObject.FindObjectOfType (typeof(Curves)) as Curves;
+        animator = GetComponent<Animator>();
+        curves = GameObject.FindObjectOfType (typeof(Curves)) as Curves;
 		audioDing = GameObject.FindObjectOfType (typeof(AudioLoop)) as AudioLoop;
-		fangShild.transform.localScale = Vector3.zero;
         buffCoolDown = new Timer();
         catchTimer = new Timer();
 		blockTimer  = new Timer();
@@ -122,44 +156,27 @@ public class Player : MonoBehaviour
             c = 2;
         }
         crystal = masterScript.GetCrystal(c);
-        animator = GetComponent<Animator>();
+       // animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
 		
 		//var children = gameObject.GetComponentsInChildren<Transform>() as GameObject;// finde Trigger  
 		//foreach (var child in children)
-		foreach (Transform child in transform)
-		{
-			if (child.name == "Catch_Trigger")
-			{
-				catchTrigger = child.gameObject;
-			}
-			
-			if (child.name == "Block_Trigger")
-			{
-				blockTrigger = child.gameObject;
-			}
-			
-			if (child.name == "Dash_Trigger")
-			{
-				dashTrigger = child.gameObject;
-			}
-			
-			if (child.name == "Miss_Trigger")
-			{
-				missTrigger = child.gameObject;
-			}
-		}
 		
-		catchTrigger.SetActive(true);///////////////
 		missTrigger.SetActive(false);
 		blockTrigger.SetActive(false);
-		dashTrigger.SetActive(false);
+      
+        //blockShild.SetActive(false);
+        dashEffect.SetActive(false);
+        buffEffect.SetActive(false);
 
-		wallTop = fieldHeight / 2;
+
+        wallTop = fieldHeight / 2;
 		wallBottom = -fieldHeight / 2;
 		wallRight = fieldWidth / 2;
 		wallLeft = -fieldWidth / 2;
-		
+
+        dashCost = dashEnergyCost;
+
 		if (InvertMotion) //Spieler Steht Links oder Recht   Steuerung anpassen
 		{
 			motionInverter = -1;
@@ -225,8 +242,10 @@ public class Player : MonoBehaviour
         if (buffCoolDown.IsFinished())
         {
             buffMoveMod = 1;
+            SetBlockColliderCale(1f);
+            dashEnergyCost = dashCost;
         }
-
+        //Debug.Log("dc:" + dashCost + "  sc:" + specialCost + "  bc:" + buffCost);
 
         if (zuLangsamZumFangenDuMong)///////////////Stun
 		{
@@ -243,16 +262,17 @@ public class Player : MonoBehaviour
 			isInAction = true;
 		}
 
-        if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished())//Buff input
+        if (controls.IsBuffActive() && !isInAction && buffCoolDown.IsFinished() && power >= buffCost)//Buff input
 		{
             //Debug.Log("buff input works");
+            power -= buffCost;
 			actionIndex = 4;//Do buff
 			isInAction = true;
 		}
 
-        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero)// &&)// power >= dashEnergyCost)//Dash input
+        if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero&& power >= dashEnergyCost)//Dash input
 		{
-			audioDing.SetSrei();
+			audioDing.SetSrei(0);
 			power -= dashEnergyCost;
 			actionIndex = 3;//Do Dash
 			isInAction = true;
@@ -350,7 +370,7 @@ public class Player : MonoBehaviour
 				if(wallDistance.y < lerpedDash.y * dashLength){endVec.y = startVec.y - wallDistance.y;}
 			}
             Vector3 diff = (startVec - endVec);
-            GameObject g = Instance(DashCollider, transform.position -(diff/2), ToolBox.GetRorationFromVector(new Vector3(directionRaw_.x,directionRaw_.y,0)));
+            GameObject g = Instance(DashCollider, transform.position -(diff/2), ToolBox.GetRotationFromVector(new Vector3(directionRaw_.x,directionRaw_.y,0)));
             g.tag = this.tag;
         }
 
@@ -369,6 +389,11 @@ public class Player : MonoBehaviour
 		}
 		return false;
 	}
+
+    private void SetBlockColliderCale(float sice)
+    {
+        blockTrigger.transform.localScale = new Vector3(1, sice, 1);
+    }
 
     private float AbstandTop() { return wallTop - transform.position.y; }
 
@@ -390,10 +415,11 @@ public class Player : MonoBehaviour
 		}
 	}
 	
-	public void SetPlayer(string player) 
+	public void SetPlayer(string playerTyp) 
 	{
-		controls = new InputControl(player,this.transform);
+            controls = new InputControl(this.gameObject, playerTyp);	
 	}
+
 	
 	public void SetZuLangsamZumFangenDuMong(bool zLZFDM)
 	{
@@ -441,9 +467,10 @@ public class Player : MonoBehaviour
                 blockShild.transform.localScale = Vector3.one * blockEfectScale;
             }
 
-            if(mode == "Block")
+            if(mode == "Block")//block while move
             {
-                if(ballSpeedup >0)
+                blockTrigger.gameObject.tag = "BlockTrigger";
+                if (ballSpeedup >0)
                 {
                     ballSpeedup -= Time.deltaTime*2;
                 }
@@ -453,6 +480,7 @@ public class Player : MonoBehaviour
                 }
             }else if (mode == "Load")
             {
+                blockTrigger.gameObject.tag = "BlockTrigger";
                 if (ballSpeedup < 1)
                 {
                     ballSpeedup += (Time.deltaTime/5);
@@ -462,10 +490,20 @@ public class Player : MonoBehaviour
                 {
                     ballSpeedup = 1f;
                 }
+                if(OnBlock())
+                {
+                    ballSpeedup = 0;
+                }
             }else if (mode == "Special")
             {
+                blockTrigger.gameObject.tag = "SpecialTrigger";
+
                 //Debug.Log("spessel");
                 ballSpeedup = 2f;
+                if(OnBlock())
+                {
+                    power -= specialCost;
+                }
             }
 
         }
@@ -502,6 +540,7 @@ public class Player : MonoBehaviour
 			case 1:////isStunned Action////
 				if(stunProgression == 1 && stunTimer.IsFinished())
 				{
+                    stunProgression = 0;
                     Debug.Log("stun endet");
                     zuLangsamZumFangenDuMong = false;
                     return true;
@@ -551,7 +590,8 @@ public class Player : MonoBehaviour
 				}
 				else if(blockProgression == 0)
 				{
-					action = 2;
+                    PlaySrei();
+                    action = 2;
 					blockProgression =1;
 				}
 				return false;
@@ -586,7 +626,6 @@ public class Player : MonoBehaviour
 				else if(buffProgression == 0)
 				{
                     //Debug.Log("Buff");
-                    crystal = 0;
                     PerformBuff();
                     buffCoolDown.SetTimer(10f);
                     buffTimer.SetTimer(2f);
@@ -598,20 +637,20 @@ public class Player : MonoBehaviour
 			   return false;
 		}
 	}
-
+    private float buffColliderScale = 1;
     private void PerformBuff()
     {
         if(crystal == 0f)
         {
-            buffMoveMod = 5f;
+            buffMoveMod = 3f;
         }
         if (crystal == 1f)
         {
-            ///Mod2 
+            SetBlockColliderCale(2f);
         }
         if (crystal == 2f)
         {
-            ///Mod2
+            dashEnergyCost = 0;
         }
     }
 
@@ -625,9 +664,10 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    public void SetOnBlock()
-    {
+    public float SetOnBlock()
+    {    
         blockWasHit = true;
+		return ballSpeedup;
     }
 
 	public void SetTrigger(int newState)
@@ -685,7 +725,6 @@ public class Player : MonoBehaviour
 				case 5://start
 					//Debug.Log("start");
 					RestTrigger();
-					catchTrigger.SetActive(true);
 					canMovement = true;
 					ResetAnimator();
 					oldState = newState;
@@ -726,7 +765,6 @@ public class Player : MonoBehaviour
 				case 10://dash
 					RestTrigger();
 					blockTrigger.SetActive(true);
-                    dashTrigger.SetActive(true);
 					canMovement = false;
 					ResetAnimator();
 					animator.SetBool ("Block", true);
@@ -740,8 +778,6 @@ public class Player : MonoBehaviour
 	public void ResetAnimator()
 	{
 		animator.SetBool ("Block", false);
-		animator.SetBool ("Fire", false);
-		animator.SetBool ("PowerShoot", false);
 		animator.SetBool ("Buff", false);
 		animator.SetBool ("Stun", false);
 		animator.SetBool ("Win", false);
@@ -751,9 +787,50 @@ public class Player : MonoBehaviour
 	
 	public void RestTrigger()
 	{
-		catchTrigger.SetActive(false);
-		missTrigger.SetActive(false);/////////
-		blockTrigger.SetActive(false);
-		dashTrigger.SetActive(false);
-	}
+        missTrigger.SetActive(false);
+        blockTrigger.SetActive(false);
+        //smoke.SetActive(false);
+        dashEffect.SetActive(false);
+        buffEffect.SetActive(false);
+    }
+    public void PlaySrei()
+    {
+        int schreiSound = 0;
+        schreiSound = (int)Random.Range(0f, 8f);
+
+        switch (schreiSound)
+        {
+            case 0:
+                Vocal1.Play(); break;
+            case 1:
+                Vocal2.Play(); break;
+            case 2:
+                Vocal3.Play(); break;
+            case 3:
+                Vocal4.Play(); break;
+            default:
+                break;
+        }
+    }
+
+   /* public void PlayMove()
+    {
+        int schreiSound = 0;
+        schreiSound = (int)Random.Range(0f, 8f);
+
+        switch (schreiSound)
+        {
+            case 0:
+                Vocal1.Play(); break;
+            case 1:
+                Vocal2.Play(); break;
+            case 2:
+                Vocal3.Play(); break;
+            case 3:
+                Vocal4.Play(); break;
+            default:
+                break;
+        }
+    }*/
 }
+

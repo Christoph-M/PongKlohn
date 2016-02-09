@@ -39,7 +39,9 @@ public class Game : MonoBehaviour {
 	public float minBallSpeed;
 	public float maxBallSpeed;
 	public AnimationCurve ballSpeedUpCurve = AnimationCurve.EaseInOut(0.0f, 10.0f, 1.0f, 100.0f);
+	public AnimationCurve ballSpeedBoostCurve = AnimationCurve.EaseInOut(0.0f, 20.0f, 0.5f, 0.0f);
 	public float ballSpeedUpStep = 5.0f;
+	public float ballBoostTime = 0.5f;
 	public float catchSpeedDec = 2.0f;
 
 	[Header("Timer")]
@@ -48,6 +50,7 @@ public class Game : MonoBehaviour {
 
 	private MasterScript masterScript;
 	private SceneHandler sceneHandlerScript;
+	private Singleplayer singleplayerScript;
 	private Transform projectile;
 
 	private Player player1;
@@ -55,6 +58,8 @@ public class Game : MonoBehaviour {
 
 	private const int p1 = 1;
 	private const int p2 = 2;
+
+	private bool singleplayer;
 
 	private float ballSpeed;
 	private float ballSpeedAtTime;
@@ -64,6 +69,9 @@ public class Game : MonoBehaviour {
 	void Awake() {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
+		singleplayer = (masterScript.GetPlayerType (2) == "Ai") ? true : false;
+		if (singleplayer) singleplayerScript = GameObject.FindObjectOfType (typeof(Singleplayer)) as Singleplayer;
 
 		StartCoroutine (SpawnGameObjects ());
 		
@@ -86,17 +94,41 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (); }
+	public void SetProjectileTransform(Transform trans) { projectile = trans; AI.SetNewTargetVectorCount (projectile.transform.position); }
 	public Transform GetProjectileTransform() { return projectile; }
 
-	public void BallSpeedUp(){
-		ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
-		ballSpeed = ballSpeedUpCurve.Evaluate(ballSpeedAtTime);
+	public void BallSpeedUp(float blockFac, bool special = false){
+		if (blockFac > 0.0f) {
+			ballSpeedAtTime += ballSpeedUpStep / (maxBallSpeed - minBallSpeed);
+			ballSpeed = ballSpeedUpCurve.Evaluate (ballSpeedAtTime) * (1 + blockFac);
+		} else {
+			ballSpeed = ballSpeedUpCurve.Evaluate (ballSpeedAtTime);
+		}
 
-		if (ballSpeed > maxBallSpeed) {
+		if (ballSpeed > maxBallSpeed && !special) {
 			ballSpeed = maxBallSpeed;
 			ballSpeedAtTime = 1.0f;
 		}
+
+		projectile.GetComponent<Move>().UpdateBallSpeed ();
+	}
+
+	public IEnumerator BallSpeedBoost() {
+		float timeElapsed = 0.0f;
+		Move moveScript = projectile.GetComponent<Move> ();
+
+		float oldSpeed = ballSpeed;
+
+		while (timeElapsed < ballBoostTime) {
+			ballSpeed = oldSpeed + ballSpeedBoostCurve.Evaluate (timeElapsed / ballBoostTime);
+			moveScript.UpdateBallSpeed ();
+
+			timeElapsed += Time.deltaTime;
+
+			yield return new WaitForSeconds (0.01f * Time.deltaTime);
+		}
+
+		ballSpeed = oldSpeed;
 	}
 
 	public float GetBallSpeed() { return ballSpeed; }
@@ -236,8 +268,16 @@ public class Game : MonoBehaviour {
 		int charP1 = masterScript.GetCharacter (1) - 1;
 		int charP2 = masterScript.GetCharacter (2) - 1;
 
-		GameObject p1 = Instantiate (charactersP1 [charP1], player1Spawn, new Quaternion ()) as GameObject;
-		GameObject p2 = Instantiate (charactersP2 [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
+		if (masterScript.GetPlayerType (2) == "Ai") {
+			if (singleplayer) {
+				aiStrength = (int)(80 + ((20 / 3) * singleplayerScript.GetAiDifficulty(masterScript.GetCharacter(2))));
+			} else {
+				aiStrength = 80;
+			}
+		}
+
+		GameObject p1 = Instantiate (masterScript.players [charP1], player1Spawn, new Quaternion ()) as GameObject;
+		GameObject p2 = Instantiate (masterScript.players [charP2], player2Spawn, new Quaternion (0.0f, 0.0f, 180.0f, 0.0f)) as GameObject;
 		Transform pEmpty = GameObject.FindGameObjectWithTag ("PlayerEmpty").transform;
 
 		player1 = p1.GetComponent<Player> ();
@@ -287,23 +327,17 @@ public class Game : MonoBehaviour {
 
 			this.EnablePlayers (false);
 
-			StartCoroutine(sceneHandlerScript.EndGame ((int)MasterScript.Scene.winScreen));
+			yield return new WaitForSeconds (3);
 
-			yield return 0;
-
-//			if (winner == 1) {
-//				masterScript.LoadScene (1);
-//
-//				yield return new WaitUntil(() => SceneManager.GetSceneAt(1).isLoaded);
-//
-//				masterScript.UnloadScene (scene);
-//			} else {
-//				masterScript.LoadScene (1);
-//
-//				yield return new WaitUntil(() => SceneManager.GetSceneAt(1).isLoaded);
-//
-//				masterScript.UnloadScene (scene);
-//			}
+			if (singleplayer) {
+				if (winner == 1) {
+					StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.winScreen));
+				} else {
+					StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.loseScreen));
+				}
+			} else {
+				StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.versusEndScreen));
+			}
 		} else {
 			uiScript.GetComponent<MatchUI> ().RoundEnd (p);
 			

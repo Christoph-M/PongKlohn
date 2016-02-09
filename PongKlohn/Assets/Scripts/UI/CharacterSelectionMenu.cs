@@ -22,8 +22,9 @@ public class CharacterSelectionMenu : MonoBehaviour {
 	private const int p1 = 1;
 	private const int p2 = 2;
 
+	private List<int> selectedCharacters = new List<int> { -1, -1, -1, -1, -1, -1 };
 	private List<int> characters = new List<int> { 1, 1 };
-	private List<int> crystals = new List<int> { -1, -1 };
+	private List<int> crystals = new List<int> { -1, -1, -1, -1, -1, -1 };
 
 	private bool p1Ready = false;
 	private bool p2Ready = false;
@@ -39,61 +40,50 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		player1 = characterSelectionMenu.transform.FindChild ("Player1");
 		player2 = characterSelectionMenu.transform.FindChild ("Player2");
 
-		StartCoroutine (SetGame ());
+		StartCoroutine (EnableStart ());
 	}
 
-	public void Player1SelectRight() {
-		int old = characters[p1 - 1];
+	public void SelectRight(int p) {
+		int old = characters[p - 1];
 
-		if (characters[p1 - 1] < maxCharacters) {
-			++characters[p1 - 1];
+		if (characters[p - 1] < maxCharacters) {
+			++characters[p - 1];
 		} else {
-			characters[p1 - 1] = 1;
+			characters[p - 1] = 1;
 		}
 
-		this.SwitchCharacter (p1, characters[p1 - 1], old);
+		this.SwitchCharacter (p, characters[p - 1], old);
 	}
 
-	public void Player1SelectLeft() {
-		int old = characters[p1 - 1];
+	public void SelectLeft(int p) {
+		int old = characters[p - 1];
 
-		if (characters[p1 - 1] > 1) {
-			--characters[p1 - 1];
+		if (characters[p - 1] > 1) {
+			--characters[p - 1];
 		} else {
-			characters[p1 - 1] = maxCharacters;
+			characters[p - 1] = maxCharacters;
 		}
 
-		this.SwitchCharacter (p1, characters[p1 - 1], old);
+		this.SwitchCharacter (p, characters[p - 1], old);
 	}
 
 	public void SelectPlayer1() {
-		this.PlayerSelect (p1);
+		if (characters [p1 - 1] != selectedCharacters [p2 - 1]) {
+			GameObject glow = player1.FindChild ("Glow").gameObject;
+
+			this.PlayerSelect (p1);
+
+			glow.SetActive (p1Ready);
+		}
 	}
 
-	public void Crystal1OneEnter() {
-		this.CrystalText (p1, "Crystal One");
-	}
-
-	public void Crystal1TwoEnter() {
-		this.CrystalText (p1, "Crystal Two");
-	}
-
-	public void Crystal1ThreeEnter() {
-		this.CrystalText (p1, "Crystal Three");
-	}
-
-	public void CrystalP1(int crystal) {
-		crystals[p1 - 1] = crystal;
-
-		this.ReadyActive (p1, true);
-	}
-
-	public void Player1Ready() {
-		GameObject glow = player1.FindChild ("Glow").gameObject;
-
+	public void CrystalP1(int i) {
 		p1Ready = !p1Ready;
-
-		glow.SetActive (p1Ready);
+		if (crystals [p1 - 1] == i) {
+			crystals [p1 - 1] = -1;
+		} else {
+			crystals [p1 - 1] = i;
+		}
 	}
 
 	public void Player2SelectRight() {
@@ -121,43 +111,36 @@ public class CharacterSelectionMenu : MonoBehaviour {
 	}
 
 	public void SelectPlayer2() {
-		this.PlayerSelect (p2);
+		if (characters [p2 - 1] != selectedCharacters [p1 - 1]) {
+			GameObject glow = player2.FindChild ("Glow").gameObject;
+
+			this.PlayerSelect (p2);
+
+			glow.SetActive (p2Ready);
+		}
 	}
 
-	public void Crystal2OneEnter() {
-		this.CrystalText (p2, "Crystal One");
-	}
-
-	public void Crystal2TwoEnter() {
-		this.CrystalText (p2, "Crystal Two");
-	}
-
-	public void Crystal2ThreeEnter() {
-		this.CrystalText (p2, "Crystal Three");
-	}
-
-	public void CrystalP2(int crystal) {
-		crystals[p2 - 1] = crystal;
-
-		this.ReadyActive (p2, true);
-	}
-
-	public void Player2Ready() {
-		GameObject glow = player2.FindChild ("Glow").gameObject;
-
+	public void CrystalP2(int i) {
 		p2Ready = !p2Ready;
-
-		glow.SetActive (p2Ready);
+		if (crystals [p2 - 1] == i) {
+			crystals [p2 - 1] = -1;
+		} else {
+			crystals [p2 - 1] = i;
+		}
 	}
 
 	public void Back() {
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.characterSelect));
 	}
 
+	public void StartGame() {
+		StartCoroutine (this.SetGame ());
+	}
+
 
 	private void SwitchCharacter(int player, int character, int old) {
-		GameObject charOld = (player == 1) ? player1.FindChild("Character_" + old).gameObject : player2.FindChild("Character_" + old).gameObject;
-		GameObject charNew = (player == 1) ? player1.FindChild("Character_" + character).gameObject : player2.FindChild("Character_" + character).gameObject;
+		GameObject charOld = (player == 1) ? player1.FindChild("Player_" + old).gameObject : player2.FindChild("Player_" + old).gameObject;
+		GameObject charNew = (player == 1) ? player1.FindChild("Player_" + character).gameObject : player2.FindChild("Player_" + character).gameObject;
 
 		charOld.SetActive (false);
 		charNew.SetActive (true);
@@ -167,55 +150,65 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		GameObject sButtons = (player == 1) ? player1.FindChild ("Select_Buttons").gameObject : player2.FindChild ("Select_Buttons").gameObject;
 		GameObject cButtons = (player == 1) ? player1.FindChild ("Crystal_Buttons").gameObject : player2.FindChild ("Crystal_Buttons").gameObject;
 
+		if (selectedCharacters [player - 1] < 0) {
+			selectedCharacters [player - 1] = characters [player - 1];
+		} else {
+			selectedCharacters [player - 1] = -1;
+		}
+
 		if (!cButtons.activeSelf) {
 			sButtons.SetActive (false);
 			cButtons.SetActive (true);
-
-			if (crystals[player - 1] > 0) {
-				this.ReadyActive (player, true);
-			}
 		} else {
 			sButtons.SetActive (true);
+
+			foreach (Toggle t in cButtons.GetComponentsInChildren<Toggle>()) {
+				t.isOn = false;
+			}
+
+			crystals [player - 1] = -1;
+
 			cButtons.SetActive (false);
-			this.ReadyActive (player, false);
-			this.CrystalText (player, "");
+			this.SetReady (player, false);
 		}
 	}
 
-	private void CrystalText(int player, string text) {
-		Text textBox = (player == 1) ? player1.FindChild ("Text_Box").GetComponent<Text> () : player2.FindChild ("Text_Box").GetComponent<Text> ();
-
-		textBox.text = text;
+	private void SetReady(int player, bool enabled) {
+		if (player == 1) {
+			p1Ready = enabled;
+		} else {
+			p2Ready = enabled;
+		}
 	}
 
-	private void ReadyActive(int player, bool enabled) {
-		GameObject readyButton = (player == 1) ? player1.FindChild ("Ready").gameObject : player2.FindChild ("Ready").gameObject;
+	private IEnumerator EnableStart() {
+		while (true) {
+			yield return new WaitUntil (() => p1Ready && p2Ready);
+			Debug.Log ("P1: char " + selectedCharacters [0] + ", crystal " + crystals [0] + "\nP2: char " + selectedCharacters [1] + ", crystal " + crystals [1]);
+			characterSelectionMenu.transform.FindChild ("Start").GetComponent<Button>().interactable = true;
 
-		if (!enabled) readyButton.GetComponent<Toggle> ().isOn = false;
+			yield return new WaitUntil (() => !p1Ready || !p2Ready);
 
-		readyButton.SetActive (enabled);
+			characterSelectionMenu.transform.FindChild ("Start").GetComponent<Button>().interactable = false;
+		}
 	}
 
 	private IEnumerator SetGame() {
-		yield return new WaitUntil (() => p1Ready && p2Ready);
-
 		this.DisableMenu ();
 
-		masterScript.SetCharacter (p1, characters [p1 - 1]);
+		masterScript.SetCharacter (p1, selectedCharacters [p1 - 1]);
 		masterScript.SetCrystal (p1, crystals[p1 - 1]);
-		masterScript.SetCharacter (p2, characters [p2 - 1]);
+		masterScript.SetCharacter (p2, selectedCharacters [p2 - 1]);
 		masterScript.SetCrystal (p2, crystals[p2 - 1]);
+
+		Debug.Log ("P1: char " + selectedCharacters [0] + ", crystal " + crystals [0] + "\nP2: char " + selectedCharacters [1] + ", crystal " + crystals [1]);
 
 		yield return new WaitForSeconds (3);
 
 		StartCoroutine(sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.characterSelect));
-
-		yield return 0;
 	}
 
 	private void DisableMenu() {
-		characterSelectionMenu.transform.FindChild ("Back").gameObject.SetActive (false);
-
 		foreach (Button button in characterSelectionMenu.GetComponentsInChildren<Button>()) {
 			button.interactable = false;
 		}

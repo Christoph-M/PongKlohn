@@ -3,10 +3,13 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MainMenu : MonoBehaviour {
 	public GameObject mainMenu;
 	public GameObject firstSelectElement;
+
+	public List<Image> canes;
 
 
 	private MasterScript masterScript;
@@ -27,7 +30,7 @@ public class MainMenu : MonoBehaviour {
 		masterScript.SetPlayerType (1, "KeyP1");
 		masterScript.SetPlayerType (2, "Ai");
 
-		StartCoroutine(sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.mainMenu));
+		StartCoroutine (sceneHandlerScript.StartSingleplayer ((int)MasterScript.Scene.spLoop, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void Multiplayer() {
@@ -42,10 +45,32 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void Credits() {
-
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.credits, (int)MasterScript.Scene.mainMenu));
 	}
 	
 	public void Quit() {
 		Application.Quit ();
+	}
+
+	public void UpdateCane(int i) {
+		switch (i) {
+		case 0:
+			foreach (Image cane in canes) {
+				cane.enabled = false;
+			}
+			break;
+		case 1:
+			canes [i - 1].enabled = true; break;
+		case 2:
+			canes [i - 1].enabled = true; break;
+		case 3:
+			canes [i - 1].enabled = true; break;
+		case 4:
+			canes [i - 1].enabled = true; break;
+		case 5:
+			canes [i - 1].enabled = true; break;
+		default:
+			break;
+		}
 	}
 }

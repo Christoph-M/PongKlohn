@@ -79,6 +79,32 @@ public class Player : MonoBehaviour
     private int oldState =0;
 	private bool dashBool = true;
 
+    public AudioSource Vocal1;
+    public AudioSource Vocal2;
+    public AudioSource Vocal3;
+    public AudioSource Vocal4;
+
+    public AudioSource BlockSound;
+
+    public AudioSource move0;
+    public AudioSource move1;
+    public AudioSource move2;
+    public AudioSource move3;
+    public AudioSource move4;
+    public AudioSource move5;
+    public AudioSource move6;
+    public AudioSource move7;
+
+    public AudioSource Dash1;
+    public AudioSource Dash2;
+    public AudioSource Dash3;
+    public AudioSource Dash4;
+    public AudioSource Dash5;
+    public AudioSource Dash6;
+    public AudioSource Dash7;
+    public AudioSource Dash8;
+    public AudioSource Dash9;
+
     public GameObject smoke;
     public GameObject DashCollider;
     public GameObject blockShild;
@@ -138,7 +164,7 @@ public class Player : MonoBehaviour
 		
 		missTrigger.SetActive(false);
 		blockTrigger.SetActive(false);
-        smoke.SetActive(false);
+      
         //blockShild.SetActive(false);
         dashEffect.SetActive(false);
         buffEffect.SetActive(false);
@@ -564,7 +590,8 @@ public class Player : MonoBehaviour
 				}
 				else if(blockProgression == 0)
 				{
-					action = 2;
+                    PlaySrei();
+                    action = 2;
 					blockProgression =1;
 				}
 				return false;
@@ -751,8 +778,6 @@ public class Player : MonoBehaviour
 	public void ResetAnimator()
 	{
 		animator.SetBool ("Block", false);
-		animator.SetBool ("Fire", false);
-		animator.SetBool ("PowerShoot", false);
 		animator.SetBool ("Buff", false);
 		animator.SetBool ("Stun", false);
 		animator.SetBool ("Win", false);
@@ -765,8 +790,47 @@ public class Player : MonoBehaviour
         missTrigger.SetActive(false);
         blockTrigger.SetActive(false);
         //smoke.SetActive(false);
-        blockShild.SetActive(false);
-        //dashEffect.SetActive(false);
+        dashEffect.SetActive(false);
         buffEffect.SetActive(false);
     }
+    public void PlaySrei()
+    {
+        int schreiSound = 0;
+        schreiSound = (int)Random.Range(0f, 8f);
+
+        switch (schreiSound)
+        {
+            case 0:
+                Vocal1.Play(); break;
+            case 1:
+                Vocal2.Play(); break;
+            case 2:
+                Vocal3.Play(); break;
+            case 3:
+                Vocal4.Play(); break;
+            default:
+                break;
+        }
+    }
+
+   /* public void PlayMove()
+    {
+        int schreiSound = 0;
+        schreiSound = (int)Random.Range(0f, 8f);
+
+        switch (schreiSound)
+        {
+            case 0:
+                Vocal1.Play(); break;
+            case 1:
+                Vocal2.Play(); break;
+            case 2:
+                Vocal3.Play(); break;
+            case 3:
+                Vocal4.Play(); break;
+            default:
+                break;
+        }
+    }*/
 }
+

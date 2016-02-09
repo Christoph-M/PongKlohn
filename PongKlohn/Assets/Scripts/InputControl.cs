@@ -23,7 +23,6 @@ public class InputControl
 	
 	public InputControl(GameObject Player_XX,string playerTyp)
 	{
-        Debug.Log("tag:" + Player_XX.tag);
         if (playerTyp == "Ai")
         {
             isAiPlayer = true;

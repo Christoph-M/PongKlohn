@@ -26,6 +26,7 @@ public class Story : MonoBehaviour {
 
 		while (true) {
 			if (!video.isPlaying || Input.anyKeyDown) {
+				video.Stop ();
 				singleplayerScript.StartMatch ((int)MasterScript.Scene.story);
 			}
 

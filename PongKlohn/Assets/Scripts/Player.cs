@@ -79,8 +79,7 @@ public class Player : MonoBehaviour
     private int oldState =0;
 	private bool dashBool = true;
 
-    private AudioSource audioSource;
-    public AudioSource audioSource1;
+    
     public AudioClip Block_0_moveC;
     public AudioClip Block_1_moveC;
     public AudioClip Block_2_moveC;
@@ -107,7 +106,10 @@ public class Player : MonoBehaviour
 
     public AudioClip BlockC;
 
-   
+    public AudioSource audioSource;
+    public AudioSource audioSource1;
+
+
 
     public GameObject smoke;
     public GameObject DashCollider;
@@ -164,7 +166,7 @@ public class Player : MonoBehaviour
        // animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
 
-        audioSource = GetComponent<AudioSource>();
+        
         
 		
 		//var children = gameObject.GetComponentsInChildren<Transform>() as GameObject;// finde Trigger  
@@ -192,8 +194,8 @@ public class Player : MonoBehaviour
 			motionInverter = 1;
 		}
 
-       // animator.SetBool(;
-	}
+        animator.SetBool("Start", true);
+    }
 	
 	void Update() 
 	{

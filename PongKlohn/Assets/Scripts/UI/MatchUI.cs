@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class MatchUI : MonoBehaviour {
 	public GameObject matchUI;
+	public GameObject pauseUI;
 
 
 	private MasterScript masterScript;
 	private SceneHandler sceneHandlerScript;
+	private Singleplayer singleplayerScript;
+
+	private EventSystem eventSystem;
 
 	private Game gameScript;
 
@@ -21,9 +26,16 @@ public class MatchUI : MonoBehaviour {
 	private float ep1;
 	private float ep2;
 
+	private bool singleplayer;
+
 	void Awake () {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
+
+		singleplayer = (masterScript.GetPlayerType (2) == "Ai") ? true : false;
+		if (singleplayer) singleplayerScript = GameObject.FindObjectOfType (typeof(Singleplayer)) as Singleplayer;
+
+		eventSystem = EventSystem.current;
 
 		gameScript = GameObject.FindObjectOfType (typeof(Game)) as Game;
 
@@ -35,7 +47,11 @@ public class MatchUI : MonoBehaviour {
 	
 	private Timer uiTimer = new Timer(8.0f);
 	void Update() {
-		this.RoundStart(uiTimer.UpdateTimer());
+		if (uiTimer.UpdateTimer () >= 0.0f) {
+			this.RoundStart (uiTimer.UpdateTimer ());
+		} else {
+			if (Input.GetButtonDown ("escape")) this.PauseGame ();
+		}
 	}
 
 	void LateUpdate() {
@@ -68,6 +84,22 @@ public class MatchUI : MonoBehaviour {
 		matchUI.transform.FindChild ("Health_P2").gameObject.SetActive (false);
 		matchUI.transform.FindChild ("Energy_P1").gameObject.SetActive (false);
 		matchUI.transform.FindChild ("Energy_P2").gameObject.SetActive (false);
+	}
+
+	public void Continue() {
+		this.PauseGame ();
+	}
+
+	public void Rematch() {
+		StartCoroutine (sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.gameScene, true));
+	}
+
+	public void MainMenu() {
+		StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.mainMenu));
+	}
+
+	public void SaveAndExit() {
+		StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.mainMenu));
 	}
 
 	private void RoundStart(float t) {
@@ -112,6 +144,21 @@ public class MatchUI : MonoBehaviour {
 			gameScript.EnableProjectile ();
 
 			break;
+		}
+	}
+
+	private void PauseGame() {
+		matchUI.SetActive (!matchUI.activeSelf);
+		pauseUI.SetActive (!pauseUI.activeSelf);
+
+		if (singleplayer && pauseUI.activeSelf) {
+			pauseUI.transform.FindChild ("Main_Menu").gameObject.SetActive (false);
+			pauseUI.transform.FindChild ("Rematch").gameObject.SetActive (false);
+			pauseUI.transform.FindChild ("Save_And_Exit").gameObject.SetActive (true);
+		} else if (pauseUI.activeSelf) {
+			pauseUI.transform.FindChild ("Save_And_Exit").gameObject.SetActive (false);
+			pauseUI.transform.FindChild ("Rematch").gameObject.SetActive (true);
+			pauseUI.transform.FindChild ("Main_Menu").gameObject.SetActive (true);
 		}
 	}
 }

@@ -46,11 +46,13 @@ public class MatchUI : MonoBehaviour {
 	}
 	
 	private Timer uiTimer = new Timer(8.0f);
+	float t = 0.0f;
 	void Update() {
-		if (uiTimer.UpdateTimer () >= 0.0f) {
-			this.RoundStart (uiTimer.UpdateTimer ());
+		t = uiTimer.UpdateTimer ();
+		if (t >= 0.0f) {
+			this.RoundStart (t);
 		} else {
-			if (Input.GetButtonDown ("escape")) this.PauseGame ();
+			if (Input.GetKeyDown (KeyCode.Escape)) this.PauseGame ();
 		}
 	}
 

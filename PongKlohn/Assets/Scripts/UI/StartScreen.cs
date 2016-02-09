@@ -6,12 +6,15 @@ using System.Collections.Generic;
 
 public class StartScreen : MonoBehaviour {
 	public GameObject startScreen;
+	public Image backgroundVideo;
 
 	public float textPulseDuration = 1.0f;
 	
 
 	private MasterScript masterScript;
 	private SceneHandler sceneHandlerScript;
+
+	private MovieTexture video;
 
 	private Image eightBall;
 	private Image ga;
@@ -25,10 +28,11 @@ public class StartScreen : MonoBehaviour {
 		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		sceneHandlerScript = GameObject.FindObjectOfType (typeof(SceneHandler)) as SceneHandler;
 
+		video = (MovieTexture)backgroundVideo.material.mainTexture;
+
 		eightBall = startScreen.transform.FindChild("8Ball").GetComponent<Image>();
 		ga = startScreen.transform.FindChild("Game_Academy").GetComponent<Image>();
 		pressStart = startScreen.transform.FindChild("Press_Start").GetComponent<Image>();
-		backplane = startScreen.transform.FindChild("Backplane").GetComponent<Image>();
 
 		StartCoroutine(this.StartUp ());
 	}
@@ -41,12 +45,14 @@ public class StartScreen : MonoBehaviour {
 	}
 
 	private IEnumerator PressStart() {
+		video.Play ();
+		GetComponent<AudioSource> ().Play ();
+
 		while (true) {
 			t = 0.0f;
 
 			while (t <= textPulseDuration / 1.2f) {
 				pressStart.CrossFadeAlpha (255, textPulseDuration / 2, false);
-				backplane.CrossFadeAlpha (255, textPulseDuration / 2, false);
 
 				t += Time.deltaTime;
 
@@ -57,7 +63,6 @@ public class StartScreen : MonoBehaviour {
 
 			while (t <= textPulseDuration / 1.2f) {
 				pressStart.CrossFadeAlpha (0, textPulseDuration / 2, false);
-				backplane.CrossFadeAlpha (0, textPulseDuration / 2, false);
 
 				t += Time.deltaTime;
 
@@ -104,7 +109,7 @@ public class StartScreen : MonoBehaviour {
 		}
 
 		t = 0.0f;
-		yield return new WaitForSeconds (1.0f);
+		yield return new WaitForSeconds (0.7f);
 
 		while (t <= 0.5f) {
 			ga.CrossFadeAlpha (0, 0.5f, false);
@@ -115,8 +120,8 @@ public class StartScreen : MonoBehaviour {
 		}
 
 		ga.gameObject.SetActive (false);
-		backplane.gameObject.SetActive (true);
 		pressStart.gameObject.SetActive (true);
+		backgroundVideo.gameObject.SetActive (true);
 
 		StartCoroutine (this.PressStart ());
 	}

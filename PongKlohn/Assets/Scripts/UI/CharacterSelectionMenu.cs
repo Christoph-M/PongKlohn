@@ -149,6 +149,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 	private void PlayerSelect(int player) {
 		GameObject sButtons = (player == 1) ? player1.FindChild ("Select_Buttons").gameObject : player2.FindChild ("Select_Buttons").gameObject;
 		GameObject cButtons = (player == 1) ? player1.FindChild ("Crystal_Buttons").gameObject : player2.FindChild ("Crystal_Buttons").gameObject;
+		Text userPrompt = characterSelectionMenu.transform.FindChild ("User_Prompt").GetComponent<Text> ();
 
 		if (selectedCharacters [player - 1] < 0) {
 			selectedCharacters [player - 1] = characters [player - 1];
@@ -159,6 +160,8 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		if (!cButtons.activeSelf) {
 			sButtons.SetActive (false);
 			cButtons.SetActive (true);
+
+			userPrompt.text = "Select   Crystal";
 		} else {
 			sButtons.SetActive (true);
 
@@ -170,6 +173,8 @@ public class CharacterSelectionMenu : MonoBehaviour {
 
 			cButtons.SetActive (false);
 			this.SetReady (player, false);
+
+			userPrompt.text = "Select   Player";
 		}
 	}
 

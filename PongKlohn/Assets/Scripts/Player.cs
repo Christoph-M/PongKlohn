@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
 
 	private InputControl controls;
 	private float motionInverter = 1;
-	private AudioLoop audioDing;
+	//private AudioLoop audioDing;
 	private Vector2 direction = Vector2.zero;//zuweisung der Inputachsen
 	private	Vector2 directionRaw = Vector2.zero;
 	private bool dashHasBeenTriggert = false;
@@ -79,31 +79,59 @@ public class Player : MonoBehaviour
     private int oldState =0;
 	private bool dashBool = true;
 
-    public AudioSource Vocal1;
-    public AudioSource Vocal2;
-    public AudioSource Vocal3;
-    public AudioSource Vocal4;
+    private AudioSource audioSource;
+    private AudioSource schrei1;
+    private AudioSource schrei2;
+    private AudioSource schrei3;
+    private AudioSource schrei4;
 
-    public AudioSource BlockSound;
+    private AudioSource Dash_0;
+    private AudioSource Dash_1;
+    private AudioSource Dash_2;
+    private AudioSource Dash_3;
+    private AudioSource Dash_4;
+    private AudioSource Dash_5;
+    private AudioSource Dash_6;
+    private AudioSource Dash_7;
+    private AudioSource Dash_8;
 
-    public AudioSource move0;
-    public AudioSource move1;
-    public AudioSource move2;
-    public AudioSource move3;
-    public AudioSource move4;
-    public AudioSource move5;
-    public AudioSource move6;
-    public AudioSource move7;
+    private AudioSource Block;
+    private AudioSource Block_0_move;
+    private AudioSource Block_1_move;
+    private AudioSource Block_2_move;
+    private AudioSource Block_3_move;
+    private AudioSource Block_4_move;
+    private AudioSource Block_5_move;
+    private AudioSource Block_6_move;
+    private AudioSource Block_7_move;
 
-    public AudioSource Dash1;
-    public AudioSource Dash2;
-    public AudioSource Dash3;
-    public AudioSource Dash4;
-    public AudioSource Dash5;
-    public AudioSource Dash6;
-    public AudioSource Dash7;
-    public AudioSource Dash8;
-    public AudioSource Dash9;
+    public AudioClip Block_0_moveC;
+    public AudioClip Block_1_moveC;
+    public AudioClip Block_2_moveC;
+    public AudioClip Block_3_moveC;
+    public AudioClip Block_4_moveC;
+    public AudioClip Block_5_moveC;
+    public AudioClip Block_6_moveC;
+    public AudioClip Block_7_moveC;
+
+    public AudioClip schrei1C;
+    public AudioClip schrei2C;
+    public AudioClip schrei3C;
+    public AudioClip schrei4C;
+
+    public AudioClip Dash_0C;
+    public AudioClip Dash_1C;
+    public AudioClip Dash_2C;
+    public AudioClip Dash_3C;
+    public AudioClip Dash_4C;
+    public AudioClip Dash_5C;
+    public AudioClip Dash_6C;
+    public AudioClip Dash_7C;
+    public AudioClip Dash_8C;
+
+    public AudioClip BlockC;
+
+   
 
     public GameObject smoke;
     public GameObject DashCollider;
@@ -129,13 +157,13 @@ public class Player : MonoBehaviour
     private int crystal = 0;
     private MasterScript masterScript;
     private float buffMoveMod = 1;
-
+    private bool blockSound = false;
 
     void Start() 
 	{
         animator = GetComponent<Animator>();
         curves = GameObject.FindObjectOfType (typeof(Curves)) as Curves;
-		audioDing = GameObject.FindObjectOfType (typeof(AudioLoop)) as AudioLoop;
+		//audioDing = GameObject.FindObjectOfType (typeof(AudioLoop)) as AudioLoop;
         buffCoolDown = new Timer();
         catchTimer = new Timer();
 		blockTimer  = new Timer();
@@ -158,6 +186,8 @@ public class Player : MonoBehaviour
         crystal = masterScript.GetCrystal(c);
        // animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
+
+        audioSource = GetComponent<AudioSource>();
 		
 		//var children = gameObject.GetComponentsInChildren<Transform>() as GameObject;// finde Trigger  
 		//foreach (var child in children)
@@ -257,6 +287,7 @@ public class Player : MonoBehaviour
 
         if (controls.IsBlockKeyActive() && !isInAction)//Block input
 		{
+           
 			//audioDing.SetSrei();
 			actionIndex = 2;//Do Block
 			isInAction = true;
@@ -272,7 +303,8 @@ public class Player : MonoBehaviour
 
         if (controls.IsDashActive() && !isInAction && directionRaw_ != Vector2.zero&& power >= dashEnergyCost)//Dash input
 		{
-			audioDing.SetSrei(0);
+            PlayDashSound();
+            
 			power -= dashEnergyCost;
 			actionIndex = 3;//Do Dash
 			isInAction = true;
@@ -560,6 +592,8 @@ public class Player : MonoBehaviour
 				{
                     if(SetBlock("Non"))
                     {
+                        blockSound = false;
+                        StartCoroutine(PlayBlockSound());
 		                blockProgression = 0;
                         return true;
                     }
@@ -590,7 +624,9 @@ public class Player : MonoBehaviour
 				}
 				else if(blockProgression == 0)
 				{
-                    PlaySrei();
+                    blockSound = true;
+                    StartCoroutine(PlayBlockSound());
+                    PlaySchreiSound();
                     action = 2;
 					blockProgression =1;
 				}
@@ -793,7 +829,146 @@ public class Player : MonoBehaviour
         dashEffect.SetActive(false);
         buffEffect.SetActive(false);
     }
-    public void PlaySrei()
+
+    public void PlaySchreiSound()
+    {
+
+        int schreiSound = (int)Random.Range(0f, 4f);
+
+
+        switch (schreiSound)
+        {
+            case 0:
+                audioSource.clip = schrei1C;
+                audioSource.Play();
+                break;
+            case 1:
+                audioSource.clip = schrei2C;
+                audioSource.Play();
+                break;
+            case 2:
+                audioSource.clip = schrei3C;
+                audioSource.Play();
+                break;
+            case 3:
+                audioSource.clip = schrei4C;
+                audioSource.Play();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void PlayBlockMoveSound()
+    {
+
+        int blockMoveSound = (int)Random.Range(0f, 8f);
+
+
+        switch (blockMoveSound)
+        {
+            case 0:
+                audioSource.clip = Block_1_moveC;
+                audioSource.Play();
+                break;
+            case 1:
+                audioSource.clip = Block_2_moveC;
+                audioSource.Play();
+                break;
+            case 2:
+                audioSource.clip = Block_3_moveC;
+                audioSource.Play();
+                break;
+            case 3:
+                audioSource.clip = Block_4_moveC;
+                audioSource.Play();
+                break;
+            case 4:
+                audioSource.clip = Block_5_moveC;
+                audioSource.Play();
+                break;
+            case 5:
+                audioSource.clip = Block_6_moveC;
+                audioSource.Play();
+                break;
+            case 6:
+                audioSource.clip = Block_7_moveC;
+                audioSource.Play();
+                break;
+            case 7:
+               audioSource.clip = Block_0_moveC;
+                audioSource.Play();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void PlayDashSound()
+    {
+
+        int dashSound = (int)Random.Range(0f, 9f);
+
+
+        switch (dashSound)
+        {
+            case 0:
+                audioSource.clip = Dash_0C;
+                audioSource.Play();
+                break;
+            case 1:
+                audioSource.clip = Dash_1C;
+                audioSource.Play();
+                break;
+            case 2:
+                audioSource.clip = Dash_2C;
+                audioSource.Play();
+                break;
+            case 3:
+                audioSource.clip = Dash_3C;
+                audioSource.Play();
+                break;
+            case 4:
+                audioSource.clip = Dash_4C;
+                audioSource.Play();
+                break;
+            case 5:
+                audioSource.clip = Dash_5C;
+                audioSource.Play();
+                break;
+            case 6:
+                audioSource.clip = Dash_6C;
+                audioSource.Play();
+                break;
+            case 7:
+               audioSource.clip = Dash_7C;
+                audioSource.Play();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public IEnumerator PlayBlockSound()
+    {
+        
+        if (blockSound == true) 
+        {
+            audioSource.clip = BlockC;
+            audioSource.Play();
+            /*if (.volume < 1f)
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    yield return new WaitForSeconds(0.1f); ;
+                    Block.volume += 0.05f;
+                }
+            }*/
+            yield return 0;
+        }
+        else { /*Block.volume = 0f;*/ audioSource.Stop(); }
+    }
+   /* public void PlaySrei()
     {
         int schreiSound = 0;
         schreiSound = (int)Random.Range(0f, 8f);
@@ -813,7 +988,7 @@ public class Player : MonoBehaviour
         }
     }
 
-   /* public void PlayMove()
+    public void PlayMove()
     {
         int schreiSound = 0;
         schreiSound = (int)Random.Range(0f, 8f);

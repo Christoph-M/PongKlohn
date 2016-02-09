@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:PongKlohn/Assets/Prefabs/Players/old.meta~4b1b40d1b74d50b32cb76d0daf36d55ee35d4fcc.meta
+guid: 81d4c82089a882446bf3c7ee4b6c9c57
+timeCreated: 1455027818
+=======
 guid: e23f53d528eaf084d93daee6fb817121
 timeCreated: 1455026482
+>>>>>>> d637b68d8552b43af2fbc9246ef1c1ab495d316e:PongKlohn/Assets/Prefabs/Players/old.meta~4b1b40d1b74d50b32cb76d0daf36d55ee35d4fcc.meta
 licenseType: Free
 DefaultImporter:
   userData: 

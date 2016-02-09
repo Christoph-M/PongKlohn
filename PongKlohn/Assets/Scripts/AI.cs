@@ -12,7 +12,7 @@ public class AI
     private Vector2 ballVec2;
 	private Transform playerTransform;
 	private Vector3 resetPosition ;
-    //private AIBlockTrigger blockTrigger;
+    
     private float playerDistance;
     public float minimumPlayerDistanceReset = 30.0f;
     public float maximumPlayerDistanceReset = 35.0f;
@@ -38,9 +38,7 @@ public class AI
 	public enum State {defensiv, agressiv, neutral, lastSave};
 	public State state;
 
-    //public enum AIType {Mastermind, MixUp, ReActive}
-
-	//private  List<Vector2> bounceArray;
+    
 	private Vector2 targetVector = new Vector2(0, 0);
 	private Vector2 originVector = new Vector2(0,0);
     private float percentageX;
@@ -53,14 +51,17 @@ public class AI
     
     List<Vector2> ballBounceList = new List<Vector2>();
     List<Vector2> ballBounceListSave = new List<Vector2>();
-    private Vector2 currentBallBounce;
+   
+    private static Vector2 currentBounce;
+    private  enum BounceEvent {AIShot,EnemyShot, neutral};
+    private  BounceEvent bounceEvent = BounceEvent.neutral;
 
     private Transform redWallTrans;
     public bool inBlockRange = false;
     public static bool newTargetVectorCountLeft = false;
     public static bool newTargetVectorCountRight = false;
     // Use this for initialization
-    public AI (Transform p, int s) 
+    public AI (Transform p) 
 	{
         minimumPlayerDistance = minimumPlayerDistanceReset;
         maximumPlayerDistance = maximumPlayerDistanceReset;
@@ -70,12 +71,11 @@ public class AI
         SetLeftRightPlayer();
         SetEnemyPlayer();
         state = State.neutral;
-        aiStrength = s;
-		//aiStrength = gameScript.aiStrength;
+		aiStrength = gameScript.aiStrength;
         missChnc = GetMissingChance(aiStrength);
 		percentageX = StatePercentage();
         persFieldLength = MeasureField();
-        currentBallBounce = Vector2.zero;
+        
         //blockTrigger = new AIBlockTrigger();
        
 
@@ -176,12 +176,13 @@ public class AI
 
     private float StatePercentage()
     {
+
         if (state == State.agressiv)
-            return 40f;
+            return UnityEngine.Random.Range(35f, 55f);
         else if (state == State.defensiv)
-            return 80;
+            return UnityEngine.Random.Range(75, 100f);
         else if (state == State.neutral)
-            return 60f;
+            return UnityEngine.Random.Range(55f, 75f);
         else if (state == State.lastSave)
             return 100f;
         else
@@ -195,11 +196,11 @@ public class AI
     private float StatePercentage(State testState)
     {
         if (testState == State.agressiv)
-            percentageX = 40f;
+            percentageX = 35f;
         else if (testState == State.defensiv)
-            percentageX = 80;
+            percentageX = 75;
         else if (testState == State.neutral)
-            percentageX = 60f;
+            percentageX = 55f;
         else if (testState == State.lastSave)
             percentageX = 100f;
         else
@@ -213,8 +214,34 @@ public class AI
         lengthX = persFieldLength * (percentageX / 100f);
         return lengthX;
     }
-    public static void SetNewTargetVectorCount(int e)
+
+   private void SetbounceEvent()
     {
+        if ((playerTransform == rightPlayer.transform && currentBounce.x > 0f) || (playerTransform == leftPlayer.transform && currentBounce.x < 0f))
+        {
+            bounceEvent = BounceEvent.AIShot;
+        }
+        else if ((playerTransform == rightPlayer.transform && currentBounce.x < 0f) || (playerTransform == leftPlayer.transform && currentBounce.x > 0f))
+        {
+            bounceEvent = BounceEvent.EnemyShot;
+        }
+        else if (currentBounce.x == 0f)
+        {
+           
+            if((playerTransform == rightPlayer.transform && ballTransform.gameObject.GetComponent<Ball>().GetPath()[1].x < 0f) || (playerTransform == leftPlayer.transform && ballTransform.gameObject.GetComponent<Ball>().GetPath()[1].x > 0f))
+            {
+                bounceEvent = BounceEvent.AIShot;
+            }
+            else if ((playerTransform == rightPlayer.transform && ballTransform.gameObject.GetComponent<Ball>().GetPath()[1].x > 0f) || (playerTransform == leftPlayer.transform && ballTransform.gameObject.GetComponent<Ball>().GetPath()[1].x < 0f))
+            {
+                bounceEvent = BounceEvent.EnemyShot;
+            }
+        }
+    }
+    public static void SetNewTargetVectorCount(Vector2 e)
+    {
+        
+        currentBounce = e;
         newTargetVectorCountRight = true;
         newTargetVectorCountLeft = true;
     }
@@ -249,10 +276,17 @@ public class AI
         {
             if (playerTransform = rightPlayer.transform)
             {
-                if (currentBallBounce.x > StatePercentage(State.agressiv)) state = State.neutral;
-                else if (currentBallBounce.x > StatePercentage(State.neutral)) state = State.defensiv;
-                else if (currentBallBounce.x > StatePercentage(State.defensiv)) state = State.lastSave;
+                if (currentBounce.x > StatePercentage(State.agressiv)) state = State.neutral;
+                else if (currentBounce.x > StatePercentage(State.neutral)) state = State.defensiv;
+                else if (currentBounce.x > StatePercentage(State.defensiv)) state = State.lastSave;
             }
+            else
+            {
+                if (currentBounce.x < -StatePercentage(State.agressiv)) state = State.neutral;
+                else if (currentBounce.x < -StatePercentage(State.neutral)) state = State.defensiv;
+                else if (currentBounce.x < -StatePercentage(State.defensiv)) state = State.lastSave;
+            }
+
            /* if (state == State.agressiv)
             {
                 state = State.neutral;
@@ -277,41 +311,47 @@ public class AI
         {
             state = State.defensiv;
         }
-       
     }
 
-    public void SetBounceVector(Vector2 bounce)
-    {
-        currentBallBounce = bounce;
-    }
+   
     int a = 0;
     private void CalculateTargetVector ()
 	{
         a++;
         Debug.Log("Now Calculating" + a);
-        ballBounceList = ballTransform.gameObject.GetComponent<Ball>().GetPath();
-        if(ballBounceList != ballBounceListSave)
+        SetbounceEvent();
+        if (bounceEvent == BounceEvent.AIShot)
         {
-            usedTargetPoints.Clear();
+            targetVector = resetPosition;
         }
-        
-        
-        Vector2 origin2 = new Vector2(0,0);
-        Vector2 target2 = new Vector2(0,0);
-        percentageX = StatePercentage();
-        float lengthX = 0f;
-      
-		lengthX = persFieldLength * (percentageX/100f);
-        
-       
+        else if (bounceEvent == BounceEvent.EnemyShot)
+        {
+            ballBounceList = ballTransform.gameObject.GetComponent<Ball>().GetPath();
+            if (ballBounceList != ballBounceListSave)
+            {
+                usedTargetPoints.Clear();
+            }
+
+
+            Vector2 origin2 = new Vector2(0, 0);
+            Vector2 target2 = new Vector2(0, 0);
+            percentageX = StatePercentage();
+            float lengthX = 0f;
+
+            lengthX = persFieldLength * (percentageX / 100f);
+
+
 
             for (int i = 0; i < (ballBounceList.Count - 1); i++)
             {
                 bool allRdyUsed = false;
 
-				if (lengthX < 0f) {
-					if (ballBounceList [i + 1] != null) {
-						if (ballBounceList [i + 1].x <= lengthX && ballBounceList [i].x >= lengthX) {
+                if (lengthX < 0f)
+                {
+                    if (ballBounceList[i + 1] != null)
+                    {
+                        if (ballBounceList[i + 1].x <= lengthX && ballBounceList[i].x >= lengthX)
+                        {
                             if (ballBounceListSave == ballBounceList)
                             {
                                 foreach (int o in usedTargetPoints)
@@ -329,11 +369,15 @@ public class AI
                                 origin2 = ballBounceList[i];
                                 break;
                             }
-						}
-					}
-				} else if (lengthX > 0f) {
-					if (ballBounceList [(i + 1)] != null) {
-						if (ballBounceList [(i + 1)].x >= lengthX && ballBounceList [i].x <= lengthX) {
+                        }
+                    }
+                }
+                else if (lengthX > 0f)
+                {
+                    if (ballBounceList[(i + 1)] != null)
+                    {
+                        if (ballBounceList[(i + 1)].x >= lengthX && ballBounceList[i].x <= lengthX)
+                        {
                             if (ballBounceListSave == ballBounceList)
                             {
                                 foreach (int o in usedTargetPoints)
@@ -353,17 +397,19 @@ public class AI
                                 origin2 = ballBounceList[i];
                                 break;
                             }
-						}
-					}
-				} 
-				else {
-					Debug.Log ("Which Player?!");
-				}
-			}
-        
-        #region alter Code
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Log("Which Player?!");
+                }
 
-        /*
+            }
+
+            #region alter Code
+
+            /*
 
                         for (int i = 0; i < bounceArray.Count; i++) {
 
@@ -404,37 +450,41 @@ public class AI
                 }
 
             */
-        #endregion
-        if(target2 == Vector2.zero && usedTargetPoints.Count != 1)
-        {
-            /*int c = 0;
-            foreach(int i in usedTargetPoints)
+            #endregion
+            if (target2 == Vector2.zero && usedTargetPoints.Count != 1)
             {
-                c = i;
+                /*int c = 0;
+                foreach(int i in usedTargetPoints)
+                {
+                    c = i;
+                }
+                usedTargetPoints[c] = 0;
+                CalculateTargetVector();*/
+                targetVector = resetPosition;
+
             }
-            usedTargetPoints[c] = 0;
-            CalculateTargetVector();*/
-            targetVector = resetPosition;
+            else if (target2 == Vector2.zero && usedTargetPoints.Count == 1)
+            {
+                //targetvector stays on old value
+            }
+            else
+            {
+                AskStartingState(origin2);
+                /*  if ((target2.x - origin2.x < 0 && playerTransform == rightPlayer.transform) || (target2.x - origin2.x > 0 && playerTransform == leftPlayer.transform))
+                    targetVector = resetPosition;
+                    else{*/
+                targetVector = AimTarget(target2, origin2, ballBounceList, lengthX);
+                targetVector += GetMissValue(missChnc);
+                //if (playerTransform == rightPlayer.transform) { targetVector += ;}
 
-        }
-        else if (target2 == Vector2.zero && usedTargetPoints.Count == 1)
-        {
-            //targetvector stays on old value
-        }
-        else
-        {
-         AskStartingState(origin2);
-        /*  if ((target2.x - origin2.x < 0 && playerTransform == rightPlayer.transform) || (target2.x - origin2.x > 0 && playerTransform == leftPlayer.transform))
-            targetVector = resetPosition;
-            else{*/
-            targetVector = AimTarget(target2, origin2, ballBounceList, lengthX);
-            targetVector += GetMissValue(missChnc);
-            
 
-        }
-           
+            }
+
             ResetUntilTurn();
             ballBounceListSave = ballBounceList;
+        }
+        else if (bounceEvent == BounceEvent.neutral) { Debug.Log("bounceEvent == neutral"); }
+        bounceEvent = BounceEvent.neutral;
     }
 
     private void BackTargetCalculation()
@@ -696,7 +746,7 @@ public class AI
     {
         if (ballTransform != null)
         {
-            if ((playerTransform == rightPlayer.transform && currentBallBounce.x > playerTransform.position.x) || (playerTransform == leftPlayer.transform && currentBallBounce.x < playerTransform.position.x))
+            if ((playerTransform == rightPlayer.transform && currentBounce.x > playerTransform.position.x) || (playerTransform == leftPlayer.transform && currentBounce.x < playerTransform.position.x))
             {
                 ballMissed = true;
                 SetAiState();
@@ -936,14 +986,13 @@ public class AI
 	// whether the AI can block or not (includes Dashing)
 	public bool GetBlock()
 	{
-        /*if (inBlockRange)
-        {
-            return true;
-        } */
+        
 		SetBallTransform();
 		if(ballTransform!=null )
-		{ 
-			if (Vector3.Distance (ballTransform.position, playerTransform.transform.position) < blockBallDistance)
+		{
+            
+			//if (Vector3.Distance (ballTransform.position, targetVector) < blockBallDistance)
+            if (Vector3.Distance (ballTransform.position, playerTransform.transform.position) < blockBallDistance)
             {
 				return true;
 			}

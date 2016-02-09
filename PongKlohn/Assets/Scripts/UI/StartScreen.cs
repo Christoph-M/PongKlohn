@@ -39,6 +39,7 @@ public class StartScreen : MonoBehaviour {
 	
 	void Update () {
 		if (Input.anyKeyDown /*&& pressStart.gameObject.activeSelf*/) {
+			video.Stop ();
 			StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.startScreen));
 		}
 

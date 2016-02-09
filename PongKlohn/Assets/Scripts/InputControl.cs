@@ -26,7 +26,7 @@ public class InputControl
         if (playerTyp == "Ai")
         {
             isAiPlayer = true;
-            ai = new AI(Player_XX.transform,1);
+            ai = new AI(Player_XX.transform);
         }
         else
         {

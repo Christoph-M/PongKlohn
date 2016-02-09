@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
     private int oldState =0;
 	private bool dashBool = true;
 
+    private AudioSource audioSource;
     private AudioSource schrei1;
     private AudioSource schrei2;
     private AudioSource schrei3;
@@ -160,31 +161,6 @@ public class Player : MonoBehaviour
 
     void Start() 
 	{
-        schrei1.clip = schrei1C;
-        schrei2.clip = schrei2C;
-        schrei3.clip = schrei3C;
-        schrei4.clip = schrei4C;
-
-        Dash_0.clip = Dash_0C;
-        Dash_1.clip = Dash_1C;
-        Dash_2.clip = Dash_2C;
-        Dash_3.clip = Dash_3C;
-        Dash_4.clip = Dash_4C;
-        Dash_5.clip = Dash_5C;
-        Dash_6.clip = Dash_6C;
-        Dash_7.clip = Dash_7C;
-        Dash_8.clip = Dash_8C;
-
-        Block.clip = BlockC;
-        Block_0_move.clip = Block_0_moveC;
-        Block_1_move.clip = Block_1_moveC;
-        Block_2_move.clip = Block_2_moveC;
-        Block_3_move.clip = Block_3_moveC;
-        Block_4_move.clip = Block_4_moveC;
-        Block_5_move.clip = Block_5_moveC;
-        Block_6_move.clip = Block_6_moveC;
-        Block_7_move.clip = Block_7_moveC;
-        
         animator = GetComponent<Animator>();
         curves = GameObject.FindObjectOfType (typeof(Curves)) as Curves;
 		//audioDing = GameObject.FindObjectOfType (typeof(AudioLoop)) as AudioLoop;
@@ -210,6 +186,8 @@ public class Player : MonoBehaviour
         crystal = masterScript.GetCrystal(c);
        // animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
+
+        audioSource = GetComponent<AudioSource>();
 		
 		//var children = gameObject.GetComponentsInChildren<Transform>() as GameObject;// finde Trigger  
 		//foreach (var child in children)
@@ -861,13 +839,21 @@ public class Player : MonoBehaviour
         switch (schreiSound)
         {
             case 0:
-                schrei1.Play(); break;
+                audioSource.clip = schrei1C;
+                audioSource.Play();
+                break;
             case 1:
-                schrei2.Play(); break;
+                audioSource.clip = schrei2C;
+                audioSource.Play();
+                break;
             case 2:
-                schrei3.Play(); break;
+                audioSource.clip = schrei3C;
+                audioSource.Play();
+                break;
             case 3:
-                schrei4.Play(); break;
+                audioSource.clip = schrei4C;
+                audioSource.Play();
+                break;
             default:
                 break;
         }
@@ -882,21 +868,37 @@ public class Player : MonoBehaviour
         switch (blockMoveSound)
         {
             case 0:
-                Block_0_move.Play(); break;
+                audioSource.clip = Block_1_moveC;
+                audioSource.Play();
+                break;
             case 1:
-                Block_1_move.Play(); break;
+                audioSource.clip = Block_2_moveC;
+                audioSource.Play();
+                break;
             case 2:
-                Block_2_move.Play(); break;
+                audioSource.clip = Block_3_moveC;
+                audioSource.Play();
+                break;
             case 3:
-                Block_3_move.Play(); break;
+                audioSource.clip = Block_4_moveC;
+                audioSource.Play();
+                break;
             case 4:
-                Block_4_move.Play(); break;
+                audioSource.clip = Block_5_moveC;
+                audioSource.Play();
+                break;
             case 5:
-                Block_5_move.Play(); break;
+                audioSource.clip = Block_6_moveC;
+                audioSource.Play();
+                break;
             case 6:
-                Block_6_move.Play(); break;
+                audioSource.clip = Block_7_moveC;
+                audioSource.Play();
+                break;
             case 7:
-                Block_7_move.Play(); break;
+               audioSource.clip = Block_0_moveC;
+                audioSource.Play();
+                break;
             default:
                 break;
         }
@@ -911,21 +913,37 @@ public class Player : MonoBehaviour
         switch (dashSound)
         {
             case 0:
-                Dash_0.Play(); break;
+                audioSource.clip = Dash_0C;
+                audioSource.Play();
+                break;
             case 1:
-                Dash_1.Play(); break;
+                audioSource.clip = Dash_1C;
+                audioSource.Play();
+                break;
             case 2:
-                Dash_2.Play(); break;
+                audioSource.clip = Dash_2C;
+                audioSource.Play();
+                break;
             case 3:
-                Dash_3.Play(); break;
+                audioSource.clip = Dash_3C;
+                audioSource.Play();
+                break;
             case 4:
-                Dash_4.Play(); break;
+                audioSource.clip = Dash_4C;
+                audioSource.Play();
+                break;
             case 5:
-                Dash_5.Play(); break;
+                audioSource.clip = Dash_5C;
+                audioSource.Play();
+                break;
             case 6:
-                Dash_6.Play(); break;
+                audioSource.clip = Dash_6C;
+                audioSource.Play();
+                break;
             case 7:
-                Dash_7.Play(); break;
+               audioSource.clip = Dash_7C;
+                audioSource.Play();
+                break;
             default:
                 break;
         }
@@ -936,21 +954,19 @@ public class Player : MonoBehaviour
         
         if (blockSound == true) 
         {
-            if (!Block.isPlaying)
-            {
-                Block.Play();
-            }
-            if (Block.volume < 1f)
+            audioSource.clip = BlockC;
+            audioSource.Play();
+            /*if (.volume < 1f)
             {
                 for (int i = 0; i < 20; i++)
                 {
                     yield return new WaitForSeconds(0.1f); ;
                     Block.volume += 0.05f;
                 }
-            }
+            }*/
             yield return 0;
         }
-        else { Block.volume = 0f; Block.Stop(); }
+        else { /*Block.volume = 0f;*/ audioSource.Stop(); }
     }
    /* public void PlaySrei()
     {

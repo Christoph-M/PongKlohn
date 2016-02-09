@@ -50,7 +50,7 @@ public class MatchUI : MonoBehaviour {
 		if (uiTimer.UpdateTimer () >= 0.0f) {
 			this.RoundStart (uiTimer.UpdateTimer ());
 		} else {
-			if (Input.GetButtonDown ("escape")) this.PauseGame ();
+			//if (Input.GetButtonDown ("escape")) this.PauseGame ();
 		}
 	}
 

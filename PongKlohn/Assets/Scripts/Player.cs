@@ -79,32 +79,7 @@ public class Player : MonoBehaviour
     private int oldState =0;
 	private bool dashBool = true;
 
-    private AudioSource audioSource;
-    private AudioSource schrei1;
-    private AudioSource schrei2;
-    private AudioSource schrei3;
-    private AudioSource schrei4;
-
-    private AudioSource Dash_0;
-    private AudioSource Dash_1;
-    private AudioSource Dash_2;
-    private AudioSource Dash_3;
-    private AudioSource Dash_4;
-    private AudioSource Dash_5;
-    private AudioSource Dash_6;
-    private AudioSource Dash_7;
-    private AudioSource Dash_8;
-
-    private AudioSource Block;
-    private AudioSource Block_0_move;
-    private AudioSource Block_1_move;
-    private AudioSource Block_2_move;
-    private AudioSource Block_3_move;
-    private AudioSource Block_4_move;
-    private AudioSource Block_5_move;
-    private AudioSource Block_6_move;
-    private AudioSource Block_7_move;
-
+    
     public AudioClip Block_0_moveC;
     public AudioClip Block_1_moveC;
     public AudioClip Block_2_moveC;
@@ -131,7 +106,10 @@ public class Player : MonoBehaviour
 
     public AudioClip BlockC;
 
-   
+    public AudioSource audioSource;
+    public AudioSource audioSource1;
+
+
 
     public GameObject smoke;
     public GameObject DashCollider;
@@ -158,6 +136,7 @@ public class Player : MonoBehaviour
     private MasterScript masterScript;
     private float buffMoveMod = 1;
     private bool blockSound = false;
+    private bool blockCSet = false;
 
     void Start() 
 	{
@@ -187,7 +166,8 @@ public class Player : MonoBehaviour
        // animator = GetComponent<Animator>();
 		myTransform = this.GetComponent<Rigidbody2D>();
 
-        audioSource = GetComponent<AudioSource>();
+        
+        
 		
 		//var children = gameObject.GetComponentsInChildren<Transform>() as GameObject;// finde Trigger  
 		//foreach (var child in children)
@@ -213,7 +193,9 @@ public class Player : MonoBehaviour
 		} else {
 			motionInverter = 1;
 		}
-	}
+
+        animator.SetBool("Start", true);
+    }
 	
 	void Update() 
 	{
@@ -593,7 +575,7 @@ public class Player : MonoBehaviour
                     if(SetBlock("Non"))
                     {
                         blockSound = false;
-                        StartCoroutine(PlayBlockSound());
+                        PlayBlockSound();
 		                blockProgression = 0;
                         return true;
                     }
@@ -625,8 +607,11 @@ public class Player : MonoBehaviour
 				else if(blockProgression == 0)
 				{
                     blockSound = true;
-                    StartCoroutine(PlayBlockSound());
-                    PlaySchreiSound();
+                    if (!audioSource.isPlaying)
+                    {
+                        PlayBlockSound();
+                        PlaySchreiSound();
+                    }
                     action = 2;
 					blockProgression =1;
 				}
@@ -949,13 +934,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    public IEnumerator PlayBlockSound()
+    public void PlayBlockSound()
     {
         
         if (blockSound == true) 
         {
-            audioSource.clip = BlockC;
-            audioSource.Play();
+            if (!blockCSet)
+            {
+                audioSource1.clip = BlockC;
+                blockCSet = true;
+            }
+            audioSource1.Play();
             /*if (.volume < 1f)
             {
                 for (int i = 0; i < 20; i++)
@@ -963,10 +952,10 @@ public class Player : MonoBehaviour
                     yield return new WaitForSeconds(0.1f); ;
                     Block.volume += 0.05f;
                 }
-            }*/
-            yield return 0;
+            }
+            yield return 0;*/
         }
-        else { /*Block.volume = 0f;*/ audioSource.Stop(); }
+        else { /*Block.volume = 0f;*/ audioSource1.Stop(); blockCSet = false; }
     }
    /* public void PlaySrei()
     {

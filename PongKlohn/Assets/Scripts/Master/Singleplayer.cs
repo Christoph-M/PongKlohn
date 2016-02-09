@@ -48,11 +48,10 @@ public class Singleplayer : MonoBehaviour {
 		++match;
 		++enemyCharacter;
 		int matches = 0;
-		Debug.Log ("Still alive: " + aiStillAlive[0] + aiStillAlive[1] + aiStillAlive[2] + aiStillAlive[3] + aiStillAlive[4]);
+
 		foreach (bool b in aiStillAlive) {
 			if (b) ++matches;
 		}
-		Debug.Log ("matches: " + matches);
 
 		if (match < matches) {
 			roundContinues = true;
@@ -68,7 +67,7 @@ public class Singleplayer : MonoBehaviour {
 				++enemyCharacter;
 			}
 		}
-		Debug.Log ("EnemyCharacter: " + enemyCharacter);
+
 		masterScript.SetCharacter (2, enemyCharacter);
 		masterScript.SetCrystal (2, Random.Range (1, 3));
 

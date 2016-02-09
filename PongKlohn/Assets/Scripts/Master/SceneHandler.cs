@@ -20,7 +20,13 @@ public class SceneHandler : MonoBehaviour {
 		masterScript.UnloadScene (this.GetScene(menuUL));
 	}
 
-	public IEnumerator StartGame(int sceneL, int sceneUL) {
+	public IEnumerator StartGame(int sceneL, int sceneUL, bool unloadFirst = false) {
+		if (unloadFirst) {
+			masterScript.UnloadScene (this.GetScene (sceneUL));
+
+			yield return new WaitUntil(() => !SceneManager.GetSceneByName(this.GetScene(sceneL)).isLoaded);
+		}
+
 		masterScript.LoadScene (this.GetScene(sceneL), false);
 		masterScript.LoadScene (this.GetScene((int)MasterScript.Scene.player), false);
 		masterScript.LoadScene (this.GetScene((int)MasterScript.Scene.balls), false);
@@ -29,7 +35,7 @@ public class SceneHandler : MonoBehaviour {
 										 SceneManager.GetSceneByName(this.GetScene((int)MasterScript.Scene.player)).isLoaded &&
 										 SceneManager.GetSceneByName(this.GetScene((int)MasterScript.Scene.balls)).isLoaded);
 
-		masterScript.UnloadScene (this.GetScene(sceneUL));
+		if (!unloadFirst) masterScript.UnloadScene (this.GetScene(sceneUL));
 	}
 
 	public IEnumerator EndGame(int scene) {

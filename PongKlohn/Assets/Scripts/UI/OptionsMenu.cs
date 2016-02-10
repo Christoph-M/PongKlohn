@@ -26,6 +26,10 @@ public class OptionsMenu : MonoBehaviour {
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.howToMenu, (int)MasterScript.Scene.optionsMenu));
 	}
 
+	public void MasterVolume() {
+		AudioListener.volume = optionsMenu.transform.FindChild ("Master_Volume").GetComponent<Slider> ().value;
+	}
+
 	public void Back() {
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.optionsMenu));
 	}

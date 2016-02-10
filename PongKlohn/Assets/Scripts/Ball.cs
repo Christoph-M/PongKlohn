@@ -34,7 +34,7 @@ public class Ball : MonoBehaviour {
 
 	private const float fieldHeight = 22.0f;
 	private const float fieldWidth = 70.0f;
-	private const float goalHeight = 10.0f;
+	private const float goalHeight = 8.0f;
 	private float wallTop;
 	private float wallBottom;
 	private float wallLeft;
@@ -322,7 +322,7 @@ public class Ball : MonoBehaviour {
 					linearRotationScript.SetDirection (1);
 				}
 			}
-				
+
 
 			this.SetFieldMiddleRotation (0.0f, (posY >= 0) ? wallTop : wallBottom);
 
@@ -333,6 +333,7 @@ public class Ball : MonoBehaviour {
 			this.SetTag (playerTag);
 			particleObjs[(this.tag == "BallP1") ? p1char : p2char + 6].SetActive (true);
 
+			other.GetComponentInParent<Player> ().SetOnBlock ();
 			this.SpeedUpProjectile (2.0f, true);
 
 
@@ -558,7 +559,7 @@ public class Ball : MonoBehaviour {
 // Sets new projectile speed + initiates boost + updates speed
 //‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void SpeedUpProjectile(float fac, bool special = false) {
-		Debug.Log ("speed up started");
+//		Debug.Log ("speed up started");
 		gameScript.BallSpeedUp (fac, special);
 		StartCoroutine (gameScript.BallSpeedBoost ());
 		moveScript.UpdateBallSpeed ();

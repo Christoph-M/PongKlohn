@@ -217,4 +217,8 @@ public class InputControl
 			return false;
 		}
 	}
+
+	public bool IsAi() {
+		return isAiPlayer;
+	}
 }

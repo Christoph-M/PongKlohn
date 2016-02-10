@@ -120,7 +120,7 @@ public class Game : MonoBehaviour {
 		while (timeElapsed < ballBoostTime) {
 			ballSpeed = oldSpeed + ballSpeedBoostCurve.Evaluate (timeElapsed / ballBoostTime);
 			moveScript.UpdateBallSpeed ();
-			Debug.Log ("oldSpeed: " + oldSpeed + ", ballSpeed: " + ballSpeed + ", time: " + timeElapsed);
+//			Debug.Log ("oldSpeed: " + oldSpeed + ", ballSpeed: " + ballSpeed + ", time: " + timeElapsed);
 			timeElapsed += Time.deltaTime;
 
 			yield return new WaitForSeconds (0.01f * Time.deltaTime);
@@ -258,7 +258,7 @@ public class Game : MonoBehaviour {
 
 		if (masterScript.GetPlayerType (2) == "Ai") {
 			if (singleplayer) {
-				aiStrength = (int)(((100 / 2) * (singleplayerScript.GetAiDifficulty(masterScript.GetCharacter(2)) - 1)));
+				aiStrength = (int)(((100 / 3) * (singleplayerScript.GetAiDifficulty(masterScript.GetCharacter(2) - 2))));
 			} else {
 				aiStrength = 80;
 			}
@@ -278,18 +278,14 @@ public class Game : MonoBehaviour {
 		player1.transform.SetParent (pEmpty);
 		player2.transform.SetParent (pEmpty);
 		player2.InvertMotion = true;
-		Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
+//		Debug.Log ("1: " + masterScript.GetPlayerType (1) + ", 2: " + masterScript.GetPlayerType (2));
 		player1.SetPlayer(masterScript.GetPlayerType(1));
 		player2.SetPlayer(masterScript.GetPlayerType(2));
-
-		player1.speed = playerSpeed;
-		player2.speed = playerSpeed;
+		
 		player1.dashSpeed = dashSpeed;
 		player2.dashSpeed = dashSpeed;
 		player1.blockTime = blockTime;
 		player2.blockTime = blockTime;
-		player1.dashEnergyCost = dashEnergyCost;
-		player2.dashEnergyCost = dashEnergyCost;
 	}
 
 	private GameObject SpawnProjectile() {
@@ -317,13 +313,16 @@ public class Game : MonoBehaviour {
 			uiScript.GetComponent<MatchUI> ().MatchEnd (winner);
 
 			this.EnablePlayers (false);
+			projectile.gameObject.SetActive (false);
 
 			if (winner == 1) {
 				wallP2.transform.FindChild ("Play").gameObject.SetActive (false);
+				wallP1.transform.FindChild ("Play").gameObject.SetActive (false);
 
 				wallP2.transform.FindChild("Loose").gameObject.SetActive (true);
 			} else {
 				wallP1.transform.FindChild ("Play").gameObject.SetActive (false);
+				wallP2.transform.FindChild ("Play").gameObject.SetActive (false);
 
 				wallP1.transform.FindChild("Loose").gameObject.SetActive (true);
 			}

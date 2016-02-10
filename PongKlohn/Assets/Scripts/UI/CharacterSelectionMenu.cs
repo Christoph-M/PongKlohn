@@ -199,7 +199,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 	private IEnumerator EnableStart() {
 		while (true) {
 			yield return new WaitUntil (() => p1Ready && p2Ready);
-			Debug.Log ("P1: char " + selectedCharacters [0] + ", crystal " + crystals [0] + "\nP2: char " + selectedCharacters [1] + ", crystal " + crystals [1]);
+//			Debug.Log ("P1: char " + selectedCharacters [0] + ", crystal " + crystals [0] + "\nP2: char " + selectedCharacters [1] + ", crystal " + crystals [1]);
 			characterSelectionMenu.transform.FindChild ("Start").GetComponent<Button>().interactable = true;
 
 			yield return new WaitUntil (() => !p1Ready || !p2Ready);
@@ -216,7 +216,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		masterScript.SetCharacter (p2, selectedCharacters [p2 - 1]);
 		masterScript.SetCrystal (p2, crystals[p2 - 1]);
 
-		Debug.Log ("P1: char " + selectedCharacters [0] + ", crystal " + crystals [0] + "\nP2: char " + selectedCharacters [1] + ", crystal " + crystals [1]);
+//		Debug.Log ("P1: char " + selectedCharacters [0] + ", crystal " + crystals [0] + "\nP2: char " + selectedCharacters [1] + ", crystal " + crystals [1]);
 
 		yield return new WaitForSeconds (3);
 

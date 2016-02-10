@@ -23,12 +23,12 @@ public class MainMenu : MonoBehaviour {
 
 		eventSystem = EventSystem.current;
 
-		eventSystem.SetSelectedGameObject(firstSelectElement);
+//		eventSystem.SetSelectedGameObject(firstSelectElement);
 	}
 
 	public void Singleplayer() {
 		masterScript.GetComponent<AudioSource> ().Play ();
-		masterScript.SetPlayerType (1, "KeyP1");
+		masterScript.SetPlayerType (1, "ConP1");
 		masterScript.SetPlayerType (2, "Ai");
 
 		StartCoroutine (sceneHandlerScript.StartSingleplayer ((int)MasterScript.Scene.spLoop, (int)MasterScript.Scene.mainMenu));
@@ -36,8 +36,8 @@ public class MainMenu : MonoBehaviour {
 
 	public void Multiplayer() {
 		masterScript.GetComponent<AudioSource> ().Play ();
-		masterScript.SetPlayerType (1, "KeyP1");
-		masterScript.SetPlayerType (2, "KeyP2");
+		masterScript.SetPlayerType (1, "ConP1");
+		masterScript.SetPlayerType (2, "ConP2");
 
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.characterSelect, (int)MasterScript.Scene.mainMenu));
 	}

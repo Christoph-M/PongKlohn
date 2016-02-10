@@ -120,12 +120,12 @@ public class Player : MonoBehaviour
     public GameObject missTrigger;
 
 
-    public int dashEnergyCost { get; set; }
+	public int dashEnergyCost = 10; // { get; set; }
     /// <summary>
     /// /////////////////////////////////
     /// </summary>
     private int dashCost = 10;
-	private int specialCost = 100;
+	private int specialCost = 75;
 	private int buffCost = 50;
     
     /// <summary>
@@ -200,6 +200,8 @@ public class Player : MonoBehaviour
 	{
 		direction = controls.UpdateMovement();//zuweisung der Inputachsen
 		directionRaw = controls.UpdateMovementRaw();
+
+		Debug.Log ("Kosten: " + dashCost + "     " + specialCost + "     " + buffCost);
 		
 		StartCoroutine(this.MovePlayer(directionRaw));
 		StartCoroutine(this.PerformAction(direction, directionRaw));
@@ -260,7 +262,7 @@ public class Player : MonoBehaviour
 
         if (zuLangsamZumFangenDuMong)///////////////Stun
 		{
-            Debug.Log("stun call");
+//            Debug.Log("stun call");
 			actionIndex = 1;//Do stunAction
 			isInAction = true;
 			
@@ -297,12 +299,13 @@ public class Player : MonoBehaviour
 			isInAction = true;
 			isPowerShooting = true;//DO special on bounce
 		}
-		else{isPowerShooting = false;}
+		//else{isPowerShooting = false;}
 		
         
 
 		if(Actions(actionIndex))
 		{
+			isPowerShooting = false;
 			isInAction = false;
             action = 0;
             actionIndex = 0;
@@ -331,7 +334,8 @@ public class Player : MonoBehaviour
 			dir = direction;
 		}
 
-		lerpDir = Vector3.Lerp (oldDir, direction,curves.GetCurve((Time.time - startValue)*3,1));
+		lerpDir = Vector3.Lerp (oldDir, direction,curves.GetCurve((Time.time - startValue)*4,1));
+		//lerpDir = direction; //Vector3.Lerp (oldDir, direction,curves.GetCurve((Time.time - startValue)*4,1));
 		lerpDir = Vector3.ClampMagnitude (lerpDir, 1.0f);
 
 		if (lerpDir.x > 0.0f) {
@@ -346,8 +350,12 @@ public class Player : MonoBehaviour
 		if (lerpDir.y < 0.0f) {
 			lerpCurve.y = curves.GetCurve(this.AbstandBottom()/3,2);
 		}
-		//Debug.Log(this.AbstandTop()+"   "+lerpCurve.y);
-		transform.position += new Vector3 ((Time.deltaTime * moveSpeed * lerpDir.x * lerpCurve.x), (Time.deltaTime * moveSpeed * lerpDir.y * lerpCurve.y), 0.0f);
+
+		if (!controls.IsAi ()) {
+			transform.position += new Vector3 ((Time.deltaTime * moveSpeed * direction.x * lerpCurve.x), (Time.deltaTime * moveSpeed * direction.y * lerpCurve.y), 0.0f);
+		} else {
+			transform.position += new Vector3 ((Time.deltaTime * moveSpeed * lerpDir.x * lerpCurve.x), (Time.deltaTime * moveSpeed * lerpDir.y * lerpCurve.y), 0.0f);
+		}
 		animator.SetFloat("xAxis", lerpDir.x * motionInverter * lerpCurve.x);
 		animator.SetFloat("yAxis", lerpDir.y * motionInverter * lerpCurve.y);
 		return false;
@@ -357,7 +365,7 @@ public class Player : MonoBehaviour
 	{
 		if(dashBool)
 		{
-			Debug.Log("Dash start: ");
+//			Debug.Log("Dash start: ");
 			
 			dashBool = false;
 			startVec = transform.position;
@@ -405,7 +413,7 @@ public class Player : MonoBehaviour
 
     private void SetBlockColliderCale(float sice)
     {
-        blockTrigger.transform.localScale = new Vector3(1, sice, 1);
+//        blockTrigger.transform.localScale = new Vector3(1, sice, 1);
     }
 
     private float AbstandTop() { return wallTop - transform.position.y; }
@@ -474,13 +482,26 @@ public class Player : MonoBehaviour
         {
             blockTimer.SetTimer(blockTime);
             blockMoveMod = 0.25f;
-            if (blockEfectScale <= 1)
+            if (blockEfectScale <= 0.4f)
             {
                 blockEfectScale += Time.deltaTime*3;
                 blockShild.transform.localScale = Vector3.one * blockEfectScale;
             }
 
-            if(mode == "Block")//block while move
+
+			if (mode == "Special")
+			{
+				blockTrigger.gameObject.tag = "SpecialTrigger";
+
+				                Debug.Log("spessel");
+				ballSpeedup = 2f;
+				if(OnBlock())
+				{
+					isPowerShooting = false;
+										Debug.Log ("special minus");
+					power -= specialCost;
+				}
+			}else if(mode == "Block")//block while move
             {
                 blockTrigger.gameObject.tag = "BlockTrigger";
                 if (ballSpeedup >0)
@@ -497,7 +518,7 @@ public class Player : MonoBehaviour
                 if (ballSpeedup < 0.5f)
                 {
                     ballSpeedup += (Time.deltaTime/5);
-                    Debug.Log("block loads");
+//                    Debug.Log("block loads");
                 }
                 else
                 {
@@ -506,16 +527,6 @@ public class Player : MonoBehaviour
                 if(OnBlock())
                 {
                     ballSpeedup = 0;
-                }
-            }else if (mode == "Special")
-            {
-                blockTrigger.gameObject.tag = "SpecialTrigger";
-
-                Debug.Log("spessel");
-                ballSpeedup = 2f;
-                if(OnBlock())
-                {
-                    power -= specialCost;
                 }
             }
 
@@ -581,8 +592,9 @@ public class Player : MonoBehaviour
 				}
 				else if(blockProgression == 1)
 				{
+				Debug.Log ("blockk " + isPowerShooting);
                     action = 2;
-                    if (controls.IsPowerShootActive(true))
+					if (isPowerShooting)
                     {
                         SetBlock("Special");
                     }
@@ -677,7 +689,7 @@ public class Player : MonoBehaviour
     {
         if(blockWasHit)
         {
-            Debug.Log("block");
+//            Debug.Log("block");
             blockWasHit = false;
             return true;
         }
@@ -686,7 +698,7 @@ public class Player : MonoBehaviour
 
     public float SetOnBlock()
     {
-        Debug.Log("block");
+//        Debug.Log("block");
         blockWasHit = true;
 		return ballSpeedup;
     }
@@ -938,25 +950,25 @@ public class Player : MonoBehaviour
     public void PlayBlockSound()
     {
         
-        if (blockSound == true) 
-        {
-            if (!blockCSet)
-            {
-                audioSource1.clip = BlockC;
-                blockCSet = true;
-            }
-            audioSource1.Play();
-            /*if (.volume < 1f)
-            {
-                for (int i = 0; i < 20; i++)
-                {
-                    yield return new WaitForSeconds(0.1f); ;
-                    Block.volume += 0.05f;
-                }
-            }
-            yield return 0;*/
-        }
-        else { /*Block.volume = 0f;*/ audioSource1.Stop(); blockCSet = false; }
+//        if (blockSound == true) 
+//        {
+//            if (!blockCSet)
+//            {
+//                audioSource1.clip = BlockC;
+//                blockCSet = true;
+//            }
+//            audioSource1.Play();
+//            /*if (.volume < 1f)
+//            {
+//                for (int i = 0; i < 20; i++)
+//                {
+//                    yield return new WaitForSeconds(0.1f); ;
+//                    Block.volume += 0.05f;
+//                }
+//            }
+//            yield return 0;*/
+//        }
+//        else { /*Block.volume = 0f;*/ audioSource1.Stop(); blockCSet = false; }
     }
 
     public void AddEnergy()

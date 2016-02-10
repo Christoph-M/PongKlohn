@@ -75,7 +75,7 @@ public class AI
         missChnc = GetMissingChance(aiStrength);
 		percentageX = StatePercentage();
         persFieldLength = MeasureField();
-        Debug.Log("AiStrength: " + aiStrength);
+//        Debug.Log("AiStrength: " + aiStrength);
         //blockTrigger = new AIBlockTrigger();
        
 
@@ -193,7 +193,7 @@ public class AI
             return 100f;
         else
         {
-            Debug.Log("Cannot read State");
+//            Debug.Log("Cannot read State");
             return 0f;
         }
 
@@ -211,7 +211,7 @@ public class AI
             percentageX = 100f;
         else
         {
-            Debug.Log("Cannot read State");
+//            Debug.Log("Cannot read State");
             return 0f;
         }
        
@@ -324,7 +324,7 @@ public class AI
     private void CalculateTargetVector ()
 	{
         a++;
-        Debug.Log("Now Calculating" + a);
+//        Debug.Log("Now Calculating" + a);
         SetbounceEvent();
         if (bounceEvent == BounceEvent.AIShot)
         {
@@ -408,7 +408,7 @@ public class AI
                 }
                 else
                 {
-                    Debug.Log("Which Player?!");
+//                    Debug.Log("Which Player?!");
                 }
 
             }
@@ -489,7 +489,7 @@ public class AI
             ResetUntilTurn();
             ballBounceListSave = ballBounceList;
         }
-        else if (bounceEvent == BounceEvent.neutral) { Debug.Log("bounceEvent == neutral"); }
+        else if (bounceEvent == BounceEvent.neutral) { /*Debug.Log("bounceEvent == neutral");*/ }
         bounceEvent = BounceEvent.neutral;
     }
 
@@ -573,7 +573,7 @@ public class AI
                 }
             }
             else {
-                Debug.Log("Which Player?!");
+//                Debug.Log("Which Player?!");
             }
         }
 

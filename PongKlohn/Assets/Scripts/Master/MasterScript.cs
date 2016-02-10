@@ -21,7 +21,7 @@ public class MasterScript : MonoBehaviour {
 
 	private List<int> crystals = new List<int>{ 1, 1 };
 
-	private List<string> playerType = new List<string>{ "KeyP1", "KeyP2" };
+	private List<string> playerType = new List<string>{ "ConP1", "ConP2" };
 
 	private GameObject projectile;
 
@@ -69,6 +69,10 @@ public class MasterScript : MonoBehaviour {
 	public string GetPlayerType(int player) {
 		return playerType [player - 1];
 	}
+
+//	public static string GetPlayerTypeS(int player) {
+//		return playerType [player - 1];
+//	}
 
 	public enum Scene {
 		master = 0,

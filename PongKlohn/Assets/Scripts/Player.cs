@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour 
 {
-    public int health;
-    public int power;
+    public int health { get; set; }
+    public int power { get; set; }
     public float blockTime;
-    public float speed;
-    public float dashSpeed;
+    public float speed { get; set; }
+    public float dashSpeed { get; set; }
     public bool InvertMotion = false;
 	protected const float fieldHeight = 22.0f;
 	protected const float fieldWidth = 70.0f;
@@ -679,6 +679,7 @@ public class Player : MonoBehaviour
     {
         if(blockWasHit)
         {
+            Debug.Log("block");
             blockWasHit = false;
             return true;
         }
@@ -686,7 +687,8 @@ public class Player : MonoBehaviour
     }
 
     public float SetOnBlock()
-    {    
+    {
+        Debug.Log("block");
         blockWasHit = true;
 		return ballSpeedup;
     }
@@ -957,44 +959,5 @@ public class Player : MonoBehaviour
         }
         else { /*Block.volume = 0f;*/ audioSource1.Stop(); blockCSet = false; }
     }
-   /* public void PlaySrei()
-    {
-        int schreiSound = 0;
-        schreiSound = (int)Random.Range(0f, 8f);
-
-        switch (schreiSound)
-        {
-            case 0:
-                Vocal1.Play(); break;
-            case 1:
-                Vocal2.Play(); break;
-            case 2:
-                Vocal3.Play(); break;
-            case 3:
-                Vocal4.Play(); break;
-            default:
-                break;
-        }
-    }
-
-    public void PlayMove()
-    {
-        int schreiSound = 0;
-        schreiSound = (int)Random.Range(0f, 8f);
-
-        switch (schreiSound)
-        {
-            case 0:
-                Vocal1.Play(); break;
-            case 1:
-                Vocal2.Play(); break;
-            case 2:
-                Vocal3.Play(); break;
-            case 3:
-                Vocal4.Play(); break;
-            default:
-                break;
-        }
-    }*/
 }
 

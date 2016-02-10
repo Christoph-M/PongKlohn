@@ -157,7 +157,7 @@ public class Game : MonoBehaviour {
 								  		player2.enabled = b; }
 
 	private bool enableProjectile = false;
-	public void EnableProjectile() { enableProjectile = true; }
+	public void EnableProjectile(bool b) { enableProjectile = b; }
 
 	public void Player1Scored(bool isWall) {
 		if (player2.health > 0) {

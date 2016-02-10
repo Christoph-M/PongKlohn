@@ -143,7 +143,7 @@ public class MatchUI : MonoBehaviour {
 			matchUI.transform.FindChild ("Energy_P2").gameObject.SetActive (true);
 
 			gameScript.EnablePlayers (true);
-			gameScript.EnableProjectile ();
+			gameScript.EnableProjectile (true);
 
 			break;
 		}
@@ -152,6 +152,9 @@ public class MatchUI : MonoBehaviour {
 	private void PauseGame() {
 		matchUI.SetActive (!matchUI.activeSelf);
 		pauseUI.SetActive (!pauseUI.activeSelf);
+		gameScript.EnablePlayers (!pauseUI.activeSelf);
+		gameScript.GetProjectileTransform ().GetComponent<Move> ().enabled = !pauseUI.activeSelf;
+		gameScript.GetProjectileTransform ().GetComponent<Ball> ().enabled = !pauseUI.activeSelf;
 
 		if (singleplayer && pauseUI.activeSelf) {
 			pauseUI.transform.FindChild ("Main_Menu").gameObject.SetActive (false);

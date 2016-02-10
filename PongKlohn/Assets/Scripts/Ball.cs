@@ -101,6 +101,8 @@ public class Ball : MonoBehaviour {
 			this.SetRotation (-1.0f);
 		}
 
+		gameScript.ResetBallSpeed ();
+
 		StartCoroutine (CalcPath (2.0f));
 	}
 

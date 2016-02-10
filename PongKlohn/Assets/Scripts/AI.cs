@@ -26,7 +26,7 @@ public class AI
     private float stopTrembling = 1.75f;
     private float ballSpeed =0f;
     private float persFieldLength;
-    int maxMissChance = 20;
+    int maxMissChance = 90;
     int missChnc;
 
 
@@ -155,7 +155,7 @@ public class AI
             return Vector2.zero;
         else
         {
-            vecVal = new Vector2(UnityEngine.Random.Range(2f, 3.5f), UnityEngine.Random.Range(3f, 4f));
+            vecVal = new Vector2(UnityEngine.Random.Range(6f, 9f), UnityEngine.Random.Range(-5f, -8f));
             float coin = UnityEngine.Random.Range(-1f, 1f);
             if (coin <= 0) vecVal *= -1;
             return vecVal;

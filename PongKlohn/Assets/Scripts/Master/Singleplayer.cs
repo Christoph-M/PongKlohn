@@ -89,7 +89,7 @@ public class Singleplayer : MonoBehaviour {
 		if (playerStillAllive && doUnload) {
 			StartCoroutine (sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.spMap, scene));
 		} else if (doUnload) {
-			StartCoroutine (sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, scene));
+			StartCoroutine (sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.spMap, scene));
 		}
 	}
 

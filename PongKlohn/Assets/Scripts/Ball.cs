@@ -101,8 +101,6 @@ public class Ball : MonoBehaviour {
 			this.SetRotation (-1.0f);
 		}
 
-		gameScript.ResetBallSpeed ();
-
 		StartCoroutine (CalcPath (2.0f));
 	}
 
@@ -406,6 +404,9 @@ public class Ball : MonoBehaviour {
 
 		this.enabled = false;
 
+		gameScript.ResetBallSpeed ();
+		moveScript.UpdateBallSpeed ();
+
 		this.ResetBall (other.name);
 
 		gameScript.ShakeScreen (1);
@@ -538,6 +539,7 @@ public class Ball : MonoBehaviour {
 // Sets new projectile speed + initiates boost + updates speed
 //‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 	private void SpeedUpProjectile(float fac, bool special = false) {
+		Debug.Log ("speed up started");
 		gameScript.BallSpeedUp (fac, special);
 		StartCoroutine (gameScript.BallSpeedBoost ());
 		moveScript.UpdateBallSpeed ();

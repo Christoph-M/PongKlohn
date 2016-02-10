@@ -122,7 +122,7 @@ public class Game : MonoBehaviour {
 		while (timeElapsed < ballBoostTime) {
 			ballSpeed = oldSpeed + ballSpeedBoostCurve.Evaluate (timeElapsed / ballBoostTime);
 			moveScript.UpdateBallSpeed ();
-
+			Debug.Log ("oldSpeed: " + oldSpeed + ", ballSpeed: " + ballSpeed + ", time: " + timeElapsed);
 			timeElapsed += Time.deltaTime;
 
 			yield return new WaitForSeconds (0.01f * Time.deltaTime);
@@ -270,7 +270,7 @@ public class Game : MonoBehaviour {
 
 		if (masterScript.GetPlayerType (2) == "Ai") {
 			if (singleplayer) {
-				aiStrength = (int)(80 + ((20 / 3) * singleplayerScript.GetAiDifficulty(masterScript.GetCharacter(2))));
+				aiStrength = (int)(((100 / 2) * (singleplayerScript.GetAiDifficulty(masterScript.GetCharacter(2)) - 1)));
 			} else {
 				aiStrength = 80;
 			}

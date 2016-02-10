@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour 
 {
-    public int health { get; set; }
+    public int health;// { get; set; }
     public int power { get; set; }
     public float blockTime;
     public float speed { get; set; }
@@ -114,7 +114,6 @@ public class Player : MonoBehaviour
     public GameObject smoke;
     public GameObject DashCollider;
     public GameObject blockShild;
-    public GameObject dashEffect;
     public GameObject buffEffect;
     public GameObject blockTrigger;
     public GameObject missTrigger;
@@ -176,7 +175,6 @@ public class Player : MonoBehaviour
 		blockTrigger.SetActive(false);
       
         //blockShild.SetActive(false);
-        dashEffect.SetActive(false);
         buffEffect.SetActive(false);
 
 
@@ -477,7 +475,7 @@ public class Player : MonoBehaviour
             blockMoveMod = 0.25f;
             if (blockEfectScale <= 1)
             {
-                blockEfectScale += Time.deltaTime;
+                blockEfectScale += Time.deltaTime*3;
                 blockShild.transform.localScale = Vector3.one * blockEfectScale;
             }
 
@@ -498,7 +496,7 @@ public class Player : MonoBehaviour
                 if (ballSpeedup < 1)
                 {
                     ballSpeedup += (Time.deltaTime/5);
-                    //Debug.Log("block loads");
+                    Debug.Log("block loads");
                 }
                 else
                 {
@@ -512,7 +510,7 @@ public class Player : MonoBehaviour
             {
                 blockTrigger.gameObject.tag = "SpecialTrigger";
 
-                //Debug.Log("spessel");
+                Debug.Log("spessel");
                 ballSpeedup = 2f;
                 if(OnBlock())
                 {
@@ -720,6 +718,7 @@ public class Player : MonoBehaviour
 				
 				case 2://block state 2
 					RestTrigger();
+                    missTrigger.SetActive(true);
 					blockTrigger.SetActive(true);///////////////
 					//this.transform.FindChild("Block").gameObject.SetActive(true);
 					canMovement = true;
@@ -813,7 +812,6 @@ public class Player : MonoBehaviour
         missTrigger.SetActive(false);
         blockTrigger.SetActive(false);
         //smoke.SetActive(false);
-        dashEffect.SetActive(false);
         buffEffect.SetActive(false);
     }
 

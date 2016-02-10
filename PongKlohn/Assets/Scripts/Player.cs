@@ -957,44 +957,5 @@ public class Player : MonoBehaviour
         }
         else { /*Block.volume = 0f;*/ audioSource1.Stop(); blockCSet = false; }
     }
-   /* public void PlaySrei()
-    {
-        int schreiSound = 0;
-        schreiSound = (int)Random.Range(0f, 8f);
-
-        switch (schreiSound)
-        {
-            case 0:
-                Vocal1.Play(); break;
-            case 1:
-                Vocal2.Play(); break;
-            case 2:
-                Vocal3.Play(); break;
-            case 3:
-                Vocal4.Play(); break;
-            default:
-                break;
-        }
-    }
-
-    public void PlayMove()
-    {
-        int schreiSound = 0;
-        schreiSound = (int)Random.Range(0f, 8f);
-
-        switch (schreiSound)
-        {
-            case 0:
-                Vocal1.Play(); break;
-            case 1:
-                Vocal2.Play(); break;
-            case 2:
-                Vocal3.Play(); break;
-            case 3:
-                Vocal4.Play(); break;
-            default:
-                break;
-        }
-    }*/
 }
 

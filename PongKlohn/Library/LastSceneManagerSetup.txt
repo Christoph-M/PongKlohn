@@ -1,14 +1,4 @@
 sceneSetups:
 - path: Assets/Scenes/Master.unity
   isLoaded: 1
-<<<<<<< HEAD
-  isActive: 0
-- path: Assets/Scenes/UI/StartScreen.unity
-  isLoaded: 1
   isActive: 1
-=======
-  isActive: 1
-- path: Assets/Scenes/Level/sceneAlb.unity
-  isLoaded: 0
-  isActive: 0
->>>>>>> 21c08a1c38720d520c1f4bffb24850be6f3681c5

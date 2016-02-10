@@ -26,7 +26,7 @@ public class AI
     private float stopTrembling = 1.75f;
     private float ballSpeed =0f;
     private float persFieldLength;
-    int maxMissChance = 90;
+    int maxMissChance = 40;
     int missChnc;
 
 
@@ -75,7 +75,7 @@ public class AI
         missChnc = GetMissingChance(aiStrength);
 		percentageX = StatePercentage();
         persFieldLength = MeasureField();
-        
+        Debug.Log("AiStrength: " + aiStrength);
         //blockTrigger = new AIBlockTrigger();
        
 
@@ -141,7 +141,7 @@ public class AI
     
     private int GetMissingChance(int strength)
     {
-        int missChance =(int) (maxMissChance * (strength / 100));
+        int missChance = maxMissChance - ((int)(maxMissChance * (strength / 100)));
         return missChance;
     }
 
@@ -151,13 +151,19 @@ public class AI
         System.Random rnd = new System.Random();
         int rndValue = rnd.Next(0, 100);
 
-        if (rndValue <= 100 - miss)
-            return Vector2.zero;
+        if (rndValue < (100 - miss)) { return Vector2.zero; }
         else
         {
-            vecVal = new Vector2(UnityEngine.Random.Range(6f, 9f), UnityEngine.Random.Range(-5f, -8f));
-            float coin = UnityEngine.Random.Range(-1f, 1f);
-            if (coin <= 0) vecVal *= -1;
+            float xM = UnityEngine.Random.Range(4.5f, 6f); 
+            float yM = UnityEngine.Random.Range(3f, 5f);
+
+            if (targetVector.y > 0) { yM *= -1; }
+
+             float coin = UnityEngine.Random.Range(-1f, 1f);
+             if (coin <= 0) { xM *= -1; }
+
+            vecVal = new Vector2(xM, yM);
+           
             return vecVal;
         }
     }

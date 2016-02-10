@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour 
 {
-    public int health;
-    public int power;
+    public int health { get; set; }
+    public int power { get; set; }
     public float blockTime;
-    public float speed;
-    public float dashSpeed;
+    public float speed { get; set; }
+    public float dashSpeed { get; set; }
     public bool InvertMotion = false;
 	protected const float fieldHeight = 22.0f;
 	protected const float fieldWidth = 70.0f;
@@ -679,6 +679,7 @@ public class Player : MonoBehaviour
     {
         if(blockWasHit)
         {
+            Debug.Log("block");
             blockWasHit = false;
             return true;
         }
@@ -686,7 +687,8 @@ public class Player : MonoBehaviour
     }
 
     public float SetOnBlock()
-    {    
+    {
+        Debug.Log("block");
         blockWasHit = true;
 		return ballSpeedup;
     }

@@ -220,7 +220,7 @@ public class SingleplayerMap : MonoBehaviour {
 
 				yield return new WaitUntil (() => Input.anyKeyDown);
 
-				StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.spMenu, (int)MasterScript.Scene.spMap));
+				StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.credits, (int)MasterScript.Scene.spMap));
 
 				yield break;
 			}

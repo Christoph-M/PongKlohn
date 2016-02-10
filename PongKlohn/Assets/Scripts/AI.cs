@@ -72,7 +72,6 @@ public class AI
         SetEnemyPlayer();
         state = State.neutral;
 		aiStrength = gameScript.aiStrength;
-        aiStrength = 0;
         missChnc = GetMissingChance(aiStrength);
 		percentageX = StatePercentage();
         persFieldLength = MeasureField();

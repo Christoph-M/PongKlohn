@@ -240,6 +240,13 @@ public class Ball : MonoBehaviour {
 			}
 
 
+			if (this.transform.position.x < 0.0f) {
+				StartCoroutine (this.PlayBlockEffect (other, 1));
+			} else {
+				StartCoroutine (this.PlayBlockEffect (other, 2));
+			}
+
+
 			gameScript.ShakeScreen (0, (playerTag == "Player1") ? 1 : 2);
 		}
 	}
@@ -276,6 +283,12 @@ public class Ball : MonoBehaviour {
 			} else {
 				particleObjs[p2char].SetActive(true);
 			}
+		}
+
+		if (this.transform.position.x < 0.0f) {
+			StartCoroutine (this.PlayBounceEffect (other, 1));
+		} else {
+			StartCoroutine (this.PlayBounceEffect (other, 2));
 		}
 
 
@@ -368,6 +381,12 @@ public class Ball : MonoBehaviour {
 					this.DisableAllSpecials (); break;
 				default:
 					break;
+			}
+
+			if (this.transform.position.x < 0.0f) {
+				StartCoroutine (this.PlayBounceEffect (other, 1));
+			} else {
+				StartCoroutine (this.PlayBounceEffect (other, 2));
 			}
 
 			gameScript.ShakeScreen (3);
@@ -620,5 +639,23 @@ public class Ball : MonoBehaviour {
 	private void EnableLinearRotation(bool b) {
 		linearRotation = b;
 		linearRotationScript.enabled = b;
+	}
+
+	private IEnumerator PlayBounceEffect(GameObject other, int i) {
+		RaycastHit2D hit = Physics2D.Raycast (this.transform.position, other.transform.position);
+
+		GameObject e = Instantiate (masterScript.GetComponent<AssetList> ().WallBounceEffecte [masterScript.GetCharacter (i) - 1], this.transform.position, ToolBox.GetRotationFromVector(new Vector3(hit.normal.x, hit.normal.y, 0.0f))) as GameObject;
+
+		yield return new WaitForSeconds (2);
+
+		Object.Destroy (e);
+	}
+
+	private IEnumerator PlayBlockEffect(GameObject other, int i) {
+		GameObject e = Instantiate (masterScript.GetComponent<AssetList> ().BlockBounceEffecte [masterScript.GetCharacter (i) - 1], this.transform.position, other.transform.parent.rotation) as GameObject;
+
+		yield return new WaitForSeconds (2);
+
+		Object.Destroy (e);
 	}
 }

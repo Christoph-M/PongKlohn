@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SceneHandler : MonoBehaviour {
+	public AudioSource menuMusic;
 
 	private MasterScript masterScript;
 
@@ -17,12 +18,18 @@ public class SceneHandler : MonoBehaviour {
 
 		yield return new WaitUntil(() => SceneManager.GetSceneByName(this.GetScene(menuL)).isLoaded);
 
+		if (menuL == 9) {
+			menuMusic.enabled = false;
+		} else {
+			menuMusic.enabled = true;
+		}
+
 		masterScript.UnloadScene (this.GetScene(menuUL));
 	}
 
 	public IEnumerator StartGame(int sceneL, int sceneUL, bool unloadFirst = false) {
 		if (unloadFirst) {
-			masterScript.UnloadScene (this.GetScene (sceneUL));
+			this.EndGame (sceneUL);
 
 			yield return new WaitUntil(() => !SceneManager.GetSceneByName(this.GetScene(sceneL)).isLoaded);
 		}
@@ -35,6 +42,8 @@ public class SceneHandler : MonoBehaviour {
 										 SceneManager.GetSceneByName(this.GetScene((int)MasterScript.Scene.player)).isLoaded &&
 										 SceneManager.GetSceneByName(this.GetScene((int)MasterScript.Scene.balls)).isLoaded);
 
+		menuMusic.enabled = false;
+
 		if (!unloadFirst) masterScript.UnloadScene (this.GetScene(sceneUL));
 	}
 
@@ -42,6 +51,8 @@ public class SceneHandler : MonoBehaviour {
 		masterScript.LoadScene (this.GetScene(scene));
 
 		yield return new WaitUntil(() => SceneManager.GetSceneByName(this.GetScene(scene)).isLoaded);
+
+		menuMusic.enabled = true;
 
 		masterScript.UnloadScene (this.GetScene((int)MasterScript.Scene.gameScene));
 		masterScript.UnloadScene (this.GetScene((int)MasterScript.Scene.player));

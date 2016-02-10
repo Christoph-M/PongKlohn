@@ -23,6 +23,7 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	public void HowTo() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.howToMenu, (int)MasterScript.Scene.optionsMenu));
 	}
 
@@ -31,6 +32,7 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	public void Back() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.optionsMenu));
 	}
 }

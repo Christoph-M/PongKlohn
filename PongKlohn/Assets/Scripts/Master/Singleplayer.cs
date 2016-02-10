@@ -10,6 +10,8 @@ public class Singleplayer : MonoBehaviour {
 	private MasterScript masterScript;
 	private SceneHandler sceneHandlerScript;
 
+	private List<int> getCharacterIndex = new List<int> { 0, 5, 1, 3, 4, 2 };
+
 	private int playerCrystalCount = -1;
 	private List<int> aiStartCrystalCount = new List<int> { -1, -1, -1, -1, -1 };
 	private List<int> aiCrystalCount = new List<int> { -1, -1, -1, -1, -1 };
@@ -68,7 +70,7 @@ public class Singleplayer : MonoBehaviour {
 			}
 		}
 
-		masterScript.SetCharacter (2, enemyCharacter);
+		masterScript.SetCharacter (2, getCharacterIndex[enemyCharacter + 1]);
 		masterScript.SetCrystal (2, Random.Range (1, 3));
 
 		StartCoroutine (sceneHandlerScript.StartGame((int)MasterScript.Scene.gameScene, sceneUL));

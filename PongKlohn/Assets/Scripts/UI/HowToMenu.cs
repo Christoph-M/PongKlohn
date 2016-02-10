@@ -24,6 +24,7 @@ public class HowToMenu : MonoBehaviour {
 	}
 
 	public void Back() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.optionsMenu, (int)MasterScript.Scene.howToMenu));
 	}
 }

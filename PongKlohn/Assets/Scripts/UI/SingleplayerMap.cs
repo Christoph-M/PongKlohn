@@ -55,6 +55,7 @@ public class SingleplayerMap : MonoBehaviour {
 	public void Crystal(int i) {
 		masterScript.SetCrystal (1, i);
 		crystalInfoText = i;
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void ChangeText(int i) {
@@ -77,10 +78,12 @@ public class SingleplayerMap : MonoBehaviour {
 	}
 
 	public void Next() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		singleplayerScript.StartMatch ((int)MasterScript.Scene.spMap);
 	}
 
 	public void Back() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine (sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.spMap));
 	}
 
@@ -193,6 +196,7 @@ public class SingleplayerMap : MonoBehaviour {
 
 			if (singleplayerScript.GetCrystalCount (1) <= 0) {
 				yield return new WaitUntil (() => Input.anyKeyDown);
+				masterScript.GetComponent<AudioSource> ().Play ();
 
 				StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.spMenu, (int)MasterScript.Scene.spMap));
 
@@ -219,6 +223,7 @@ public class SingleplayerMap : MonoBehaviour {
 				tournamentWin.SetActive (true);
 
 				yield return new WaitUntil (() => Input.anyKeyDown);
+				masterScript.GetComponent<AudioSource> ().Play ();
 
 				StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.credits, (int)MasterScript.Scene.spMap));
 

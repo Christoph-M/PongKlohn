@@ -23,14 +23,17 @@ public class VersusEndScreenMenu : MonoBehaviour {
 	}
 
 	public void Rematch() {
-		StartCoroutine (sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.winScreen));
+		masterScript.GetComponent<AudioSource> ().Play ();
+		StartCoroutine (sceneHandlerScript.StartGame ((int)MasterScript.Scene.gameScene, (int)MasterScript.Scene.versusEndScreen));
 	}
 
 	public void CharSelect() {
-		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.characterSelect, (int)MasterScript.Scene.winScreen));
+		masterScript.GetComponent<AudioSource> ().Play ();
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.characterSelect, (int)MasterScript.Scene.versusEndScreen));
 	}
 
 	public void Quit() {
-		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.winScreen));
+		masterScript.GetComponent<AudioSource> ().Play ();
+		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.versusEndScreen));
 	}
 }

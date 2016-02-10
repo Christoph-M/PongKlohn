@@ -81,18 +81,16 @@ public class Game : MonoBehaviour {
 		ballSpeed = minBallSpeed;
 	}
 
-	void OnValidate()  {
-		if (player1 && player2) {
-			player1.speed = playerSpeed;
-			player2.speed = playerSpeed;
-			player1.dashSpeed = dashSpeed;
-			player2.dashSpeed = dashSpeed;
-			player1.blockTime = blockTime;
-			player2.blockTime = blockTime;
-			player1.dashEnergyCost = dashEnergyCost;
-			player2.dashEnergyCost = dashEnergyCost;
-		}
-	}
+//	void OnValidate()  {
+//		if (player1 && player2) {
+//			player1.dashSpeed = dashSpeed;
+//			player2.dashSpeed = dashSpeed;
+//			player1.blockTime = blockTime;
+//			player2.blockTime = blockTime;
+//			player1.dashEnergyCost = dashEnergyCost;
+//			player2.dashEnergyCost = dashEnergyCost;
+//		}
+//	}
 
 	public void SetProjectileTransform(Transform trans) { projectile = trans; if (trans) AI.SetNewTargetVectorCount (projectile.transform.position); }
 	public Transform GetProjectileTransform() { return projectile; }
@@ -196,23 +194,11 @@ public class Game : MonoBehaviour {
 	}
 
 	public void Player1AddEnergy() {
-		if (player1.power < maxPlayerEnergy) {
-			player1.power += energyGain;
-		} 
-
-		if (player1.power >= maxPlayerEnergy) {
-			player1.power = maxPlayerEnergy;
-		}
+		player1.AddEnergy();
 	}
 
 	public void Player2AddEnergy() {
-		if (player2.power < maxPlayerEnergy) {
-			player2.power += energyGain;
-		} 
-
-		if (player2.power >= maxPlayerEnergy) {
-			player2.power = maxPlayerEnergy;
-		}
+		player2.AddEnergy();
 	}
 
 	public void ShakeScreen(int type = -1, int p = -1) {
@@ -254,6 +240,8 @@ public class Game : MonoBehaviour {
 		// Wait until game scene is active
 		yield return new WaitUntil(() => SceneManager.SetActiveScene(SceneManager.GetSceneByName(masterScript.scenes[(int)MasterScript.Scene.gameScene])));
 
+		this.SpawnWalls ();
+
 		this.enabled = true;
 		uiScript.enabled = true;
 
@@ -294,10 +282,6 @@ public class Game : MonoBehaviour {
 		player1.SetPlayer(masterScript.GetPlayerType(1));
 		player2.SetPlayer(masterScript.GetPlayerType(2));
 
-		player1.health = playerHealth;
-		player2.health = playerHealth;
-		player1.power = playerEnergy;
-		player2.power = playerEnergy;
 		player1.speed = playerSpeed;
 		player2.speed = playerSpeed;
 		player1.dashSpeed = dashSpeed;
@@ -320,12 +304,31 @@ public class Game : MonoBehaviour {
 		return projectiles;
 	}
 
+	private GameObject wallP1;
+	private GameObject wallP2;
+	private void SpawnWalls() {
+		wallP1 = Instantiate (masterScript.GetComponent<AssetList> ().WallsEffecteL [masterScript.GetCharacter (1) - 1], Vector3.zero, Quaternion.identity) as GameObject;
+		wallP2 = Instantiate (masterScript.GetComponent<AssetList> ().WallsEffecteR [masterScript.GetCharacter (2) - 1], Vector3.zero, Quaternion.identity) as GameObject;
+	}
+
 	private IEnumerator EndRound(int p){
 		if (gameRound >= maxGameRounds) {
 			int winner = (player1Score > player2Score) ? p1 : p2;
 			uiScript.GetComponent<MatchUI> ().MatchEnd (winner);
 
 			this.EnablePlayers (false);
+
+			if (winner == 1) {
+				wallP2.transform.FindChild ("Play").gameObject.SetActive (false);
+
+				wallP2.transform.FindChild("Loose").gameObject.SetActive (true);
+			} else {
+				wallP1.transform.FindChild ("Play").gameObject.SetActive (false);
+
+				wallP1.transform.FindChild("Loose").gameObject.SetActive (true);
+			}
+
+
 
 			yield return new WaitForSeconds (3);
 
@@ -339,7 +342,7 @@ public class Game : MonoBehaviour {
 				StartCoroutine (sceneHandlerScript.EndGame ((int)MasterScript.Scene.versusEndScreen));
 			}
 		} else {
-			uiScript.GetComponent<MatchUI> ().RoundEnd (p);
+//			uiScript.GetComponent<MatchUI> ().RoundEnd (p);
 			
 			player1.health = playerHealth;
 			player2.health = playerHealth;

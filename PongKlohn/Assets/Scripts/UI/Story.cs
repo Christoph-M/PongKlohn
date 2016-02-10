@@ -6,11 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Story : MonoBehaviour {
+	private MasterScript masterScript;
 	private Singleplayer singleplayerScript;
 
 	private MovieTexture video;
 
 	void Start () {
+		masterScript = GameObject.FindObjectOfType (typeof(MasterScript)) as MasterScript;
 		singleplayerScript = GameObject.FindObjectOfType (typeof(Singleplayer)) as Singleplayer;
 
 		video = (MovieTexture)GetComponent<Image> ().material.mainTexture;
@@ -26,6 +28,7 @@ public class Story : MonoBehaviour {
 
 		while (true) {
 			if (!video.isPlaying || Input.anyKeyDown) {
+				masterScript.GetComponent<AudioSource> ().Play ();
 				video.Stop ();
 				singleplayerScript.StartMatch ((int)MasterScript.Scene.story);
 			}

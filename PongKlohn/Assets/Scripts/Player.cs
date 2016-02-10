@@ -6,9 +6,10 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour 
 {
     public int health;// { get; set; }
-    public int power { get; set; }
+    public int power;// { get; set; }
+    public int powerGain;
     public float blockTime;
-    public float speed { get; set; }
+    public float speed;// { get; set; }
     public float dashSpeed { get; set; }
     public bool InvertMotion = false;
 	protected const float fieldHeight = 22.0f;
@@ -124,7 +125,7 @@ public class Player : MonoBehaviour
     /// /////////////////////////////////
     /// </summary>
     private int dashCost = 10;
-	private int specialCost = 75;
+	private int specialCost = 100;
 	private int buffCost = 50;
     
     /// <summary>
@@ -493,7 +494,7 @@ public class Player : MonoBehaviour
             }else if (mode == "Load")
             {
                 blockTrigger.gameObject.tag = "BlockTrigger";
-                if (ballSpeedup < 1)
+                if (ballSpeedup < 0.5f)
                 {
                     ballSpeedup += (Time.deltaTime/5);
                     Debug.Log("block loads");
@@ -553,13 +554,12 @@ public class Player : MonoBehaviour
 				if(stunProgression == 1 && stunTimer.IsFinished())
 				{
                     stunProgression = 0;
-                    Debug.Log("stun endet");
                     zuLangsamZumFangenDuMong = false;
+					blockMoveMod = 1f;
                     return true;
 				}
 				else if(stunProgression == 0)
 				{
-                    Debug.Log("stun ist gesetzt");
 					stunTimer.SetTimer(2f);
 					action = 4;
 					stunProgression =1;
@@ -753,7 +753,8 @@ public class Player : MonoBehaviour
 					break;
 				
 				case 6://Buff
-					RestTrigger();
+					RestTrigger ();
+					buffEffect.SetActive (true);
 					canMovement = false;
 					ResetAnimator();
 					animator.SetBool ("Buff", true);					
@@ -956,6 +957,16 @@ public class Player : MonoBehaviour
             yield return 0;*/
         }
         else { /*Block.volume = 0f;*/ audioSource1.Stop(); blockCSet = false; }
+    }
+
+    public void AddEnergy()
+    {
+        power += powerGain;
+        if(power>100)
+        {
+            power = 100;
+        }
+        
     }
 }
 

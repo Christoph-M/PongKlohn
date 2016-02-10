@@ -36,7 +36,11 @@ public class AudioLoop : MonoBehaviour
     public AudioSource Block_7_move;
 
 
-
+//	void LateUpdate() {
+//		if (!monkIntroAudio.isPlaying && !monkLoopAudio.enabled) {
+//			monkLoopAudio.enabled = true;
+//		}
+//	}
 
     public void PlaySchreiSound()
     {

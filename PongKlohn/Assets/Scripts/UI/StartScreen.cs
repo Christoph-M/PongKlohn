@@ -39,6 +39,7 @@ public class StartScreen : MonoBehaviour {
 	
 	void Update () {
 		if (Input.anyKeyDown /*&& pressStart.gameObject.activeSelf*/) {
+			masterScript.GetComponent<AudioSource> ().Play ();
 			video.Stop ();
 			StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.startScreen));
 		}
@@ -79,29 +80,6 @@ public class StartScreen : MonoBehaviour {
 		t = 0.0f;
 
 		while (t <= 1.0f) {
-			eightBall.CrossFadeAlpha (255, 1.0f, false);
-
-			t += Time.deltaTime;
-
-			yield return new WaitForSeconds (0.05f);
-		}
-
-		yield return new WaitForSeconds (1.0f);
-		t = 0.0f;
-
-		while (t <= 0.5f) {
-			eightBall.CrossFadeAlpha (0, 0.5f, false);
-
-			t += Time.deltaTime;
-
-			yield return new WaitForSeconds (0.05f);
-		}
-
-		eightBall.gameObject.SetActive (false);
-		ga.gameObject.SetActive (true);
-		t = 0.0f;
-
-		while (t <= 1.0f) {
 			ga.CrossFadeAlpha (255, 1.0f, false);
 
 			t += Time.deltaTime;
@@ -121,6 +99,29 @@ public class StartScreen : MonoBehaviour {
 		}
 
 		ga.gameObject.SetActive (false);
+		eightBall.gameObject.SetActive (true);
+		t = 0.0f;
+
+		while (t <= 1.0f) {
+			eightBall.CrossFadeAlpha (255, 1.0f, false);
+
+			t += Time.deltaTime;
+
+			yield return new WaitForSeconds (0.05f);
+		}
+
+		yield return new WaitForSeconds (1.0f);
+		t = 0.0f;
+
+		while (t <= 0.5f) {
+			eightBall.CrossFadeAlpha (0, 0.5f, false);
+
+			t += Time.deltaTime;
+
+			yield return new WaitForSeconds (0.05f);
+		}
+
+		eightBall.gameObject.SetActive (false);
 		pressStart.gameObject.SetActive (true);
 		backgroundVideo.gameObject.SetActive (true);
 

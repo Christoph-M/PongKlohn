@@ -6,6 +6,7 @@ using System.Collections;
 public class MatchUI : MonoBehaviour {
 	public GameObject matchUI;
 	public GameObject pauseUI;
+	public AudioSource gong;
 
 
 	private MasterScript masterScript;
@@ -45,7 +46,7 @@ public class MatchUI : MonoBehaviour {
 		energyBarP2 = matchUI.transform.FindChild ("Energy_P2").FindChild ("specialbar").GetComponent<Image> ();
 	}
 	
-	private Timer uiTimer = new Timer(8.0f);
+	private Timer uiTimer = new Timer(6.0f);
 	float t = 0.0f;
 	void Update() {
 		t = uiTimer.UpdateTimer ();
@@ -69,7 +70,7 @@ public class MatchUI : MonoBehaviour {
 	}
 	
 	public void RoundEnd(int p){
-		matchUI.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins\nRound " + gameScript.gameRound + "!";
+//		matchUI.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins\nRound " + gameScript.gameRound + "!";
 		matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 		matchUI.transform.FindChild ("Health_P1").gameObject.SetActive (false);
 		matchUI.transform.FindChild ("Health_P2").gameObject.SetActive (false);
@@ -80,7 +81,7 @@ public class MatchUI : MonoBehaviour {
 	}
 
 	public void MatchEnd(int p){
-		matchUI.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins Match!";
+//		matchUI.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins Match!";
 		matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 		matchUI.transform.FindChild ("Health_P1").gameObject.SetActive (false);
 		matchUI.transform.FindChild ("Health_P2").gameObject.SetActive (false);
@@ -107,32 +108,33 @@ public class MatchUI : MonoBehaviour {
 	private void RoundStart(float t) {
 		switch ((int)t) {
 		case 8:
-			matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (false);
+//			matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (false);
 			break;
 		case 7:
-			matchUI.transform.FindChild ("BackplaneR").gameObject.SetActive (true);
-			matchUI.transform.FindChild ("Round_" + gameScript.gameRound).gameObject.SetActive(true);
+//			matchUI.transform.FindChild ("BackplaneR").gameObject.SetActive (true);
 			break;
 		case 6:
-			matchUI.transform.FindChild ("BackplaneR").gameObject.SetActive (false);
-			matchUI.transform.FindChild ("Round_" + gameScript.gameRound).gameObject.SetActive (false);
+//			matchUI.transform.FindChild ("BackplaneR").gameObject.SetActive (false);
 			break;
 		case 5:
-			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (true);
-			matchUI.transform.FindChild ("2").gameObject.SetActive (true);
+			matchUI.transform.FindChild ("Round_" + gameScript.gameRound).gameObject.SetActive(true);
+//			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (true);
+//			matchUI.transform.FindChild ("2").gameObject.SetActive (true);
 			break;
 		case 4:
-			matchUI.transform.FindChild ("2").gameObject.SetActive (false);
-			matchUI.transform.FindChild ("1").gameObject.SetActive (true);
+//			matchUI.transform.FindChild ("2").gameObject.SetActive (false);
+//			matchUI.transform.FindChild ("1").gameObject.SetActive (true);
 			break;
 		case 3:
-			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (false);
-			matchUI.transform.FindChild ("1").gameObject.SetActive (false);
+			matchUI.transform.FindChild ("Round_" + gameScript.gameRound).gameObject.SetActive (false);
+//			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (false);
+//			matchUI.transform.FindChild ("1").gameObject.SetActive (false);
 			break;
 		case 2:
 			gameScript.ShakeScreen (1);
 			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (true);
 			matchUI.transform.FindChild ("FIGHT").gameObject.SetActive (true);
+			gong.enabled = true;
 			break;
 		case 1:
 			matchUI.transform.FindChild ("Backplane").gameObject.SetActive (false);

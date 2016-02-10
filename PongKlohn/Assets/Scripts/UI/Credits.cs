@@ -38,6 +38,7 @@ public class Credits : MonoBehaviour {
 
 	void Update () {
 		if (Input.anyKeyDown) {
+			masterScript.GetComponent<AudioSource> ().Play ();
 			StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.credits));
 		}
 	}

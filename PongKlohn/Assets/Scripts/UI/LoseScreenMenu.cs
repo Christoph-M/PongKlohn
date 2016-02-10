@@ -28,12 +28,14 @@ public class LoseScreenMenu : MonoBehaviour {
 	}
 
 	public void Continue() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		singleplayerScript.EndRound ((int)MasterScript.Scene.loseScreen);
 
 		singleplayerScript.SaveGame ();
 	}
 
 	public void SaveAndExit() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		if (!singleplayerScript.RoundContinues ()) {
 			singleplayerScript.EndRound (-1, false);
 		}

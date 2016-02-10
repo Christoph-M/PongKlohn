@@ -31,18 +31,21 @@ public class SingleplayerMenu : MonoBehaviour {
 	}
 
 	public void Continue() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		singleplayerScript.LoadGame ();
 
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.spMap, (int)MasterScript.Scene.spMenu));
 	}
 
 	public void NewGame() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		singleplayerScript.DeleteGame ();
 
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.story, (int)MasterScript.Scene.spMenu));
 	}
 
 	public void Back() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.spMenu));
 	}
 }

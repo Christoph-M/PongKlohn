@@ -53,6 +53,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		}
 
 		this.SwitchCharacter (p, characters[p - 1], old);
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void SelectLeft(int p) {
@@ -65,6 +66,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		}
 
 		this.SwitchCharacter (p, characters[p - 1], old);
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void SelectPlayer1() {
@@ -75,6 +77,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 
 			glow.SetActive (p1Ready);
 		}
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void CrystalP1(int i) {
@@ -84,6 +87,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		} else {
 			crystals [p1 - 1] = i;
 		}
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void Player2SelectRight() {
@@ -96,6 +100,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		}
 
 		this.SwitchCharacter (p2, characters[p2 - 1], old);
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void Player2SelectLeft() {
@@ -108,6 +113,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		}
 
 		this.SwitchCharacter (p2, characters[p2 - 1], old);
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void SelectPlayer2() {
@@ -118,6 +124,7 @@ public class CharacterSelectionMenu : MonoBehaviour {
 
 			glow.SetActive (p2Ready);
 		}
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void CrystalP2(int i) {
@@ -127,13 +134,16 @@ public class CharacterSelectionMenu : MonoBehaviour {
 		} else {
 			crystals [p2 - 1] = i;
 		}
+		masterScript.GetComponent<AudioSource> ().Play ();
 	}
 
 	public void Back() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.mainMenu, (int)MasterScript.Scene.characterSelect));
 	}
 
 	public void StartGame() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine (this.SetGame ());
 	}
 

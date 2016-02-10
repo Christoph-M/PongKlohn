@@ -27,6 +27,7 @@ public class WinScreenMenu : MonoBehaviour {
 	}
 	
 	public void Continue() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		if (singleplayerScript.RoundContinues ()) {
 			singleplayerScript.StartMatch ((int)MasterScript.Scene.winScreen);
 		} else {
@@ -38,6 +39,7 @@ public class WinScreenMenu : MonoBehaviour {
 	}
 
 	public void SaveAndExit() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		if (!singleplayerScript.RoundContinues ()) {
 			singleplayerScript.UpdateRound ();
 			singleplayerScript.EndRound (-1, false);

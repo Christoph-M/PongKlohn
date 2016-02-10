@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void Singleplayer() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		masterScript.SetPlayerType (1, "KeyP1");
 		masterScript.SetPlayerType (2, "Ai");
 
@@ -34,6 +35,7 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void Multiplayer() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		masterScript.SetPlayerType (1, "KeyP1");
 		masterScript.SetPlayerType (2, "KeyP2");
 
@@ -41,14 +43,17 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void OptionsMenu() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.optionsMenu, (int)MasterScript.Scene.mainMenu));
 	}
 
 	public void Credits() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.credits, (int)MasterScript.Scene.mainMenu));
 	}
 	
 	public void Quit() {
+		masterScript.GetComponent<AudioSource> ().Play ();
 		Application.Quit ();
 	}
 

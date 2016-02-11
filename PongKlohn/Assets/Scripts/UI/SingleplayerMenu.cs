@@ -39,7 +39,7 @@ public class SingleplayerMenu : MonoBehaviour {
 
 	public void NewGame() {
 		masterScript.GetComponent<AudioSource> ().Play ();
-		singleplayerScript.DeleteGame ();
+//		singleplayerScript.DeleteGame ();
 
 		StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.story, (int)MasterScript.Scene.spMenu));
 	}

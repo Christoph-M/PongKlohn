@@ -71,7 +71,7 @@ public class MatchUI : MonoBehaviour {
 	
 	public void RoundEnd(int p){
 //		matchUI.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins\nRound " + gameScript.gameRound + "!";
-		matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (true);
+//		matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 		matchUI.transform.FindChild ("Health_P1").gameObject.SetActive (false);
 		matchUI.transform.FindChild ("Health_P2").gameObject.SetActive (false);
 		matchUI.transform.FindChild ("Energy_P1").gameObject.SetActive (false);
@@ -82,7 +82,7 @@ public class MatchUI : MonoBehaviour {
 
 	public void MatchEnd(int p){
 //		matchUI.transform.FindChild ("Player_Win").GetComponent<Text> ().text = "Player " + p + " Wins Match!";
-		matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (true);
+//		matchUI.transform.FindChild ("Player_Win").gameObject.SetActive (true);
 		matchUI.transform.FindChild ("Health_P1").gameObject.SetActive (false);
 		matchUI.transform.FindChild ("Health_P2").gameObject.SetActive (false);
 		matchUI.transform.FindChild ("Energy_P1").gameObject.SetActive (false);
@@ -155,16 +155,17 @@ public class MatchUI : MonoBehaviour {
 		matchUI.SetActive (!matchUI.activeSelf);
 		pauseUI.SetActive (!pauseUI.activeSelf);
 		gameScript.EnablePlayers (!pauseUI.activeSelf);
-		gameScript.GetProjectileTransform ().GetComponent<Move> ().enabled = !pauseUI.activeSelf;
+		if (gameScript.GetProjectileTransform ()) gameScript.GetProjectileTransform ().GetComponent<Move> ().enabled = !pauseUI.activeSelf;
 		gameScript.GetProjectileTransform ().GetComponent<Ball> ().enabled = !pauseUI.activeSelf;
 
 		if (singleplayer && pauseUI.activeSelf) {
 			pauseUI.transform.FindChild ("Main_Menu").gameObject.SetActive (false);
 			pauseUI.transform.FindChild ("Rematch").gameObject.SetActive (false);
-			pauseUI.transform.FindChild ("Save_And_Exit").gameObject.SetActive (true);
+			pauseUI.transform.FindChild ("Main_Menu").gameObject.SetActive (true);
+//			pauseUI.transform.FindChild ("Save_And_Exit").gameObject.SetActive (true);
 		} else if (pauseUI.activeSelf) {
 			pauseUI.transform.FindChild ("Save_And_Exit").gameObject.SetActive (false);
-			pauseUI.transform.FindChild ("Rematch").gameObject.SetActive (true);
+			pauseUI.transform.FindChild ("Rematch").gameObject.SetActive (false);
 			pauseUI.transform.FindChild ("Main_Menu").gameObject.SetActive (true);
 		}
 	}

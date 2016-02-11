@@ -12,6 +12,7 @@ public class SingleplayerMap : MonoBehaviour {
 	public Text textPlusOne;
 	public Text textMinusOne;
 	public GameObject tournamentWin;
+	public GameObject tournamentLose;
 	public Text crystalText;
 	public List<GameObject> temple;
 	public List<Text> crystalCount;
@@ -62,11 +63,11 @@ public class SingleplayerMap : MonoBehaviour {
 		if (i > 0 && crystalSelect [i - 1].interactable) {
 			switch (i) {
 			case 1:
-				crystalText.text = "Crystal One"; break;
+				crystalText.text = "Gawamba"; break;
 			case 2:
-				crystalText.text = "Crystal Two"; break;
+				crystalText.text = "Iko"; break;
 			case 3:
-				crystalText.text = "Crystal Three"; break;
+				crystalText.text = "Zarp"; break;
 			default:
 				break;
 			}
@@ -94,7 +95,7 @@ public class SingleplayerMap : MonoBehaviour {
 		for (int i = 0; i < crystalUnlocked.Count; ++i) {
 			bool b = bool.Parse (Ini.IniReadValue ("Other", "unlock" + i + "HasBeenShown"));
 
-			if (!b) showUnlock = true;
+			if (!b && singleplayerScript.GetCrystalCount(1) > 0) showUnlock = true;
 		}
 
 		if (singleplayerScript.GetNewUnlock () || showUnlock) {
@@ -195,8 +196,12 @@ public class SingleplayerMap : MonoBehaviour {
 			}
 
 			if (singleplayerScript.GetCrystalCount (1) <= 0) {
+				tournamentLose.SetActive (true);
+
 				yield return new WaitUntil (() => Input.anyKeyDown);
 				masterScript.GetComponent<AudioSource> ().Play ();
+
+				singleplayerScript.DeleteGame ();
 
 				StartCoroutine(sceneHandlerScript.LoadMenu ((int)MasterScript.Scene.spMenu, (int)MasterScript.Scene.spMap));
 

@@ -152,6 +152,10 @@ public class Singleplayer : MonoBehaviour {
 		return round;
 	}
 
+	public int GetMatch() {
+		return match;
+	}
+
 	public List<bool> GetCrystalUnlockStatus() {
 		return crystalUnlocked;
 	}

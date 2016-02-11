@@ -391,7 +391,7 @@ public class Player : MonoBehaviour
 				if(wallDistance.y < lerpedDash.y * dashLength){endVec.y = startVec.y - wallDistance.y;}
 			}
             Vector3 diff = (startVec - endVec);
-            GameObject g = Instance(DashCollider, transform.position -(diff/2), ToolBox.GetRotationFromVector(new Vector3(directionRaw_.x,directionRaw_.y,0)));
+            GameObject g = Instance(DashCollider, ((transform.position -(diff/2)) + new Vector3(0,0,-2) ), ToolBox.GetRotationFromVector(new Vector3(directionRaw_.x,directionRaw_.y,0)));
             g.tag = this.tag;
         }
 
@@ -550,7 +550,8 @@ public class Player : MonoBehaviour
         }
         blockEffectRotSpeed += (ballSpeedup * 800) * Time.deltaTime;
         //Debug.Log("blockEffectRotSpeed"+ blockEffectRotSpeed + "   :"+ballSpeedup);
-        blockShild.transform.rotation = Quaternion.AngleAxis(blockEffectRotSpeed, new Vector3(1,0,0));
+        
+        blockShild.transform.rotation = Quaternion.AngleAxis(blockEffectRotSpeed,new Vector3(1,0,0));
         return false;
     }
 

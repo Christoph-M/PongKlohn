@@ -33,7 +33,7 @@ public class Story : MonoBehaviour {
 				singleplayerScript.StartMatch ((int)MasterScript.Scene.story);
 			}
 
-			yield return new WaitForSeconds (0.05f);
+			yield return new WaitForSeconds (0.01f);
 		}
 	}
 }

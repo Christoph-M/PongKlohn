@@ -31,7 +31,9 @@ public class SceneHandler : MonoBehaviour {
 		if (unloadFirst) {
 			this.EndGame (sceneUL);
 
-			yield return new WaitUntil(() => !SceneManager.GetSceneByName(this.GetScene(sceneL)).isLoaded);
+//			yield return new WaitUntil(() => !SceneManager.GetSceneByName(this.GetScene(sceneL)).isLoaded);
+
+			yield return new WaitForSeconds (1.0f);
 		}
 
 		masterScript.LoadScene (this.GetScene(sceneL), false);
